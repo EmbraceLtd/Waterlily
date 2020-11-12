@@ -143,7 +143,6 @@ namespace Deerwood
                     {
                         if (item.location == userLocation)
                         {
-                            item.carry = true;
                             if (item.title == "bottle")
                             {
                                 Console.WriteLine("KABOOM! The bottle of nitroglycerine explodes in your tender parts. Should have been more careful!");
