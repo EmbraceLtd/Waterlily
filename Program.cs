@@ -132,6 +132,35 @@ namespace Deerwood
                     }
                 }
             }
+            else if (verb == "FUCK")
+            {
+                if (string.IsNullOrEmpty(obj))
+                    Console.WriteLine($"Hey!");
+                else
+                {
+                    var item = GetItemByName(obj);
+                    if (item != null)
+                    {
+                        if (item.location == userLocation)
+                        {
+                            item.carry = true;
+                            if (item.title == "bottle")
+                            {
+                                Console.WriteLine("KABOOM! The bottle of nitroglycerine explodes in your tender parts. Should have been more careful!");
+                                cont = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"You don't want to do that! I'm serious!");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("It ain't here!");
+                        }
+                    }
+                }
+            }
             else if (verb == "DROP")
             {
                 if (string.IsNullOrEmpty(obj))

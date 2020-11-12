@@ -2,7 +2,7 @@
   {
     "number": 1,
     "title": "Main Street",
-    "description": "Overlooking Main Street, Deerwood. It's a hazy morning. Church bells are heard from afar.",
+    "description": "Overlooking Main Street, Flatville. It's a hazy morning. Church bells are heard from afar.",
     "destSouth": 2,
     "destWest": -1,
     "destEast": -1,
@@ -11,7 +11,7 @@
   {
     "number": 2,
     "title": "Bourbon Park",
-    "description": "In Bourbon Park. Birds are singing and stuff.",
+    "description": "In Bourbon Park. Birds are singing and doing whatever birds do.",
     "destSouth": -1,
     "destWest": -1,
     "destEast": -1,
