@@ -13,5 +13,6 @@ namespace Deerwood
         public int destSouth { get; set; }
         public int destEast { get; set; }
         public int destWest { get; set; }
+        public bool showedDescription { get; set; }
     }
 }

@@ -38,12 +38,24 @@ namespace Deerwood
             }
         }
 
-        private static void DescribeWorld()
+        private static void DescribeWorld(bool brief = true)
         {
             var myLocation = GetLocationByNumber(userLocation);
-            Console.WriteLine(myLocation.title);
-            Console.WriteLine("-------------------------------------------------------------------------------------");
-            Console.WriteLine(myLocation.description);
+            if (!brief)
+            {
+                Console.WriteLine(myLocation.description);
+            }
+            else
+            {
+                if (!myLocation.showedDescription)
+                {
+                    Console.WriteLine(myLocation.description);
+                    myLocation.showedDescription = true;
+                }
+                else
+                    Console.WriteLine(myLocation.title);
+
+            }
             Console.Write($"You can go {(myLocation.destNorth > -1 ? "north " : string.Empty)}");
             Console.Write($"{(myLocation.destSouth > -1 ? "south " : string.Empty)}");
             Console.Write($"{(myLocation.destEast > -1 ? "east " : string.Empty)}");
@@ -57,7 +69,7 @@ namespace Deerwood
                 foreach (var item in itemsHere)
                     Console.WriteLine($"   {item.shortDescription}.");
             }
-        }
+        } 
 
         private static void InitializeWorld()
         {
@@ -87,7 +99,7 @@ namespace Deerwood
             }
             else if ((verb == "LOOK" && obj == string.Empty) || verb == "WHERE")
             {
-                DescribeWorld();
+                DescribeWorld(brief: false);
             }
             else if (verb == "GET" || verb == "TAKE")
             {
