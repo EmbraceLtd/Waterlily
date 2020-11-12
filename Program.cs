@@ -93,7 +93,7 @@ namespace Deerwood
             var verb = sentence[0].ToUpper();
             var obj = sentence.Count() > 1 ? sentence[1] : string.Empty;
 
-            if (verb == "EXIT")
+            if (verb == "EXIT" || verb == "Q")
             {
                 cont = false;
             }
