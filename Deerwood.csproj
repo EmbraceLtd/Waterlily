@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
     <None Remove="items.json" />
     <None Remove="locations.json" />
   </ItemGroup>
