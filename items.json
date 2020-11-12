@@ -1,0 +1,18 @@
+[
+  {
+    "title": "hammer",
+    "shortDescription": "a small hammer",
+    "longDescription": "The hammer has a wooden handle and looks well used",
+    "location": 1,
+    "canTake": true,
+    "canUse": true
+  },
+  {
+    "title": "bottle",
+    "shortDescription": "a small bottle",
+    "longDescription": "The label says 'Nitroglycerine'. Better not touch it!",
+    "location": 2,
+    "canTake": true,
+    "canUse": false
+  }
+]
