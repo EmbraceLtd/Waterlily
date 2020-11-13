@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Deerwood
 {
@@ -47,13 +48,22 @@ namespace Deerwood
             }
             else
             {
-                if (!myLocation.showedDescription)
+                if (myLocation == null)
                 {
-                    Console.WriteLine(myLocation.description);
-                    myLocation.showedDescription = true;
+                    Console.WriteLine("You have entered an undefined area! Look for a newer version of this game!");
+                    cont = false;
+                    return;
                 }
                 else
-                    Console.WriteLine(myLocation.title);
+                {
+                    if (!myLocation.showedDescription)
+                    {
+                        Console.WriteLine(myLocation.description);
+                        myLocation.showedDescription = true;
+                    }
+                    else
+                        Console.WriteLine(myLocation.title);
+                }
 
             }
             Console.Write($"You can go {(myLocation.destNorth > -1 ? "north " : string.Empty)}");
@@ -76,7 +86,7 @@ namespace Deerwood
             Console.Clear();
             Console.WriteLine("DEERWOOD 1.0");
             Console.WriteLine("(C) Embrace Ltd. of Uggadunk V3.0, 2020");
-            Console.WriteLine("=====================================================================================");
+            Console.WriteLine("=======================================================================================================");
 
             ReadItems();
             ReadLocations();
@@ -94,53 +104,134 @@ namespace Deerwood
             var verb = sentence[0].ToUpper();
             var obj = sentence.Count() > 1 ? sentence[1] : string.Empty;
 
-            if (verb == "EXIT" || verb == "Q")
+            switch (verb)
             {
-                cont = false;
+                case "EXIT":
+                case "Q":
+                    cont = false;
+                    break;
+                case "LOOK" when obj == string.Empty:
+                case "WHERE":
+                    DescribeWorld(brief: false);
+                    break;
+                case "GET":
+                case "TAKE":
+                    PickupAction(obj);
+                    break;
+                case "FUCK":
+                    FuckAction(obj);
+                    break;
+                case "DROP":
+                    DropAction(obj);
+                    break;
+                case "INV":
+                case "INVENTORY":
+                    InventoryAction();
+                    break;
+                case "EXAMINE":
+                case "LOOK":
+                    ExamineAction(obj);
+                    break;
+                case "OPEN":
+                    OpenAction(obj);
+                    break;
+                case "BREAK":
+                    BreakAction(obj);
+                    break;
+                case "S":
+                case "SOUTH":
+                    GoAction(myLocation.destSouth);
+                    break;
+                case "N":
+                case "NORTH":
+                    GoAction(myLocation.destNorth);
+                    break;
+                case "E":
+                case "EAST":
+                    GoAction(myLocation.destEast);
+                    break;
+                case "W":
+                case "WEST":
+                    GoAction(myLocation.destWest);
+                    break;
+                default:
+                    Console.WriteLine("You gotta be kidding!");
+                    break;
             }
-            else if ((verb == "LOOK" && obj == string.Empty) || verb == "WHERE")
+        }
+
+        private static void OpenAction(string obj)
+        {
+            var item = GetItemByName(obj);
+            if (item != null)
             {
-                DescribeWorld(brief: false);
+                if (item.location == userLocation)
+                {
+                    if (item.canOpen)
+                    {
+                        if (!item.isOpen)
+                        {
+                            Console.WriteLine($"You open the {item.examinedTitle}.");
+                            item.isOpen = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"The {item.examinedTitle} is already open!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The {item.examinedTitle} can't be opened.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("It ain't here!");
+                }
             }
-            else if (verb == "GET" || verb == "TAKE")
+        }
+
+        private static void BreakAction(string obj)
+        {
+            var item = GetItemByName(obj);
+            if (item != null)
             {
-                GetAction(obj);
-            }
-            else if (verb == "FUCK")
-            {
-                FuckAction(obj);
-            }
-            else if (verb == "DROP")
-            {
-                DropAction(obj);
-            }
-            else if (verb == "INV" || verb == "INVENTORY")
-            {
-                InventoryAction();
-            }
-            else if (verb == "EXAMINE" || verb == "LOOK")
-            {
-                ExamineAction(obj);
-            }
-            else if (verb == "S" || verb == "SOUTH")
-            {
-                GoAction(myLocation.destSouth);
-            }
-            else if (verb == "N" || verb == "NORTH")
-            {
-                GoAction(myLocation.destNorth);
-            }
-            else if (verb == "E" || verb == "EAST")
-            {
-                GoAction(myLocation.destEast);
-            }
-            else if (verb == "W" || verb == "WEST")
-            {
-                GoAction(myLocation.destWest);
-            }
-            else
-            {
-                Console.WriteLine("You gotta be kidding!");
+                if (item.location == userLocation)
+                {
+                    if (item.canBreak)
+                    {
+                        var breakItem = GetBreakingTool();
+                        if (breakItem!=null)
+                        {
+                            if (!item.isBroken)
+                            {
+                                Console.WriteLine($"You break the {item.examinedTitle} with the {breakItem.title}.");
+                                item.shortDescription = new StringBuilder(item.shortDescription.Insert(2, "broken ")).ToString();
+                                item.longDescription = new StringBuilder(item.longDescription).Replace("closed", "broken").ToString();
+                                item.isBroken = true;
+
+                                if (userLocation == 1 && obj == "window")
+                                    myLocation.destNorth = 3;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"The {item.examinedTitle} is already broken!");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You don't have anything to break the {item.examinedTitle} with.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The {item.examinedTitle} can't be broken.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("It ain't here!");
+                }
             }
         }
 
@@ -183,10 +274,20 @@ namespace Deerwood
             var myItems = GetMyItems();
 
             if (!myItems.Any())
-                Console.WriteLine("   Not a damn thing!");
+                Console.WriteLine("   not a damn thing!");
 
             foreach (var item in GetMyItems())
                 Console.WriteLine($"   {item.shortDescription}. ");
+        }
+
+        private static Item GetBreakingTool()
+        {
+            foreach (var item in GetMyItems())
+            {
+                if (item.canBreakTool)
+                    return item;
+            }
+            return null;
         }
 
         private static void DropAction(string obj)
@@ -195,13 +296,23 @@ namespace Deerwood
                 Console.WriteLine($"Drop what?");
             else
             {
-                var item = GetItemByName(obj);
-                if (item != null)
+                var myItems = new List<Item>();
+                if (obj.ToUpper()=="ALL")
+                {
+                    myItems = GetMyItems();
+                }
+                else
+                {
+                    var item = GetItemByName(obj);
+                    if (item != null)
+                        myItems.Add(item);
+                }
+                foreach(var item in myItems)
                 {
                     if (item.carry)
                     {
                         item.carry = false;
-                        Console.WriteLine($"You {(item.sensitive ? "very carefully put down" : "dropped")} the {obj}.");
+                        Console.WriteLine($"You {(item.sensitive ? "very carefully put down" : "drop")} the {item.examinedTitle}.");
                     }
                     else
                     {
@@ -240,7 +351,7 @@ namespace Deerwood
             }
         }
 
-        private static void GetAction(string obj)
+        private static void PickupAction(string obj)
         {
             if (string.IsNullOrEmpty(obj))
                 Console.WriteLine($"Get what?");
@@ -300,6 +411,20 @@ namespace Deerwood
                     }
                 }
             }
+        }
+
+        private static bool HaveItem(string obj)
+        {
+            var qItem = GetItemByName(obj);
+            if (qItem != null)
+            {
+                foreach(var item in GetMyItems())
+                {
+                    if (item == qItem)
+                        return true;
+                }
+            }
+            return false;
         }
 
         private static void MoveMyItems(int location)

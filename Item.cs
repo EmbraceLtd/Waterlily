@@ -17,5 +17,10 @@ namespace Deerwood
         public bool canUse { get; set; }
         public bool wasExamined { get; set; }
         public bool sensitive { get; set; }
+        public bool canOpen { get; set; }
+        public bool canBreak { get; set; }
+        public bool isOpen { get; set; }
+        public bool isBroken { get; set; }
+        public bool canBreakTool { get; set; }
     }
 }

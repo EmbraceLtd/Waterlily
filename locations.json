@@ -2,7 +2,7 @@
   {
     "number": 1,
     "title": "Main Street",
-    "description": "Overlooking Main Street, Flatville. It's a hazy morning. Church bells are heard from afar.",
+    "description": "Overlooking Main Street, Flatville. It's a hazy morning. Church bells are heard from afar.\r\nBehind you is the Central Bank building.",
     "destSouth": 2,
     "destWest": -1,
     "destEast": -1,

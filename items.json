@@ -9,7 +9,12 @@
     "canTake": true,
     "canUse": true,
     "wasExamined": false,
-    "sensitive": false
+    "sensitive": false,
+    "canOpen": false,
+    "canBreak": false,
+    "isOpen": false,
+    "isBroken": false,
+    "canBreakTool": true
   },
   {
     "title": "bottle",
@@ -21,6 +26,28 @@
     "canTake": true,
     "canUse": false,
     "wasExamined": false,
-    "sensitive": true
+    "sensitive": true,
+    "canOpen": true,
+    "canBreak": true,
+    "isOpen": false,
+    "isBroken": false,
+    "canBreakTool": false
+  },
+  {
+    "title": "window",
+    "examinedTitle": "window",
+    "shortDescription": "a window",
+    "examinedShortDescription": "a window",
+    "longDescription": "The window is closed and the curtains are drawn.",
+    "location": 1,
+    "canTake": false,
+    "canUse": false,
+    "wasExamined": false,
+    "sensitive": false,
+    "canOpen": false,
+    "canBreak": true,
+    "isOpen": false,
+    "isBroken": false,
+    "canBreakTool": false
   }
 ]
