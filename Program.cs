@@ -94,15 +94,19 @@ namespace Deerwood
             Console.WriteLine("(C) Embrace Ltd. of Uggadunk V3.0, 2020");
             Console.WriteLine("=======================================================================================================");
 
+            MainSettings();
             ReadItems();
             ReadLocations();
 
+            DescribeWorld();
+        }
+
+        private static void MainSettings()
+        {
             userLocation = 1;
             myLocation = GetLocationByNumber(userLocation);
             safeBlownup = false;
             cont = true;
-
-            DescribeWorld();
         }
 
         private static void ProcessCommand(string cmd)
