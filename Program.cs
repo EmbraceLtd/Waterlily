@@ -16,7 +16,7 @@ namespace Deerwood
         private static int userLocation;
         private static Location myLocation;
         private static bool cont = true;
-        private static bool safeBlownup = false;
+        private static bool safeBlownup;
 
         static void Main(string[] args)
         {
@@ -96,8 +96,12 @@ namespace Deerwood
 
             ReadItems();
             ReadLocations();
+
             userLocation = 1;
             myLocation = GetLocationByNumber(userLocation);
+            safeBlownup = false;
+            cont = true;
+
             DescribeWorld();
         }
 
