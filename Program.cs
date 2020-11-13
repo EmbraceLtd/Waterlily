@@ -263,7 +263,7 @@ namespace Deerwood
 
                 if (blowupSafe)
                 {
-                    Console.WriteLine("The bottle of nitroglycerine explodes inside the bank manager's office,");
+                    Console.WriteLine("The bottle of nitroglycerine explodes inside the bank manager's office. A large bang is heard all over town!");
                     var safe = GetItemByName("safe");
                     safe.isOpen = true;
                     safe.longDescription = "The safe has been blown up";
@@ -488,16 +488,20 @@ namespace Deerwood
                 return namedItem;
         }
 
+        private static void ReadSettings<T>(ref T collection, string file)
+        {
+            var json = GetStringFromResource(file);
+            collection = JsonConvert.DeserializeObject<T>(json);
+        }
+
         private static void ReadItems()
         {
-            var json = GetStringFromResource("items.json");
-            items = JsonConvert.DeserializeObject<List<Item>>(json);
+            ReadSettings(ref items, "items.json");
         }
 
         private static void ReadLocations()
         {
-            var json = GetStringFromResource("locations.json");
-            locations = JsonConvert.DeserializeObject<List<Location>>(json);
+            ReadSettings(ref locations, "locations.json");
         }
 
         private static string GetStringFromResource(string resourceName)
