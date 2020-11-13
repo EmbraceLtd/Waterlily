@@ -13,6 +13,7 @@ namespace Deerwood
         private static List<Location> locations;
         private static List<Item> items;
         private static int userLocation;
+        private static Location myLocation;
         private static bool cont = true;
 
         static void Main(string[] args)
@@ -40,7 +41,6 @@ namespace Deerwood
 
         private static void DescribeWorld(bool brief = true)
         {
-            var myLocation = GetLocationByNumber(userLocation);
             if (!brief)
             {
                 Console.WriteLine(myLocation.description);
@@ -81,6 +81,7 @@ namespace Deerwood
             ReadItems();
             ReadLocations();
             userLocation = 1;
+            myLocation = GetLocationByNumber(userLocation);
             DescribeWorld();
         }
 
@@ -103,117 +104,133 @@ namespace Deerwood
             }
             else if (verb == "GET" || verb == "TAKE")
             {
-                if (string.IsNullOrEmpty(obj))
-                    Console.WriteLine($"Get what?");
-                else
-                {
-                    var item = GetItemByName(obj);
-                    if (item != null)
-                    {
-                        if (item.canTake)
-                        {
-                            if (item.location == userLocation)
-                            {
-                                if (!item.carry)
-                                {
-                                    item.carry = true;
-                                    if (item.title == "bottle")
-                                    {
-                                        Console.WriteLine("KABOOM! The bottle of nitroglycerine explodes in your hand. Should have been more careful!");
-                                        cont = false;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine($"You got the {obj}!");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("You got it already!");
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("It ain't here!");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("You can't!");
-                        }
-                    }
-                }
+                GetAction(obj);
             }
             else if (verb == "FUCK")
             {
-                if (string.IsNullOrEmpty(obj))
-                    Console.WriteLine($"Hey!");
-                else
-                {
-                    var item = GetItemByName(obj);
-                    if (item != null)
-                    {
-                        if (item.location == userLocation)
-                        {
-                            if (item.title == "bottle")
-                            {
-                                Console.WriteLine("KABOOM! The bottle of nitroglycerine explodes in your tender parts. Should have been more careful!");
-                                cont = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine($"You don't want to do that! I'm serious!");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("It ain't here!");
-                        }
-                    }
-                }
+                FuckAction(obj);
             }
             else if (verb == "DROP")
             {
-                if (string.IsNullOrEmpty(obj))
-                    Console.WriteLine($"Drop what?");
-                else
-                {
-                    var item = GetItemByName(obj);
-                    if (item != null)
-                    {
-                        if (item.carry)
-                        {
-                            item.carry = false;
-                            Console.WriteLine($"You dropped the {obj}.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("You ain't got it!");
-                        }
-                    }
-                }
+                DropAction(obj);
             }
             else if (verb == "INV" || verb == "INVENTORY")
             {
-                Console.Write("You are carrying: ");
-                var myItems = GetMyItems();
-
-                if (!myItems.Any())
-                    Console.Write("Not a damn thing!");
-
-                foreach (var item in GetMyItems())
-                    Console.Write($"{item.shortDescription}. ");
-
-                Console.WriteLine();
+                InventoryAction();
             }
             else if (verb == "EXAMINE" || verb == "LOOK")
+            {
+                ExamineAction(obj);
+            }
+            else if (verb == "S" || verb == "SOUTH")
+            {
+                GoAction(myLocation.destSouth);
+            }
+            else if (verb == "N" || verb == "NORTH")
+            {
+                GoAction(myLocation.destNorth);
+            }
+            else if (verb == "E" || verb == "EAST")
+            {
+                GoAction(myLocation.destEast);
+            }
+            else if (verb == "W" || verb == "WEST")
+            {
+                GoAction(myLocation.destWest);
+            }
+            else
+            {
+                Console.WriteLine("You gotta be kidding!");
+            }
+        }
+
+        private static void GoAction(int destination)
+        {
+            if (destination > -1)
+            {
+                userLocation = destination;
+                MoveMyItems(destination);
+                myLocation = GetLocationByNumber(destination);
+                DescribeWorld();
+            }
+            else
+            {
+                Console.WriteLine("You can't go there!");
+            }
+        }
+
+        private static void ExamineAction(string obj)
+        {
+            var item = GetItemByName(obj);
+            if (item != null)
+            {
+                if (item.location == userLocation)
+                {
+                    Console.WriteLine(item.longDescription);
+                    item.wasExamined = true;
+                    item.shortDescription = item.examinedShortDescription;
+                }
+                else
+                {
+                    Console.WriteLine("It ain't here!");
+                }
+            }
+        }
+
+        private static void InventoryAction()
+        {
+            Console.WriteLine("You are carrying: ");
+            var myItems = GetMyItems();
+
+            if (!myItems.Any())
+                Console.WriteLine("   Not a damn thing!");
+
+            foreach (var item in GetMyItems())
+                Console.WriteLine($"   {item.shortDescription}. ");
+        }
+
+        private static void DropAction(string obj)
+        {
+            if (string.IsNullOrEmpty(obj))
+                Console.WriteLine($"Drop what?");
+            else
+            {
+                var item = GetItemByName(obj);
+                if (item != null)
+                {
+                    if (item.carry)
+                    {
+                        item.carry = false;
+                        Console.WriteLine($"You {(item.sensitive ? "very carefully put down" : "dropped")} the {obj}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("You ain't got it!");
+                    }
+                }
+            }
+        }
+
+        private static void FuckAction(string obj)
+        {
+            if (string.IsNullOrEmpty(obj))
+                Console.WriteLine($"Hey!");
+            else
             {
                 var item = GetItemByName(obj);
                 if (item != null)
                 {
                     if (item.location == userLocation)
                     {
-                        Console.WriteLine(item.longDescription);
+                        if (item.title == "bottle")
+                        {
+                            Console.WriteLine("KABOOM! The bottle of nitroglycerine explodes in your tender parts. Should have been more careful!");
+                            cont = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You don't want to do that! I'm serious!");
+                        }
                     }
                     else
                     {
@@ -221,65 +238,67 @@ namespace Deerwood
                     }
                 }
             }
-            else if (verb == "S" || verb == "SOUTH")
-            {
-                var myLocation = GetLocationByNumber(userLocation);
-                if (myLocation.destSouth > -1)
-                {
-                    userLocation = myLocation.destSouth;
-                    MoveMyItems(myLocation.destSouth);
-                    DescribeWorld();
-                }
-                else
-                {
-                    Console.WriteLine("You can't go there!");
-                }
-            }
-            else if (verb == "N" || verb == "NORTH")
-            {
-                var myLocation = GetLocationByNumber(userLocation);
-                if (myLocation.destNorth > -1)
-                {
-                    userLocation = myLocation.destNorth;
-                    MoveMyItems(myLocation.destNorth);
-                    DescribeWorld();
-                }
-                else
-                {
-                    Console.WriteLine("You can't go there!");
-                }
-            }
-            else if (verb == "E" || verb == "EAST")
-            {
-                var myLocation = GetLocationByNumber(userLocation);
-                if (myLocation.destEast > -1)
-                {
-                    userLocation = myLocation.destEast;
-                    MoveMyItems(myLocation.destEast);
-                    DescribeWorld();
-                }
-                else
-                {
-                    Console.WriteLine("You can't go there!");
-                }
-            }
-            else if (verb == "W" || verb == "WEST")
-            {
-                var myLocation = GetLocationByNumber(userLocation);
-                if (myLocation.destEast > -1)
-                {
-                    userLocation = myLocation.destEast;
-                    MoveMyItems(myLocation.destEast);
-                    DescribeWorld();
-                }
-                else
-                {
-                    Console.WriteLine("You can't go there!");
-                }
-            }
+        }
+
+        private static void GetAction(string obj)
+        {
+            if (string.IsNullOrEmpty(obj))
+                Console.WriteLine($"Get what?");
             else
             {
-                Console.WriteLine("You gotta be kidding!");
+                var itemsHere = new List<Item>();
+                if (obj.ToUpper() == "ALL")
+                {
+                    itemsHere = GetItemsByLocation(userLocation);
+                }
+                else
+                {
+                    var item = GetItemByName(obj);
+                    if (item != null)
+                        itemsHere.Add(item);
+                }
+
+                foreach (var item in itemsHere)
+                {
+                    if (item.canTake)
+                    {
+                        if (item.location == userLocation)
+                        {
+                            if (!item.carry)
+                            {
+                                item.carry = true;
+                                if (item.sensitive)
+                                {
+                                    if (!item.wasExamined)
+                                    {
+                                        Console.WriteLine($"KABOOM! The {item.examinedTitle} explodes in your hand. Should have been more careful!");
+                                        cont = false;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"You very carefully pick up the {item.title}.");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You got the {item.title}!");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("You got it already!");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("It ain't here!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't!");
+                    }
+                }
             }
         }
 

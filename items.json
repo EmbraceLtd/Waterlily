@@ -1,18 +1,26 @@
 [
   {
     "title": "hammer",
+    "examinedTitle": "hammer",
     "shortDescription": "a small hammer",
+    "examinedShortDescription": "a small hammer",
     "longDescription": "The hammer has a wooden handle and looks well used",
     "location": 1,
     "canTake": true,
-    "canUse": true
+    "canUse": true,
+    "wasExamined": false,
+    "sensitive": false
   },
   {
     "title": "bottle",
+    "examinedTitle": "bottle of nitroglycerine",
     "shortDescription": "a small bottle",
-    "longDescription": "The label says 'Nitroglycerine'. Better not touch it!",
+    "examinedShortDescription": "a small bottle of nitroglycerine",
+    "longDescription": "The label says 'Nitroglycerine'. Better be careful!",
     "location": 2,
     "canTake": true,
-    "canUse": false
+    "canUse": false,
+    "wasExamined": false,
+    "sensitive": true
   }
 ]
