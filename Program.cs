@@ -443,7 +443,8 @@ namespace Deerwood
                     }
                     else
                     {
-                        Console.WriteLine("You can't!");
+                        if (obj.ToUpper() != "ALL")
+                            Console.WriteLine("You can't!");
                     }
                 }
             }
