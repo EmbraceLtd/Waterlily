@@ -94,9 +94,9 @@ namespace Deerwood
             Console.WriteLine("(C) Embrace Ltd. of Uggadunk V3.0, 2020");
             Console.WriteLine("=======================================================================================================");
 
-            MainSettings();
             ReadItems();
             ReadLocations();
+            MainSettings();
 
             DescribeWorld();
         }
