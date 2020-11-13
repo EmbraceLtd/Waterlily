@@ -49,5 +49,39 @@
     "isOpen": false,
     "isBroken": false,
     "canBreakTool": false
+  },
+  {
+    "title": "safe",
+    "examinedTitle": "safe",
+    "shortDescription": "a safe",
+    "examinedShortDescription": "a safe",
+    "longDescription": "The safe is closed and locked.",
+    "location": 3,
+    "canTake": false,
+    "canUse": false,
+    "wasExamined": false,
+    "sensitive": false,
+    "canOpen": false,
+    "canBreak": false,
+    "isOpen": false,
+    "isBroken": false,
+    "canBreakTool": false
+  },
+  {
+    "title": "money",
+    "examinedTitle": "100 dollars",
+    "shortDescription": "some money",
+    "examinedShortDescription": "100 dollars",
+    "longDescription": "Ten 10 dollar bills.",
+    "location": -1,
+    "canTake": true,
+    "canUse": true,
+    "wasExamined": false,
+    "sensitive": false,
+    "canOpen": false,
+    "canBreak": false,
+    "isOpen": false,
+    "isBroken": false,
+    "canBreakTool": false
   }
 ]

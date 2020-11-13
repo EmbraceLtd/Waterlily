@@ -16,6 +16,7 @@ namespace Deerwood
         private static int userLocation;
         private static Location myLocation;
         private static bool cont = true;
+        private static bool safeBlownup = false;
 
         static void Main(string[] args)
         {
@@ -66,11 +67,7 @@ namespace Deerwood
                 }
 
             }
-            Console.Write($"You can go {(myLocation.destNorth > -1 ? "north " : string.Empty)}");
-            Console.Write($"{(myLocation.destSouth > -1 ? "south " : string.Empty)}");
-            Console.Write($"{(myLocation.destEast > -1 ? "east " : string.Empty)}");
-            Console.Write($"{(myLocation.destWest > -1 ? "west " : string.Empty)}");
-            Console.WriteLine();
+            ShowDestinations();
 
             var itemsHere = GetItemsByLocation(userLocation);
             if (itemsHere.Any())
@@ -79,7 +76,16 @@ namespace Deerwood
                 foreach (var item in itemsHere)
                     Console.WriteLine($"   {item.shortDescription}.");
             }
-        } 
+        }
+
+        private static void ShowDestinations()
+        {
+            Console.Write($"You can go {(myLocation.destNorth > -1 ? "north " : string.Empty)}");
+            Console.Write($"{(myLocation.destSouth > -1 ? "south " : string.Empty)}");
+            Console.Write($"{(myLocation.destEast > -1 ? "east " : string.Empty)}");
+            Console.Write($"{(myLocation.destWest > -1 ? "west " : string.Empty)}");
+            Console.WriteLine();
+        }
 
         private static void InitializeWorld()
         {
@@ -211,7 +217,10 @@ namespace Deerwood
                                 item.isBroken = true;
 
                                 if (userLocation == 1 && obj == "window")
+                                {
                                     myLocation.destNorth = 3;
+                                    ShowDestinations();
+                                }
                             }
                             else
                             {
@@ -239,10 +248,29 @@ namespace Deerwood
         {
             if (destination > -1)
             {
+                var blowupSafe = false;
+                if (userLocation == 3 && !safeBlownup)
+                {
+                    var bottle = GetItemByName("bottle");
+                    if (!bottle.carry && bottle.location == userLocation)
+                        blowupSafe = true;
+                }
+
                 userLocation = destination;
                 MoveMyItems(destination);
                 myLocation = GetLocationByNumber(destination);
                 DescribeWorld();
+
+                if (blowupSafe)
+                {
+                    Console.WriteLine("The bottle of nitroglycerine explodes inside the bank manager's office,");
+                    var safe = GetItemByName("safe");
+                    safe.isOpen = true;
+                    safe.longDescription = "The safe has been blown up";
+                    GetItemByName("money").location = 3;
+                    GetItemByName("bottle").location = -1;
+                    safeBlownup = true;
+                }
             }
             else
             {
