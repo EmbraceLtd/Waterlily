@@ -11,8 +11,6 @@ namespace Waterlily
 {
     class Program
     {
-        //private static List<Location> locations;
-        //private static List<Item> items;
         private static GameDefinition gameDefinition;
         private static int userLocation;
         private static Location myLocation;
@@ -98,8 +96,6 @@ namespace Waterlily
             Console.WriteLine("=======================================================================================================");
 
             ReadConfig();
-            //ReadItems();
-            //ReadLocations();
             MainSettings();
 
             DescribeWorld();
@@ -511,16 +507,6 @@ namespace Waterlily
         {
             ReadSettings(ref gameDefinition, "default.json");
         }
-
-        //private static void ReadItems()
-        //{
-        //    ReadSettings(ref items, "items.json");
-        //}
-
-        //private static void ReadLocations()
-        //{
-        //    ReadSettings(ref locations, "locations.json");
-        //}
 
         private static string GetStringFromResource(string resourceName)
         {
