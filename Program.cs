@@ -197,6 +197,9 @@ namespace Waterlily
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 obj);
 
+            if (string.IsNullOrEmpty(Path.GetExtension(configPath)))
+                configPath = new StringBuilder(configPath).Append(".json").ToString();
+
             if (File.Exists(configPath))
             {
                 ReadSettingsFromFile<GameDefinition>(ref gameDefinition, configPath);
@@ -208,7 +211,7 @@ namespace Waterlily
             }
             else
             {
-
+                Console.WriteLine($"Can't find {configPath}");
             }
         }
 
