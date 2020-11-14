@@ -44,4 +44,13 @@ namespace Waterlily
         public int destWest { get; set; }
         public bool showedDescription { get; set; }
     }
+
+    public class PendingAction
+    {
+        public int location { get; set; }
+        public string item { get; set; }
+        public string action { get; set; }
+        public bool active { get; set; } = false;
+        public bool completed { get; set; } = false;
+    }
 }

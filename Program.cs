@@ -16,6 +16,7 @@ namespace Waterlily
         private static Location myLocation;
         private static bool cont = true;
         private static bool safeBlownup;
+        private static List<PendingAction> pendingActions;
 
         static void Main(string[] args)
         {
@@ -28,6 +29,7 @@ namespace Waterlily
                     Console.Write("> ");
                     var userCommand = Console.ReadLine();
                     ProcessCommand(userCommand);
+                    ProcessPendingActions();
                 }
                 Console.WriteLine("You left this world in a puff of smoke! You are very dead.");
                 Console.Write("Revive? (Y/n)");
@@ -88,11 +90,13 @@ namespace Waterlily
 
         private static void InitializeWorld()
         {
+            pendingActions = new List<PendingAction>();
+
             InitMessage();
 
             ReadConfig();
             MainSettings();
-            ShowGameInfo();
+            ShowGameInfo("default ");
 
             Console.WriteLine("=======================================================================================================");
 
@@ -109,9 +113,9 @@ namespace Waterlily
             Console.WriteLine("=======================================================================================================");
         }
 
-        private static void ShowGameInfo()
+        private static void ShowGameInfo(string def = "")
         {
-            Console.WriteLine($"Running game {gameDefinition.name}");
+            Console.WriteLine($"Running {def}game {gameDefinition.name}");
             Console.WriteLine($"Author: {gameDefinition.author}");
         }
 
@@ -192,6 +196,44 @@ namespace Waterlily
                 default:
                     Console.WriteLine("You gotta be kidding!");
                     break;
+            }
+        }
+
+        private static void ProcessPendingActions()
+        {
+            foreach (var pendAction in pendingActions)
+            {
+                if (pendAction.action == "detonate" && pendAction.active && !pendAction.completed)
+                    Detonate(pendAction);
+            }
+
+            foreach (var pendAction in pendingActions)
+            {
+                if (!pendAction.active && !pendAction.completed)
+                    pendAction.active = true;
+            }
+
+            pendingActions.RemoveAll(p => p.completed);
+        }
+
+        private static void Detonate(PendingAction pendAction)
+        {
+            if (pendAction.item == "bottle")
+            {
+                var loc = GetLocationByNumber(pendAction.location);
+                Console.WriteLine($"The {pendAction.item} explodes in the {loc.title}. A large bang is heard all over town!");
+                var safe = GetItemByName("safe");
+                safe.isOpen = true;
+                safe.longDescription = "The safe has been blown up";
+                GetItemByName("money").location = 3;
+                GetItemByName("bottle").location = -1;
+                safeBlownup = true;
+
+                if (pendAction.location == userLocation)
+                    cont = false;
+
+                pendAction.active = false;
+                pendAction.completed = true;
             }
         }
 
@@ -306,29 +348,10 @@ namespace Waterlily
         {
             if (destination > -1)
             {
-                var blowupSafe = false;
-                if (userLocation == 3 && !safeBlownup)
-                {
-                    var bottle = GetItemByName("bottle");
-                    if (!bottle.carry && bottle.location == userLocation)
-                        blowupSafe = true;
-                }
-
                 userLocation = destination;
                 MoveMyItems(destination);
                 myLocation = GetLocationByNumber(destination);
                 DescribeWorld();
-
-                if (blowupSafe)
-                {
-                    Console.WriteLine("The bottle of nitroglycerine explodes inside the bank manager's office. A large bang is heard all over town!");
-                    var safe = GetItemByName("safe");
-                    safe.isOpen = true;
-                    safe.longDescription = "The safe has been blown up";
-                    GetItemByName("money").location = 3;
-                    GetItemByName("bottle").location = -1;
-                    safeBlownup = true;
-                }
             }
             else
             {
@@ -399,6 +422,8 @@ namespace Waterlily
                     {
                         item.carry = false;
                         Console.WriteLine($"You {(item.sensitive ? "very carefully put down" : "drop")} the {item.examinedTitle}.");
+                        if (item.title == "bottle")
+                            pendingActions.Add(new PendingAction { action = "detonate", item = "bottle", location = userLocation});
                     }
                     else
                     {
