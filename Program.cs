@@ -97,8 +97,17 @@ namespace Waterlily
 
             ReadConfig();
             MainSettings();
+            ShowGameInfo();
+
+            Console.WriteLine("=======================================================================================================");
 
             DescribeWorld();
+        }
+
+        private static void ShowGameInfo()
+        {
+            Console.WriteLine($"Running game {gameDefinition.name}");
+            Console.WriteLine($"Author: {gameDefinition.author}");
         }
 
         private static void MainSettings()
