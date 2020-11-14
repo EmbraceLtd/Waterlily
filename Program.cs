@@ -90,8 +90,10 @@ namespace Deerwood
         private static void InitializeWorld()
         {
             Console.Clear();
-            Console.WriteLine("DEERWOOD 1.0");
-            Console.WriteLine("(C) Embrace Ltd. of Uggadunk V3.0, 2020");
+            Console.WriteLine("=======================================================================================================");
+            Console.WriteLine("WATERLILY ADVENTURE ENGINE 1.0");
+            Console.WriteLine("BY TOMMY SJÖBLOM / EMBRACE LTD.");
+            Console.WriteLine("(C) UGGADUNK v3.0 SOFTWARE, 2020");
             Console.WriteLine("=======================================================================================================");
 
             ReadItems();
