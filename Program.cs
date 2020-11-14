@@ -30,9 +30,9 @@ namespace Waterlily
                     ProcessCommand(userCommand);
                 }
                 Console.WriteLine("You left this world in a puff of smoke! You are very dead.");
-                Console.Write("Revive? (Y/N)");
+                Console.Write("Revive? (Y/n)");
                 var revive = Console.ReadLine().ToUpper();
-                if (revive == "Y")
+                if (revive == "Y" || revive == string.Empty)
                 {
                     cont = true;
                     InitializeWorld();
