@@ -207,13 +207,13 @@ namespace Waterlily
                     Detonate(pendAction);
             }
 
+            pendingActions.RemoveAll(p => p.completed);
+
             foreach (var pendAction in pendingActions)
             {
-                if (!pendAction.active && !pendAction.completed)
+                if (!pendAction.active)
                     pendAction.active = true;
             }
-
-            pendingActions.RemoveAll(p => p.completed);
         }
 
         private static void Detonate(PendingAction pendAction)
