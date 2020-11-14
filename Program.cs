@@ -88,12 +88,7 @@ namespace Waterlily
 
         private static void InitializeWorld()
         {
-            Console.Clear();
-            Console.WriteLine("=======================================================================================================");
-            Console.WriteLine("WATERLILY ADVENTURE ENGINE 1.0");
-            Console.WriteLine("BY TOMMY SJÖBLOM / EMBRACE LTD.");
-            Console.WriteLine("(C) UGGADUNK v3.0 SOFTWARE, 2020");
-            Console.WriteLine("=======================================================================================================");
+            InitMessage();
 
             ReadConfig();
             MainSettings();
@@ -102,6 +97,16 @@ namespace Waterlily
             Console.WriteLine("=======================================================================================================");
 
             DescribeWorld();
+        }
+
+        private static void InitMessage()
+        {
+            Console.Clear();
+            Console.WriteLine("=======================================================================================================");
+            Console.WriteLine("WATERLILY ADVENTURE ENGINE 1.0");
+            Console.WriteLine("BY TOMMY SJÖBLOM / EMBRACE LTD.");
+            Console.WriteLine("(C) UGGADUNK v3.0 SOFTWARE, 2020");
+            Console.WriteLine("=======================================================================================================");
         }
 
         private static void ShowGameInfo()
@@ -129,6 +134,9 @@ namespace Waterlily
 
             switch (verb)
             {
+                case "LOAD":
+                    LoadAction(obj);
+                    break;
                 case "EXIT":
                 case "Q":
                     cont = false;
@@ -180,6 +188,27 @@ namespace Waterlily
                 default:
                     Console.WriteLine("You gotta be kidding!");
                     break;
+            }
+        }
+
+        private static void LoadAction(string obj)
+        {
+            var configPath = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                obj);
+
+            if (File.Exists(configPath))
+            {
+                ReadSettingsFromFile<GameDefinition>(ref gameDefinition, configPath);
+                InitMessage();
+                MainSettings();
+                ShowGameInfo();
+                Console.WriteLine("=======================================================================================================");
+                DescribeWorld();
+            }
+            else
+            {
+
             }
         }
 
@@ -504,6 +533,12 @@ namespace Waterlily
             }
             else
                 return namedItem;
+        }
+
+        private static void ReadSettingsFromFile<T>(ref T collection, string file)
+        {
+            var json = File.ReadAllText(file);
+            collection = JsonConvert.DeserializeObject<T>(json);
         }
 
         private static void ReadSettings<T>(ref T collection, string file)

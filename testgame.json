@@ -1,0 +1,35 @@
+﻿{
+  "name": "Test game 0.1",
+  "author": "Tommy Sjöblom",
+  "startLocation": 1,
+  "items": [
+    {
+      "title": "drink",
+      "examinedTitle": "drink",
+      "shortDescription": "a tasty drink",
+      "examinedShortDescription": "a tasty drink",
+      "longDescription": "The drink is green and bubbling",
+      "location": 1,
+      "canTake": true,
+      "canUse": true,
+      "wasExamined": false,
+      "sensitive": false,
+      "canOpen": false,
+      "canBreak": false,
+      "isOpen": false,
+      "isBroken": false,
+      "canBreakTool": false
+    }
+  ],
+  "locations": [
+    {
+      "number": 1,
+      "title": "Spooky Cafe",
+      "description": "In the Spooky Cafe, in the eerie lounge",
+      "destSouth": -1,
+      "destWest": 2,
+      "destEast": -1,
+      "destNorth": -1
+    }
+  ]
+}
