@@ -11,8 +11,9 @@ namespace Waterlily
 {
     class Program
     {
-        private static List<Location> locations;
-        private static List<Item> items;
+        //private static List<Location> locations;
+        //private static List<Item> items;
+        private static GameDefinition gameDefinition;
         private static int userLocation;
         private static Location myLocation;
         private static bool cont = true;
@@ -96,8 +97,9 @@ namespace Waterlily
             Console.WriteLine("(C) UGGADUNK v3.0 SOFTWARE, 2020");
             Console.WriteLine("=======================================================================================================");
 
-            ReadItems();
-            ReadLocations();
+            ReadConfig();
+            //ReadItems();
+            //ReadLocations();
             MainSettings();
 
             DescribeWorld();
@@ -105,7 +107,7 @@ namespace Waterlily
 
         private static void MainSettings()
         {
-            userLocation = 1;
+            userLocation = gameDefinition.startLocation;
             myLocation = GetLocationByNumber(userLocation);
             safeBlownup = false;
             cont = true;
@@ -474,22 +476,22 @@ namespace Waterlily
 
         private static Location GetLocationByNumber(int number)
         {
-            return locations.Find(l => l.number == number);
+            return gameDefinition.locations.Find(l => l.number == number);
         }
 
         private static List<Item> GetItemsByLocation(int number)
         {
-            return items.Where(i => i.location == number && !i.carry).ToList();
+            return gameDefinition.items.Where(i => i.location == number && !i.carry).ToList();
         }
 
         private static List<Item> GetMyItems()
         {
-            return items.Where(i => i.carry).ToList();
+            return gameDefinition.items.Where(i => i.carry).ToList();
         }
 
         private static Item GetItemByName(string name)
         {
-            var namedItem = items.Where(i => i.title.ToUpper() == name.ToUpper()).FirstOrDefault();
+            var namedItem = gameDefinition.items.Where(i => i.title.ToUpper() == name.ToUpper()).FirstOrDefault();
             if (namedItem == null)
             {
                 Console.WriteLine("What's that?!");
@@ -505,15 +507,20 @@ namespace Waterlily
             collection = JsonConvert.DeserializeObject<T>(json);
         }
 
-        private static void ReadItems()
+        private static void ReadConfig()
         {
-            ReadSettings(ref items, "items.json");
+            ReadSettings(ref gameDefinition, "default.json");
         }
 
-        private static void ReadLocations()
-        {
-            ReadSettings(ref locations, "locations.json");
-        }
+        //private static void ReadItems()
+        //{
+        //    ReadSettings(ref items, "items.json");
+        //}
+
+        //private static void ReadLocations()
+        //{
+        //    ReadSettings(ref locations, "locations.json");
+        //}
 
         private static string GetStringFromResource(string resourceName)
         {

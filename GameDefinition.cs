@@ -4,6 +4,15 @@ using System.Text;
 
 namespace Waterlily
 {
+    public class GameDefinition
+    {
+        public string name { get; set; }
+        public string author { get; set; }
+        public int startLocation { get; set; }
+        public List<Item> items { get; set; }
+        public List<Location> locations { get; set; }
+    }
+
     public class Item
     {
         public string title { get; set; }
@@ -22,5 +31,17 @@ namespace Waterlily
         public bool isOpen { get; set; }
         public bool isBroken { get; set; }
         public bool canBreakTool { get; set; }
+    }
+
+    public class Location
+    {
+        public int number { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public int destNorth { get; set; }
+        public int destSouth { get; set; }
+        public int destEast { get; set; }
+        public int destWest { get; set; }
+        public bool showedDescription { get; set; }
     }
 }

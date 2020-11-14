@@ -6,15 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Item.cs" />
+    <Compile Remove="Location.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove=".gitattributes" />
     <None Remove=".gitignore" />
+    <None Remove="default.json" />
     <None Remove="items.json" />
     <None Remove="locations.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="items.json" />
-    <EmbeddedResource Include="locations.json" />
+    <EmbeddedResource Include="default.json" />
   </ItemGroup>
 
   <ItemGroup>

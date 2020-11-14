@@ -1,0 +1,121 @@
+{
+  "name": "Deerwood 1.0",
+  "author": "Tommy Sjöblom",
+  "startLocation": 1,
+  "items": [
+    {
+      "title": "hammer",
+      "examinedTitle": "hammer",
+      "shortDescription": "a small hammer",
+      "examinedShortDescription": "a small hammer",
+      "longDescription": "The hammer has a wooden handle and looks well used",
+      "location": 1,
+      "canTake": true,
+      "canUse": true,
+      "wasExamined": false,
+      "sensitive": false,
+      "canOpen": false,
+      "canBreak": false,
+      "isOpen": false,
+      "isBroken": false,
+      "canBreakTool": true
+    },
+    {
+      "title": "bottle",
+      "examinedTitle": "bottle of nitroglycerine",
+      "shortDescription": "a small bottle",
+      "examinedShortDescription": "a small bottle of nitroglycerine",
+      "longDescription": "The label says 'Nitroglycerine'. Better be careful!",
+      "location": 2,
+      "canTake": true,
+      "canUse": false,
+      "wasExamined": false,
+      "sensitive": true,
+      "canOpen": true,
+      "canBreak": true,
+      "isOpen": false,
+      "isBroken": false,
+      "canBreakTool": false
+    },
+    {
+      "title": "window",
+      "examinedTitle": "window",
+      "shortDescription": "a window",
+      "examinedShortDescription": "a window",
+      "longDescription": "The window is closed and the curtains are drawn.",
+      "location": 1,
+      "canTake": false,
+      "canUse": false,
+      "wasExamined": false,
+      "sensitive": false,
+      "canOpen": false,
+      "canBreak": true,
+      "isOpen": false,
+      "isBroken": false,
+      "canBreakTool": false
+    },
+    {
+      "title": "safe",
+      "examinedTitle": "safe",
+      "shortDescription": "a safe",
+      "examinedShortDescription": "a safe",
+      "longDescription": "The safe is closed and locked.",
+      "location": 3,
+      "canTake": false,
+      "canUse": false,
+      "wasExamined": false,
+      "sensitive": false,
+      "canOpen": false,
+      "canBreak": false,
+      "isOpen": false,
+      "isBroken": false,
+      "canBreakTool": false
+    },
+    {
+      "title": "money",
+      "examinedTitle": "100 dollars",
+      "shortDescription": "some money",
+      "examinedShortDescription": "100 dollars",
+      "longDescription": "Ten 10 dollar bills.",
+      "location": -1,
+      "canTake": true,
+      "canUse": true,
+      "wasExamined": false,
+      "sensitive": false,
+      "canOpen": false,
+      "canBreak": false,
+      "isOpen": false,
+      "isBroken": false,
+      "canBreakTool": false
+    }
+  ],
+  "locations": [
+    {
+      "number": 1,
+      "title": "Main Street",
+      "description": "Overlooking Main Street, Flatville. It's a hazy morning. Church bells are heard from afar.\r\nBehind you is the Central Bank building.",
+      "destSouth": 2,
+      "destWest": -1,
+      "destEast": -1,
+      "destNorth": -1
+    },
+    {
+      "number": 2,
+      "title": "The park",
+      "description": "You are in a park. Birds are singing and doing whatever birds do.",
+      "destSouth": -1,
+      "destWest": -1,
+      "destEast": -1,
+      "destNorth": 1
+    },
+    {
+      "number": 3,
+      "title": "Bank manager's office",
+      "description": "You are in the bank manager's office. The manager is away.",
+      "destSouth": 1,
+      "destWest": -1,
+      "destEast": -1,
+      "destNorth": -1
+    }
+  ]
+}
