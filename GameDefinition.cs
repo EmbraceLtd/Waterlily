@@ -8,7 +8,7 @@ namespace Waterlily
     {
         public string name { get; set; }
         public string author { get; set; }
-        public int startLocation { get; set; }
+        public int userLocation { get; set; }
         public List<Item> items { get; set; }
         public List<Location> locations { get; set; }
     }

@@ -117,7 +117,7 @@ namespace Waterlily
 
         private static void MainSettings()
         {
-            userLocation = gameDefinition.startLocation;
+            userLocation = gameDefinition.userLocation;
             myLocation = GetLocationByNumber(userLocation);
             safeBlownup = false;
             cont = true;
