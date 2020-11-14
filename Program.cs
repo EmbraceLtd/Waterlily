@@ -134,6 +134,10 @@ namespace Waterlily
 
             switch (verb)
             {
+                case "WAIT":
+                case "SLEEP":
+                    WaitAction(verb);
+                    break;
                 case "LOAD":
                     LoadAction(obj);
                     break;
@@ -189,6 +193,11 @@ namespace Waterlily
                     Console.WriteLine("You gotta be kidding!");
                     break;
             }
+        }
+
+        private static void WaitAction(string verb)
+        {
+            Console.WriteLine($"You {verb.ToLower()}. Time passes.");
         }
 
         private static void LoadAction(string obj)
