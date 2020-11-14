@@ -16,6 +16,13 @@
     <None Remove="default.json" />
     <None Remove="items.json" />
     <None Remove="locations.json" />
+    <None Remove="testgame.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="testgame.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -25,12 +32,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="testgame.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
