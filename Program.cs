@@ -16,6 +16,7 @@ namespace Waterlily
         private static Location myLocation;
         private static bool cont = true;
         private static List<PendingAction> pendingActions;
+        private static int turnCount = 1;
 
         static void Main(string[] args)
         {
@@ -25,7 +26,7 @@ namespace Waterlily
             {
                 while (cont)
                 {
-                    Console.Write("> ");
+                    Console.Write($"{turnCount++}> ");
                     var userCommand = Console.ReadLine();
                     ProcessCommand(userCommand);
                     ProcessPendingActions();
