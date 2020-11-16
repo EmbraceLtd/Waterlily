@@ -129,7 +129,7 @@ namespace Waterlily
         private static void ProcessCommand(string cmd)
         {
             if (string.IsNullOrWhiteSpace(cmd))
-                return;
+                cmd = "wait";
 
             var sentence = cmd.Split(' ');
             var verb = sentence[0].ToUpper();
