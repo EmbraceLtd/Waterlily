@@ -33,7 +33,8 @@ namespace Waterlily
                 }
                 Console.WriteLine("You left this world in a puff of smoke! You are very dead.");
                 Console.Write("Revive? (Y/n)");
-                var revive = Console.ReadLine().ToUpper();
+                var revive = Reader.ReadLine().ToUpper();
+                
                 if (revive == "Y" || revive == string.Empty)
                 {
                     cont = true;
@@ -45,7 +46,14 @@ namespace Waterlily
         private static string GetCommand()
         {
             string cmd;
-            cmd = Console.ReadLine();
+            try
+            {
+                cmd = Reader.ReadLine(60000);
+            }
+            catch (TimeoutException)
+            {
+                cmd = "wait";
+            }
             return cmd;
         }
 
