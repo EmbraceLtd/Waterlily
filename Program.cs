@@ -53,6 +53,7 @@ namespace Waterlily
             catch (TimeoutException)
             {
                 cmd = "wait";
+                Console.WriteLine();
             }
             return cmd;
         }
