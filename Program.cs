@@ -27,7 +27,7 @@ namespace Waterlily
                 while (cont)
                 {
                     Console.Write($"{turnCount++}> ");
-                    var userCommand = Console.ReadLine();
+                    var userCommand = GetCommand();
                     ProcessCommand(userCommand);
                     ProcessPendingActions();
                 }
@@ -40,6 +40,13 @@ namespace Waterlily
                     InitializeWorld();
                 }
             }
+        }
+
+        private static string GetCommand()
+        {
+            string cmd;
+            cmd = Console.ReadLine();
+            return cmd;
         }
 
         private static void DescribeWorld(bool brief = true)
