@@ -304,24 +304,33 @@ namespace Waterlily
                     if (item.canBreak)
                     {
                         var breakItem = GetBreakingTool();
-                        if (breakItem!=null)
+                        if (breakItem != null)
                         {
-                            if (!item.isBroken)
+                            if (item.explosive)
                             {
                                 Console.WriteLine($"You break the {item.examinedTitle} with the {breakItem.title}.");
-                                item.shortDescription = new StringBuilder(item.shortDescription.Insert(2, "broken ")).ToString();
-                                item.longDescription = new StringBuilder(item.longDescription).Replace("closed", "broken").ToString();
-                                item.isBroken = true;
-
-                                if (userLocation == 1 && obj == "window")
-                                {
-                                    myLocation.destNorth = 3;
-                                    ShowDestinations();
-                                }
+                                Console.WriteLine($"KABOOM! It explodes and you are blown to bits!");
+                                cont = false;
                             }
                             else
                             {
-                                Console.WriteLine($"The {item.examinedTitle} is already broken!");
+                                if (!item.isBroken)
+                                {
+                                    Console.WriteLine($"You break the {item.examinedTitle} with the {breakItem.title}.");
+                                    item.shortDescription = new StringBuilder(item.shortDescription.Insert(2, "broken ")).ToString();
+                                    item.longDescription = new StringBuilder(item.longDescription).Replace("closed", "broken").ToString();
+                                    item.isBroken = true;
+
+                                    if (userLocation == 1 && obj == "window")
+                                    {
+                                        myLocation.destNorth = 3;
+                                        ShowDestinations();
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"The {item.examinedTitle} is already broken!");
+                                }
                             }
                         }
                         else
@@ -418,7 +427,7 @@ namespace Waterlily
                     if (item.carry)
                     {
                         item.carry = false;
-                        Console.WriteLine($"You {(item.sensitive ? "very carefully put down" : "drop")} the {item.examinedTitle}.");
+                        Console.WriteLine($"You {(item.explosive ? "very carefully put down" : "drop")} the {item.examinedTitle}.");
                         if (item.title == "bottle")
                             pendingActions.Add(new PendingAction { action = "detonate", item = "bottle", location = userLocation});
                     }
@@ -486,7 +495,7 @@ namespace Waterlily
                             if (!item.carry)
                             {
                                 item.carry = true;
-                                if (item.sensitive)
+                                if (item.explosive)
                                 {
                                     if (!item.wasExamined)
                                     {

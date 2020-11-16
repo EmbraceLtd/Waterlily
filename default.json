@@ -20,7 +20,7 @@
       "longDescription": "The label says 'Nitroglycerine'. Better be careful!",
       "location": 2,
       "canTake": true,
-      "sensitive": true,
+      "explosive": true,
       "canOpen": true,
       "canBreak": true
     },

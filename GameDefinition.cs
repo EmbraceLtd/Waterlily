@@ -25,7 +25,7 @@ namespace Waterlily
         public bool canTake { get; set; } = false;
         public bool canUse { get; set; } = false;
         public bool wasExamined { get; set; } = false;
-        public bool sensitive { get; set; } = false;
+        public bool explosive { get; set; } = false;
         public bool canOpen { get; set; } = false;
         public bool canBreak { get; set; } = false;
         public bool isOpen { get; set; } = false;
