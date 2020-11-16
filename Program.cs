@@ -15,7 +15,6 @@ namespace Waterlily
         private static int userLocation;
         private static Location myLocation;
         private static bool cont = true;
-        private static bool safeBlownup;
         private static List<PendingAction> pendingActions;
 
         static void Main(string[] args)
@@ -123,7 +122,6 @@ namespace Waterlily
         {
             userLocation = gameDefinition.userLocation;
             myLocation = GetLocationByNumber(userLocation);
-            safeBlownup = false;
             cont = true;
         }
 
@@ -227,7 +225,6 @@ namespace Waterlily
                 safe.longDescription = "The safe has been blown up";
                 GetItemByName("money").location = 3;
                 GetItemByName("bottle").location = -1;
-                safeBlownup = true;
 
                 if (pendAction.location == userLocation)
                     cont = false;
