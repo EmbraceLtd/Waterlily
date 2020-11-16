@@ -16,7 +16,7 @@ namespace Waterlily
         private static Location myLocation;
         private static bool cont = true;
         private static List<PendingAction> pendingActions;
-        private static int turnCount = 1;
+        private static int turnCount;
 
         static void Main(string[] args)
         {
@@ -91,6 +91,7 @@ namespace Waterlily
         private static void InitializeWorld()
         {
             pendingActions = new List<PendingAction>();
+            turnCount = 1;
 
             InitMessage();
 
