@@ -5,9 +5,7 @@
   "items": [
     {
       "title": "drink",
-      "examinedTitle": "drink",
       "shortDescription": "a tasty drink",
-      "examinedShortDescription": "a tasty drink",
       "longDescription": "The drink is green and bubbling",
       "location": 1,
       "canTake": true,

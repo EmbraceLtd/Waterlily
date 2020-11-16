@@ -5,9 +5,7 @@
   "items": [
     {
       "title": "hammer",
-      "examinedTitle": "hammer",
       "shortDescription": "a small hammer",
-      "examinedShortDescription": "a small hammer",
       "longDescription": "The hammer has a wooden handle and looks well used",
       "location": 1,
       "canTake": true,
@@ -28,18 +26,14 @@
     },
     {
       "title": "window",
-      "examinedTitle": "window",
       "shortDescription": "a window",
-      "examinedShortDescription": "a window",
       "longDescription": "The window is closed and the curtains are drawn.",
       "location": 1,
       "canBreak": true
     },
     {
       "title": "safe",
-      "examinedTitle": "safe",
       "shortDescription": "a safe",
-      "examinedShortDescription": "a safe",
       "longDescription": "The safe is closed and locked.",
       "location": 3
     },

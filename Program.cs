@@ -253,7 +253,7 @@ namespace Waterlily
 
             if (File.Exists(configPath))
             {
-                ReadSettingsFromFile<GameDefinition>(ref gameDefinition, configPath);
+                ReadSettingsFromFile(ref gameDefinition, configPath);
                 InitMessage();
                 MainSettings();
                 ShowGameInfo();
@@ -572,21 +572,35 @@ namespace Waterlily
                 return namedItem;
         }
 
-        private static void ReadSettingsFromFile<T>(ref T collection, string file)
+        private static void ReadSettingsFromFile(ref GameDefinition collection, string file)
         {
             var json = File.ReadAllText(file);
-            collection = JsonConvert.DeserializeObject<T>(json);
+            collection = JsonConvert.DeserializeObject<GameDefinition>(json);
         }
 
-        private static void ReadSettings<T>(ref T collection, string file)
+        private static void ReadSettings(ref GameDefinition collection, string file)
         {
             var json = GetStringFromResource(file);
-            collection = JsonConvert.DeserializeObject<T>(json);
+            collection = JsonConvert.DeserializeObject<GameDefinition>(json);
+
+            InitializeDefaultStrings(collection);
         }
 
         private static void ReadConfig()
         {
             ReadSettings(ref gameDefinition, "default.json");
+        }
+
+        private static void InitializeDefaultStrings(GameDefinition collection)
+        {
+            foreach(var item in collection.items)
+            {
+                if (string.IsNullOrEmpty(item.examinedTitle))
+                    item.examinedTitle = item.title;
+
+                if (string.IsNullOrEmpty(item.examinedShortDescription))
+                    item.examinedShortDescription = item.shortDescription;
+            }
         }
 
         private static string GetStringFromResource(string resourceName)
