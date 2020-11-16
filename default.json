@@ -12,12 +12,6 @@
       "location": 1,
       "canTake": true,
       "canUse": true,
-      "wasExamined": false,
-      "sensitive": false,
-      "canOpen": false,
-      "canBreak": false,
-      "isOpen": false,
-      "isBroken": false,
       "canBreakTool": true
     },
     {
@@ -28,14 +22,9 @@
       "longDescription": "The label says 'Nitroglycerine'. Better be careful!",
       "location": 2,
       "canTake": true,
-      "canUse": false,
-      "wasExamined": false,
       "sensitive": true,
       "canOpen": true,
-      "canBreak": true,
-      "isOpen": false,
-      "isBroken": false,
-      "canBreakTool": false
+      "canBreak": true
     },
     {
       "title": "window",
@@ -44,15 +33,7 @@
       "examinedShortDescription": "a window",
       "longDescription": "The window is closed and the curtains are drawn.",
       "location": 1,
-      "canTake": false,
-      "canUse": false,
-      "wasExamined": false,
-      "sensitive": false,
-      "canOpen": false,
-      "canBreak": true,
-      "isOpen": false,
-      "isBroken": false,
-      "canBreakTool": false
+      "canBreak": true
     },
     {
       "title": "safe",
@@ -60,16 +41,7 @@
       "shortDescription": "a safe",
       "examinedShortDescription": "a safe",
       "longDescription": "The safe is closed and locked.",
-      "location": 3,
-      "canTake": false,
-      "canUse": false,
-      "wasExamined": false,
-      "sensitive": false,
-      "canOpen": false,
-      "canBreak": false,
-      "isOpen": false,
-      "isBroken": false,
-      "canBreakTool": false
+      "location": 3
     },
     {
       "title": "money",
@@ -79,14 +51,7 @@
       "longDescription": "Ten 10 dollar bills.",
       "location": -1,
       "canTake": true,
-      "canUse": true,
-      "wasExamined": false,
-      "sensitive": false,
-      "canOpen": false,
-      "canBreak": false,
-      "isOpen": false,
-      "isBroken": false,
-      "canBreakTool": false
+      "canUse": true
     }
   ],
   "locations": [
@@ -94,28 +59,19 @@
       "number": 1,
       "title": "Main Street",
       "description": "Overlooking Main Street, Flatville. It's a hazy morning. Church bells are heard from afar.\r\nBehind you is the Central Bank building.",
-      "destSouth": 2,
-      "destWest": -1,
-      "destEast": -1,
-      "destNorth": -1
+      "destSouth": 2
     },
     {
       "number": 2,
       "title": "The park",
       "description": "You are in a park. Birds are singing and doing whatever birds do.",
-      "destSouth": -1,
-      "destWest": -1,
-      "destEast": -1,
       "destNorth": 1
     },
     {
       "number": 3,
       "title": "Bank manager's office",
       "description": "You are in the bank manager's office. The manager is away.",
-      "destSouth": 1,
-      "destWest": -1,
-      "destEast": -1,
-      "destNorth": -1
+      "destSouth": 1
     }
   ]
 }

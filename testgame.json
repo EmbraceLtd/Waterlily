@@ -11,14 +11,7 @@
       "longDescription": "The drink is green and bubbling",
       "location": 1,
       "canTake": true,
-      "canUse": true,
-      "wasExamined": false,
-      "sensitive": false,
-      "canOpen": false,
-      "canBreak": false,
-      "isOpen": false,
-      "isBroken": false,
-      "canBreakTool": false
+      "canUse": true
     }
   ],
   "locations": [
@@ -26,10 +19,7 @@
       "number": 1,
       "title": "Spooky Cafe",
       "description": "In the Spooky Cafe, in the eerie lounge",
-      "destSouth": -1,
-      "destWest": 2,
-      "destEast": -1,
-      "destNorth": -1
+      "destWest": 2
     }
   ]
 }

@@ -21,16 +21,16 @@ namespace Waterlily
         public string shortDescription { get; set; }
         public string examinedShortDescription { get; set; }
         public int location { get; set; }
-        public bool carry { get; set; }
-        public bool canTake { get; set; }
-        public bool canUse { get; set; }
-        public bool wasExamined { get; set; }
-        public bool sensitive { get; set; }
-        public bool canOpen { get; set; }
-        public bool canBreak { get; set; }
-        public bool isOpen { get; set; }
-        public bool isBroken { get; set; }
-        public bool canBreakTool { get; set; }
+        public bool carry { get; set; } = false;
+        public bool canTake { get; set; } = false;
+        public bool canUse { get; set; } = false;
+        public bool wasExamined { get; set; } = false;
+        public bool sensitive { get; set; } = false;
+        public bool canOpen { get; set; } = false;
+        public bool canBreak { get; set; } = false;
+        public bool isOpen { get; set; } = false;
+        public bool isBroken { get; set; } = false;
+        public bool canBreakTool { get; set; } = false;
     }
 
     public class Location
@@ -38,10 +38,10 @@ namespace Waterlily
         public int number { get; set; }
         public string title { get; set; }
         public string description { get; set; }
-        public int destNorth { get; set; }
-        public int destSouth { get; set; }
-        public int destEast { get; set; }
-        public int destWest { get; set; }
+        public int destNorth { get; set; } = -1;
+        public int destSouth { get; set; } = -1;
+        public int destEast { get; set; } = -1;
+        public int destWest { get; set; } = -1;
         public bool showedDescription { get; set; }
     }
 
