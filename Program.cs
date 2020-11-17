@@ -124,9 +124,9 @@ namespace Waterlily
         {
             Console.Clear();
             Console.WriteLine("=======================================================================================================");
-            Console.WriteLine("WATERLILY ADVENTURE ENGINE 1.0");
-            Console.WriteLine("BY TOMMY SJÖBLOM / EMBRACE LTD.");
-            Console.WriteLine("(C) UGGADUNK v3.0 SOFTWARE, 2020");
+            Console.WriteLine("                             *** WATERLILY ADVENTURE ENGINE 1.0 ***");
+            Console.WriteLine("                        BY TOMMY SJÖBLOM / EMBRACE LTD. / UGGADUNK v3.0");
+            Console.WriteLine("                               COPYRIGHT (C) TOMMY SJÖBLOM, 2020");
             Console.WriteLine("=======================================================================================================");
         }
 
