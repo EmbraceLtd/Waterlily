@@ -17,6 +17,7 @@ namespace Waterlily
         private static bool cont = true;
         private static List<PendingAction> pendingActions;
         private static int turnCount;
+        private static string dashline = new string('=', 99);
 
         static void Main(string[] args)
         {
@@ -119,7 +120,7 @@ namespace Waterlily
                 MainSettings();
                 ShowGameInfo("default ");
 
-                Console.WriteLine("=======================================================================================================");
+                Console.WriteLine(dashline);
 
                 DescribeWorld();
                 return true;
@@ -131,11 +132,11 @@ namespace Waterlily
         private static void InitMessage()
         {
             Console.Clear();
-            Console.WriteLine("=======================================================================================================");
+            Console.WriteLine(dashline);
             Console.WriteLine("                             *** WATERLILY ADVENTURE ENGINE 1.0 ***");
             Console.WriteLine("                        BY TOMMY SJÖBLOM / EMBRACE LTD. / UGGADUNK v3.0");
             Console.WriteLine("                               COPYRIGHT (C) TOMMY SJÖBLOM, 2020");
-            Console.WriteLine("=======================================================================================================");
+            Console.WriteLine(dashline);
         }
 
         private static void ShowGameInfo(string def = "")
@@ -283,7 +284,7 @@ namespace Waterlily
                     InitMessage();
                     MainSettings();
                     ShowGameInfo();
-                    Console.WriteLine("=======================================================================================================");
+                    Console.WriteLine(dashline);
                     DescribeWorld();
                 }
             }
