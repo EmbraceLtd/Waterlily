@@ -20,25 +20,28 @@ namespace Waterlily
 
         static void Main(string[] args)
         {
-            InitializeWorld();
-
-            while (cont)
+            var custom = args.Count() > 0 ? args[0] : string.Empty;
+            if (InitializeWorld(custom))
             {
+
                 while (cont)
                 {
-                    Console.Write($"{turnCount++}> ");
-                    var userCommand = GetCommand();
-                    ProcessCommand(userCommand);
-                    ProcessPendingActions();
-                }
-                Console.WriteLine("You left this world in a puff of smoke! You are very dead.");
-                Console.Write("Revive? (Y/n)");
-                var revive = Reader.ReadLine().ToUpper();
-                
-                if (revive == "Y" || revive == string.Empty)
-                {
-                    cont = true;
-                    InitializeWorld();
+                    while (cont)
+                    {
+                        Console.Write($"{turnCount++}> ");
+                        var userCommand = GetCommand();
+                        ProcessCommand(userCommand);
+                        ProcessPendingActions();
+                    }
+                    Console.WriteLine("You left this world in a puff of smoke! You are very dead.");
+                    Console.Write("Revive? (Y/n)");
+                    var revive = Reader.ReadLine().ToUpper();
+
+                    if (revive == "Y" || revive == string.Empty)
+                    {
+                        cont = true;
+                        InitializeWorld();
+                    }
                 }
             }
         }
@@ -104,20 +107,25 @@ namespace Waterlily
             Console.WriteLine();
         }
 
-        private static void InitializeWorld()
+        private static bool InitializeWorld(string customConfig = "")
         {
             pendingActions = new List<PendingAction>();
             turnCount = 1;
 
             InitMessage();
 
-            ReadConfig();
-            MainSettings();
-            ShowGameInfo("default ");
+            if (ReadConfig(customConfig))
+            {
+                MainSettings();
+                ShowGameInfo("default ");
 
-            Console.WriteLine("=======================================================================================================");
+                Console.WriteLine("=======================================================================================================");
 
-            DescribeWorld();
+                DescribeWorld();
+                return true;
+            }
+            else
+                return false;
         }
 
         private static void InitMessage()
@@ -263,17 +271,21 @@ namespace Waterlily
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 obj);
 
+            Console.WriteLine(configPath);
+
             if (string.IsNullOrEmpty(Path.GetExtension(configPath)))
                 configPath = new StringBuilder(configPath).Append(".json").ToString();
 
             if (File.Exists(configPath))
             {
-                ReadSettingsFromFile(ref gameDefinition, configPath);
-                InitMessage();
-                MainSettings();
-                ShowGameInfo();
-                Console.WriteLine("=======================================================================================================");
-                DescribeWorld();
+                if (InitializeWorld(configPath))
+                {
+                    InitMessage();
+                    MainSettings();
+                    ShowGameInfo();
+                    Console.WriteLine("=======================================================================================================");
+                    DescribeWorld();
+                }
             }
             else
             {
@@ -596,10 +608,19 @@ namespace Waterlily
                 return namedItem;
         }
 
-        private static void ReadSettingsFromFile(ref GameDefinition collection, string file)
+        private static bool ReadSettingsFromFile(ref GameDefinition collection, string file)
         {
-            var json = File.ReadAllText(file);
-            collection = JsonConvert.DeserializeObject<GameDefinition>(json);
+            if (File.Exists(file))
+            {
+                var json = File.ReadAllText(file);
+                collection = JsonConvert.DeserializeObject<GameDefinition>(json);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Can't find file {file}");
+                return false;
+            }
         }
 
         private static void ReadSettings(ref GameDefinition collection, string file)
@@ -610,9 +631,20 @@ namespace Waterlily
             InitializeDefaultStrings(collection);
         }
 
-        private static void ReadConfig()
+        private static bool ReadConfig(string customConfig)
         {
-            ReadSettings(ref gameDefinition, "default.json");
+            if (string.IsNullOrEmpty(customConfig))
+            {
+                ReadSettings(ref gameDefinition, "default.json");
+                return true;
+            }
+            else
+            {
+                if (!customConfig.ToLower().EndsWith(".json"))
+                    customConfig = new StringBuilder(customConfig).Append(".json").ToString();
+
+                return ReadSettingsFromFile(ref gameDefinition, customConfig);
+            }
         }
 
         private static void InitializeDefaultStrings(GameDefinition collection)
