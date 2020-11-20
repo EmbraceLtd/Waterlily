@@ -64,13 +64,21 @@
       "number": 2,
       "title": "The park",
       "description": "You are in a park. Birds are singing and doing whatever birds do.",
-      "destNorth": 1
+      "destNorth": 1,
+      "destSouthWest": 4
     },
     {
       "number": 3,
       "title": "Bank manager's office",
       "description": "You are in the bank manager's office. The manager is away.",
       "destSouth": 1
+    },
+    {
+      "number": 4,
+      "title": "Ferry pier",
+      "description": "You are at the the banks of River Shanty, at the ferry pier.",
+      "destNorthEast": 2
     }
+
   ]
 }

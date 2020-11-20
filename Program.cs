@@ -102,7 +102,11 @@ namespace Waterlily
         private static void ShowDestinations()
         {
             Console.Write($"You can go {(myLocation.destNorth > -1 ? "north " : string.Empty)}");
+            Console.Write($"{(myLocation.destNorthWest > -1 ? "northwest " : string.Empty)}");
+            Console.Write($"{(myLocation.destNorthEast > -1 ? "northeast " : string.Empty)}");
             Console.Write($"{(myLocation.destSouth > -1 ? "south " : string.Empty)}");
+            Console.Write($"{(myLocation.destSouthWest > -1 ? "southwest " : string.Empty)}");
+            Console.Write($"{(myLocation.destSouthEast > -1 ? "southeast " : string.Empty)}");
             Console.Write($"{(myLocation.destEast > -1 ? "east " : string.Empty)}");
             Console.Write($"{(myLocation.destWest > -1 ? "west " : string.Empty)}");
             Console.WriteLine();
