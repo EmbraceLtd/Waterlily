@@ -108,7 +108,9 @@ namespace Waterlily
             Console.Write($"{(myLocation.destSouthWest > -1 ? "southwest " : string.Empty)}");
             Console.Write($"{(myLocation.destSouthEast > -1 ? "southeast " : string.Empty)}");
             Console.Write($"{(myLocation.destEast > -1 ? "east " : string.Empty)}");
-            Console.Write($"{(myLocation.destWest > -1 ? "west " : string.Empty)}");
+            Console.Write($"{(myLocation.destWest > -1 ? "west " : string.Empty)}"); 
+            Console.Write($"{(myLocation.destUp > -1 ? "up " : string.Empty)}");
+            Console.Write($"{(myLocation.destDown > -1 ? "down " : string.Empty)}");
             Console.WriteLine();
         }
 
