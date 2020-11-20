@@ -17,7 +17,7 @@ namespace Waterlily
         private static bool cont = true;
         private static List<PendingAction> pendingActions;
         private static int turnCount;
-        private static string dashline = new string('=', 99);
+        private static string dashline = new string('*', 99);
 
         static void Main(string[] args)
         {
@@ -113,15 +113,10 @@ namespace Waterlily
             pendingActions = new List<PendingAction>();
             turnCount = 1;
 
-            InitMessage();
-
             if (ReadConfig(customConfig))
             {
+                InitMessage();
                 MainSettings();
-                ShowGameInfo("default ");
-
-                Console.WriteLine(dashline);
-
                 DescribeWorld();
                 return true;
             }
@@ -133,16 +128,12 @@ namespace Waterlily
         {
             Console.Clear();
             Console.WriteLine(dashline);
-            Console.WriteLine("                             *** WATERLILY ADVENTURE ENGINE 1.0 ***");
-            Console.WriteLine("                        BY TOMMY SJÖBLOM / EMBRACE LTD. / UGGADUNK v3.0");
-            Console.WriteLine("                               COPYRIGHT (C) TOMMY SJÖBLOM, 2020");
-            Console.WriteLine(dashline);
-        }
-
-        private static void ShowGameInfo(string def = "")
-        {
-            Console.WriteLine($"Running {def}game {gameDefinition.name}");
-            Console.WriteLine($"Author: {gameDefinition.author}");
+            Console.WriteLine("*");
+            foreach (var line in gameDefinition.intro)
+                Console.WriteLine($"*  {line}");
+            Console.WriteLine("*");
+            Console.WriteLine("**************************************************** Powered by Waterlily Engine by Tommy Sjöblom *");
+            Console.WriteLine();
         }
 
         private static void MainSettings()
@@ -283,8 +274,6 @@ namespace Waterlily
                 {
                     InitMessage();
                     MainSettings();
-                    ShowGameInfo();
-                    Console.WriteLine(dashline);
                     DescribeWorld();
                 }
             }

@@ -1,6 +1,10 @@
 ﻿{
   "name": "Test game 0.1",
   "author": "Tommy Sjöblom",
+  "intro": [
+    "TEST GAME 0.1 FOR WATERLILY",
+    "by Tommy 2020"
+  ],
   "userLocation": 1,
   "items": [
     {
