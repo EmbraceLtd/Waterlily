@@ -209,6 +209,30 @@ namespace Waterlily
                 case "WEST":
                     GoAction(myLocation.destWest);
                     break;
+                case "SW":
+                case "SOUTHWEST":
+                    GoAction(myLocation.destSouthWest);
+                    break;
+                case "SE":
+                case "SOUTHEAST":
+                    GoAction(myLocation.destSouthEast);
+                    break;
+                case "NW":
+                case "NORTHWEST":
+                    GoAction(myLocation.destNorthWest);
+                    break;
+                case "NE":
+                case "NORTHEAST":
+                    GoAction(myLocation.destNorthEast);
+                    break;
+                case "U":
+                case "UP":
+                    GoAction(myLocation.destUp);
+                    break;
+                case "D":
+                case "DOWN":
+                    GoAction(myLocation.destDown);
+                    break;
                 default:
                     Console.WriteLine("You gotta be kidding!");
                     break;

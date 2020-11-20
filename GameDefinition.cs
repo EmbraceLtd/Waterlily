@@ -43,6 +43,12 @@ namespace Waterlily
         public int destSouth { get; set; } = -1;
         public int destEast { get; set; } = -1;
         public int destWest { get; set; } = -1;
+        public int destSouthWest { get; set; } = -1;
+        public int destSouthEast { get; set; } = -1;
+        public int destNorthWest { get; set; } = -1;
+        public int destNorthEast { get; set; } = -1;
+        public int destUp { get; set; } = -1;
+        public int destDown { get; set; } = -1;
         public bool showedDescription { get; set; }
     }
 
