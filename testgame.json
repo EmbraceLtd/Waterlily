@@ -12,8 +12,10 @@
       "shortDescription": "a tasty drink",
       "longDescription": "The drink is green and bubbling",
       "location": 1,
-      "canTake": true,
-      "canUse": true
+      "properties": {
+        "canTake": "1",
+        "canUse": "1"
+      }
     }
   ],
   "locations": [

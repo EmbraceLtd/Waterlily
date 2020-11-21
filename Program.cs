@@ -633,8 +633,16 @@ namespace Waterlily
             if (File.Exists(file))
             {
                 var json = File.ReadAllText(file);
-                collection = JsonConvert.DeserializeObject<GameDefinition>(json);
-                return true;
+                try
+                {
+                    collection = JsonConvert.DeserializeObject<GameDefinition>(json);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Problems reading config: {ex.Message}");
+                    return false;
+                }
             }
             else
             {
