@@ -269,7 +269,7 @@ namespace Waterlily
                 var loc = GetLocationByNumber(pendAction.location);
                 Console.WriteLine($"The {pendAction.item} explodes in the {loc.title}. A large bang is heard all over town!");
                 var safe = GetItemByName("safe");
-                safe.isOpen = true;
+                safe.setProp("isOpen", "1");
                 safe.longDescription = "The safe has been blown up";
                 GetItemByName("money").location = 3;
                 GetItemByName("bottle").location = -1;
@@ -320,12 +320,12 @@ namespace Waterlily
             {
                 if (item.location == userLocation)
                 {
-                    if (item.canOpen)
+                    if (item.getProp("canOpen") == "1")
                     {
-                        if (!item.isOpen)
+                        if (item.getProp("isOpen") != "1")
                         {
                             Console.WriteLine($"You open the {item.examinedTitle}.");
-                            item.isOpen = true;
+                            item.setProp("isOpen", "1");
                         }
                         else
                         {
@@ -351,12 +351,12 @@ namespace Waterlily
             {
                 if (item.location == userLocation)
                 {
-                    if (item.canBreak)
+                    if (item.getProp("canBreak") == "1")
                     {
                         var breakItem = GetBreakingTool();
                         if (breakItem != null)
                         {
-                            if (item.explosive)
+                            if (item.getProp("explosive") == "1")
                             {
                                 Console.WriteLine($"You break the {item.examinedTitle} with the {breakItem.title}.");
                                 Console.WriteLine($"KABOOM! It explodes and you are blown to bits!");
@@ -364,12 +364,12 @@ namespace Waterlily
                             }
                             else
                             {
-                                if (!item.isBroken)
+                                if (item.getProp("isBroken") != "1")
                                 {
                                     Console.WriteLine($"You break the {item.examinedTitle} with the {breakItem.title}.");
                                     item.shortDescription = new StringBuilder(item.shortDescription.Insert(2, "broken ")).ToString();
                                     item.longDescription = new StringBuilder(item.longDescription).Replace("closed", "broken").ToString();
-                                    item.isBroken = true;
+                                    item.setProp("isBroken", "1");
 
                                     if (userLocation == 1 && obj == "window")
                                     {
@@ -423,7 +423,7 @@ namespace Waterlily
                 if (item.location == userLocation)
                 {
                     Console.WriteLine(item.longDescription);
-                    item.wasExamined = true;
+                    item.setProp("wasExamined", "1");
                     item.shortDescription = item.examinedShortDescription;
                 }
                 else
@@ -449,7 +449,7 @@ namespace Waterlily
         {
             foreach (var item in GetMyItems())
             {
-                if (item.canBreakTool)
+                if (item.getProp("canBreakTool") == "1")
                     return item;
             }
             return null;
@@ -462,7 +462,7 @@ namespace Waterlily
             else
             {
                 var myItems = new List<Item>();
-                if (obj.ToUpper()=="ALL")
+                if (obj.ToUpper() == "ALL")
                 {
                     myItems = GetMyItems();
                 }
@@ -474,10 +474,10 @@ namespace Waterlily
                 }
                 foreach(var item in myItems)
                 {
-                    if (item.carry)
+                    if (item.getProp("carry")=="1")
                     {
-                        item.carry = false;
-                        Console.WriteLine($"You {(item.explosive ? "very carefully put down" : "drop")} the {item.examinedTitle}.");
+                        item.setProp("carry", "0");
+                        Console.WriteLine($"You {(item.getProp("explosive") == "1" ? "very carefully put down" : "drop")} the {item.examinedTitle}.");
                         if (item.title == "bottle")
                             pendingActions.Add(new PendingAction { action = "detonate", item = "bottle", location = userLocation});
                     }
@@ -538,16 +538,16 @@ namespace Waterlily
 
                 foreach (var item in itemsHere)
                 {
-                    if (item.canTake)
+                    if (item.getProp("canTake") == "1")
                     {
                         if (item.location == userLocation)
                         {
-                            if (!item.carry)
+                            if (item.getProp("carry") != "1")
                             {
-                                item.carry = true;
-                                if (item.explosive)
+                                item.setProp("carry", "1");
+                                if (item.getProp("explosive") == "1")
                                 {
-                                    if (!item.wasExamined)
+                                    if (item.getProp("wasExamined") != "1")
                                     {
                                         Console.WriteLine($"KABOOM! The {item.examinedTitle} explodes in your hand. Should have been more careful!");
                                         cont = false;
@@ -608,12 +608,12 @@ namespace Waterlily
 
         private static List<Item> GetItemsByLocation(int number)
         {
-            return gameDefinition.items.Where(i => i.location == number && !i.carry).ToList();
+            return gameDefinition.items.Where(i => i.location == number && i.getProp("carry") != "1").ToList();
         }
 
         private static List<Item> GetMyItems()
         {
-            return gameDefinition.items.Where(i => i.carry).ToList();
+            return gameDefinition.items.Where(i => i.getProp("carry") == "1").ToList();
         }
 
         private static Item GetItemByName(string name)

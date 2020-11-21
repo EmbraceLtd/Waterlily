@@ -13,9 +13,11 @@
       "shortDescription": "a small hammer",
       "longDescription": "The hammer has a wooden handle and looks well used",
       "location": 1,
-      "canTake": true,
-      "canUse": true,
-      "canBreakTool": true
+      "properties": {
+        "canTake": "1",
+        "canUse": "1",
+        "canBreakTool": "1"
+      }
     },
     {
       "title": "bottle",
@@ -24,23 +26,28 @@
       "examinedShortDescription": "a small bottle of nitroglycerine",
       "longDescription": "The label says 'Nitroglycerine'. Better be careful!",
       "location": 2,
-      "canTake": true,
-      "explosive": true,
-      "canOpen": true,
-      "canBreak": true
+      "properties": {
+        "canTake": "1",
+        "explosive": "1",
+        "canOpen": "1",
+        "canBreak": "1"
+      }
     },
     {
       "title": "window",
       "shortDescription": "a window",
       "longDescription": "The window is closed and the curtains are drawn.",
       "location": 1,
-      "canBreak": true
+      "properties": {
+        "canBreak": "1"
+      }
     },
     {
       "title": "safe",
       "shortDescription": "a safe",
       "longDescription": "The safe is closed and locked.",
-      "location": 3
+      "location": 3,
+      "properties": {}
     },
     {
       "title": "money",
@@ -49,8 +56,10 @@
       "examinedShortDescription": "100 dollars",
       "longDescription": "Ten 10 dollar bills.",
       "location": -1,
-      "canTake": true,
-      "canUse": true
+      "properties": {
+        "canTake": "1",
+        "canUse": "1"
+      }
     }
   ],
   "locations": [

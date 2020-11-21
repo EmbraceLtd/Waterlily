@@ -12,6 +12,8 @@ namespace Waterlily
         public List<string> intro { get; set; }
         public List<Item> items { get; set; }
         public List<Location> locations { get; set; }
+        public List<Command> commands { get; set; }
+        public List<Action> actions { get; set; }
     }
 
     public class Item
@@ -22,16 +24,23 @@ namespace Waterlily
         public string shortDescription { get; set; }
         public string examinedShortDescription { get; set; }
         public int location { get; set; }
-        public bool carry { get; set; } = false;
-        public bool canTake { get; set; } = false;
-        public bool canUse { get; set; } = false;
-        public bool wasExamined { get; set; } = false;
-        public bool explosive { get; set; } = false;
-        public bool canOpen { get; set; } = false;
-        public bool canBreak { get; set; } = false;
-        public bool isOpen { get; set; } = false;
-        public bool isBroken { get; set; } = false;
-        public bool canBreakTool { get; set; } = false;
+        public Dictionary<string, string> properties { get; set; }
+
+        public string getProp(string property)
+        {
+            if (properties.ContainsKey(property))
+                return properties[property];
+            else
+                return "";
+        }
+
+        public void setProp(string property, string value)
+        {
+            if (properties.ContainsKey(property))
+                properties[property] = value;
+            else
+                properties.Add(property, value);
+        }
     }
 
     public class Location
@@ -59,5 +68,18 @@ namespace Waterlily
         public string action { get; set; }
         public bool active { get; set; } = false;
         public bool completed { get; set; } = false;
+    }
+
+    public class Command
+    {
+        public List<string> commands { get; set; }
+        public string targetAction { get; set; }
+    }
+
+    public class Action
+    {
+        public string name { get; set; }
+        public List<string> conditions { get; set; }
+        public List<string> operations { get; set; }
     }
 }
