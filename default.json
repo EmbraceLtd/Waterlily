@@ -9,24 +9,24 @@
   ],
   "items": [
     {
-      "title": "hammer",
-      "shortDescription": "a small hammer",
-      "longDescription": "The hammer has a wooden handle and looks well used",
-      "location": 1,
       "properties": {
+        "title": "hammer",
+        "shortDescription": "a small hammer",
+        "longDescription": "The hammer has a wooden handle and looks well used",
+        "location": "1",
         "canTake": "1",
         "canUse": "1",
         "canBreakTool": "1"
       }
     },
     {
-      "title": "bottle",
-      "examinedTitle": "bottle of nitroglycerine",
-      "shortDescription": "a small bottle",
-      "examinedShortDescription": "a small bottle of nitroglycerine",
-      "longDescription": "The label says 'Nitroglycerine'. Better be careful!",
-      "location": 2,
       "properties": {
+        "title": "bottle",
+        "examinedTitle": "bottle of nitroglycerine",
+        "shortDescription": "a small bottle",
+        "examinedShortDescription": "a small bottle of nitroglycerine",
+        "longDescription": "The label says 'Nitroglycerine'. Better be careful!",
+        "location": "2",
         "canTake": "1",
         "explosive": "1",
         "canOpen": "1",
@@ -34,29 +34,30 @@
       }
     },
     {
-      "title": "window",
-      "shortDescription": "a window",
-      "longDescription": "The window is closed and the curtains are drawn.",
-      "location": 1,
       "properties": {
+        "title": "window",
+        "shortDescription": "a window",
+        "longDescription": "The window is closed and the curtains are drawn.",
+        "location": "1",
         "canBreak": "1"
       }
     },
     {
-      "title": "safe",
-      "shortDescription": "a safe",
-      "longDescription": "The safe is closed and locked.",
-      "location": 3,
-      "properties": {}
+      "properties": {
+        "title": "safe",
+        "shortDescription": "a safe",
+        "longDescription": "The safe is closed and locked.",
+        "location": "3"
+      }
     },
     {
-      "title": "money",
-      "examinedTitle": "100 dollars",
-      "shortDescription": "some money",
-      "examinedShortDescription": "100 dollars",
-      "longDescription": "Ten 10 dollar bills.",
-      "location": -1,
       "properties": {
+        "title": "money",
+        "examinedTitle": "100 dollars",
+        "shortDescription": "some money",
+        "examinedShortDescription": "100 dollars",
+        "longDescription": "Ten 10 dollar bills.",
+        "location": "-1",
         "canTake": "1",
         "canUse": "1"
       }
