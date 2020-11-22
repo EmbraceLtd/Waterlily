@@ -1,7 +1,6 @@
 # Waterlily
 
 A text adventure engine that can run custom text adventure games defined in .json files.
-It features a built-in game called Deerwood and a custom .json file with a game called Testgame to demonstrate customization.
 
 The goal is to create a game engine which gives game creators large freedom to create text adventures that define their own items, locations, commands and actions without having to write any code. 
 ## Future
