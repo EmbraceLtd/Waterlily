@@ -10,4 +10,4 @@ A big overhaul of the engine is being made to remove all hard-coding.
 This will affect how items and locations are configured, and add config settings for commands and actions.
 This is done in a separate local branch, which has not yet been pushed.
 
-This will bring a new config format (Waterlily 2) which will break compatibility with the old format (Waterlily 1).
+This will bring a new config format (Waterlily 2) which will break compatibility with the current format (Waterlily 1).
