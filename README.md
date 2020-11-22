@@ -8,4 +8,4 @@ The goal is to create a game engine which gives game creators large freedom to c
 A big overhaul of the engine is being made to remove all hard-coding. 
 This will affect how items and locations are configured, and add config settings for commands and actions.  
   
-This will bring a new config format (waterlily-2) which will break compatibility with the current format (waterlily-1).
+This means a new config format (waterlily-2) which will break compatibility with the current format (waterlily-1), and replace it.
