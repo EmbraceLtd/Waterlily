@@ -212,7 +212,7 @@
     {
       "name": "examineCommand",
       "conditions": [],
-      "operations": [ "get.{obj}.longDescription.write" ],
+      "operations": [ "write.{obj}.longDescription" ],
       "completedMessage": ""
     },
     {
@@ -233,7 +233,8 @@
       ],
       "operations": [
         "set.{obj}.isOpen.1"
-      ]
+      ],
+      "completedMessage": "You open the {obj}."
     },
     {
       "name": "breakAction",
@@ -249,11 +250,16 @@
         {
           "condition": "get.{obj}.canBreak.eq.1",
           "failureMessage": "The {obj} can't be broken."
+        },
+        {
+          "condition": "get.hammer.carry.eq.1",
+          "failureMessage": "You don't have anything to break the {obj} with."
         }
       ],
       "operations": [
         "set.{obj}.isbroken.1"
-      ]
+      ],
+      "completedMessage": "You break the {obj}"
     }
   ]
 }
