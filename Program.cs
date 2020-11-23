@@ -13,7 +13,7 @@ namespace Waterlily
     {
         private static GameDefinition gameDefinition;
         private static string userLocation;
-        private static Location myLocation;
+        private static PropertyCollection myLocation;
         private static bool cont = true;
         private static List<PendingAction> pendingActions;
         private static int turnCount;
@@ -66,7 +66,7 @@ namespace Waterlily
         {
             if (!brief)
             {
-                Console.WriteLine(myLocation.description);
+                Console.WriteLine(myLocation.getProp("description"));
             }
             else
             {
@@ -78,13 +78,13 @@ namespace Waterlily
                 }
                 else
                 {
-                    if (!myLocation.showedDescription)
+                    if (myLocation.getProp("showedDescription")!="1")
                     {
-                        Console.WriteLine(myLocation.description);
-                        myLocation.showedDescription = true;
+                        Console.WriteLine(myLocation.getProp("description"));
+                        myLocation.setProp("showedDescription", "1");
                     }
                     else
-                        Console.WriteLine(myLocation.title);
+                        Console.WriteLine(myLocation.getProp("title"));
                 }
 
             }
@@ -101,16 +101,16 @@ namespace Waterlily
 
         private static void ShowDestinations()
         {
-            Console.Write($"You can go {(myLocation.destNorth != "-1" ? "north " : string.Empty)}");
-            Console.Write($"{(myLocation.destNorthWest != "-1" ? "northwest " : string.Empty)}");
-            Console.Write($"{(myLocation.destNorthEast != "-1" ? "northeast " : string.Empty)}");
-            Console.Write($"{(myLocation.destSouth != "-1" ? "south " : string.Empty)}");
-            Console.Write($"{(myLocation.destSouthWest != "-1" ? "southwest " : string.Empty)}");
-            Console.Write($"{(myLocation.destSouthEast != "-1" ? "southeast " : string.Empty)}");
-            Console.Write($"{(myLocation.destEast != "-1" ? "east " : string.Empty)}");
-            Console.Write($"{(myLocation.destWest != "-1" ? "west " : string.Empty)}"); 
-            Console.Write($"{(myLocation.destUp != "-1" ? "up " : string.Empty)}");
-            Console.Write($"{(myLocation.destDown != "-1" ? "down " : string.Empty)}");
+            Console.Write($"You can go {(myLocation.getProp("destNorth") != "-1" ? "north " : string.Empty)}");
+            Console.Write($"{(myLocation.getProp("destNorthWest") != "-1" ? "northwest " : string.Empty)}");
+            Console.Write($"{(myLocation.getProp("destNorthEast") != "-1" ? "northeast " : string.Empty)}");
+            Console.Write($"{(myLocation.getProp("destSouth") != "-1" ? "south " : string.Empty)}");
+            Console.Write($"{(myLocation.getProp("destSouthWest") != "-1" ? "southwest " : string.Empty)}");
+            Console.Write($"{(myLocation.getProp("destSouthEast") != "-1" ? "southeast " : string.Empty)}");
+            Console.Write($"{(myLocation.getProp("destEast") != "-1" ? "east " : string.Empty)}");
+            Console.Write($"{(myLocation.getProp("destWest") != "-1" ? "west " : string.Empty)}"); 
+            Console.Write($"{(myLocation.getProp("destUp") != "-1" ? "up " : string.Empty)}");
+            Console.Write($"{(myLocation.getProp("destDown") != "-1" ? "down " : string.Empty)}");
             Console.WriteLine();
         }
 
@@ -201,43 +201,43 @@ namespace Waterlily
                     break;
                 case "S":
                 case "SOUTH":
-                    GoAction(myLocation.destSouth);
+                    GoAction(myLocation.getProp("destSouth"));
                     break;
                 case "N":
                 case "NORTH":
-                    GoAction(myLocation.destNorth);
+                    GoAction(myLocation.getProp("destNorth"));
                     break;
                 case "E":
                 case "EAST":
-                    GoAction(myLocation.destEast);
+                    GoAction(myLocation.getProp("destEast"));
                     break;
                 case "W":
                 case "WEST":
-                    GoAction(myLocation.destWest);
+                    GoAction(myLocation.getProp("destWest"));
                     break;
                 case "SW":
                 case "SOUTHWEST":
-                    GoAction(myLocation.destSouthWest);
+                    GoAction(myLocation.getProp("destSouthWest"));
                     break;
                 case "SE":
                 case "SOUTHEAST":
-                    GoAction(myLocation.destSouthEast);
+                    GoAction(myLocation.getProp("destSouthEast"));
                     break;
                 case "NW":
                 case "NORTHWEST":
-                    GoAction(myLocation.destNorthWest);
+                    GoAction(myLocation.getProp("destNorthWest"));
                     break;
                 case "NE":
                 case "NORTHEAST":
-                    GoAction(myLocation.destNorthEast);
+                    GoAction(myLocation.getProp("destNorthEast"));
                     break;
                 case "U":
                 case "UP":
-                    GoAction(myLocation.destUp);
+                    GoAction(myLocation.getProp("destUp"));
                     break;
                 case "D":
                 case "DOWN":
-                    GoAction(myLocation.destDown);
+                    GoAction(myLocation.getProp("destDown"));
                     break;
                 default:
                     Console.WriteLine("You gotta be kidding!");
@@ -267,7 +267,7 @@ namespace Waterlily
             if (pendAction.item == "bottle")
             {
                 var loc = GetLocationByNumber(pendAction.location);
-                Console.WriteLine($"The {pendAction.item} explodes in the {loc.title}. A large bang is heard all over town!");
+                Console.WriteLine($"The {pendAction.item} explodes in the {loc.getProp("title")}. A large bang is heard all over town!");
                 var safe = GetItemByName("safe");
                 safe.setProp("isOpen", "1");
                 safe.setProp("longDescription", "The safe has been blown up");
@@ -351,12 +351,12 @@ namespace Waterlily
             {
                 if (item.getProp("location") == userLocation)
                 {
-                    if (item.getProp("canBreak") == "1")
+                    if (item.isProp("canBreak"))
                     {
                         var breakItem = GetBreakingTool();
                         if (breakItem != null)
                         {
-                            if (item.getProp("explosive") == "1")
+                            if (item.isProp("explosive"))
                             {
                                 Console.WriteLine($"You break the {item.getProp("examinedTitle")} with the {breakItem.getProp("title")}.");
                                 Console.WriteLine($"KABOOM! It explodes and you are blown to bits!");
@@ -364,7 +364,7 @@ namespace Waterlily
                             }
                             else
                             {
-                                if (item.getProp("isBroken") != "1")
+                                if (item.isProp("isBroken"))
                                 {
                                     Console.WriteLine($"You break the {item.getProp("examinedTitle")} with the {breakItem.getProp("title")}.");
                                     item.setProp("shortDescription", new StringBuilder(item.getProp("shortDescription").Insert(2, "broken ")).ToString());
@@ -373,7 +373,7 @@ namespace Waterlily
 
                                     if (userLocation == "1" && obj == "window")
                                     {
-                                        myLocation.destNorth = "3";
+                                        myLocation.setProp("destNorth", "3");
                                         ShowDestinations();
                                     }
                                 }
@@ -445,7 +445,7 @@ namespace Waterlily
                 Console.WriteLine($"   {item.getProp("shortDescription")}. ");
         }
 
-        private static Item GetBreakingTool()
+        private static PropertyCollection GetBreakingTool()
         {
             foreach (var item in GetMyItems())
             {
@@ -461,7 +461,7 @@ namespace Waterlily
                 Console.WriteLine($"Drop what?");
             else
             {
-                var myItems = new List<Item>();
+                var myItems = new List<PropertyCollection>();
                 if (obj.ToUpper() == "ALL")
                 {
                     myItems = GetMyItems();
@@ -524,7 +524,7 @@ namespace Waterlily
                 Console.WriteLine($"Get what?");
             else
             {
-                var itemsHere = new List<Item>();
+                var itemsHere = new List<PropertyCollection>();
                 if (obj.ToUpper() == "ALL")
                 {
                     itemsHere = GetItemsByLocation(userLocation);
@@ -601,22 +601,22 @@ namespace Waterlily
                 item.setProp("location", location);
         }
 
-        private static Location GetLocationByNumber(string number)
+        private static PropertyCollection GetLocationByNumber(string number)
         { 
-            return gameDefinition.locations.Find(l => l.number == number);
+            return gameDefinition.locations.Find(l => l.getProp("number") == number);
         }
 
-        private static List<Item> GetItemsByLocation(string locNumber)
+        private static List<PropertyCollection> GetItemsByLocation(string locNumber)
         {
             return gameDefinition.items.Where(i => i.getProp("location") == locNumber && i.getProp("carry") != "1").ToList();
         }
 
-        private static List<Item> GetMyItems()
+        private static List<PropertyCollection> GetMyItems()
         {
             return gameDefinition.items.Where(i => i.getProp("carry") == "1").ToList();
         }
 
-        private static Item GetItemByName(string name)
+        private static PropertyCollection GetItemByName(string name)
         {
             var namedItem = gameDefinition.items.Where(i => i.getProp("title").ToUpper() == name.ToUpper()).FirstOrDefault();
             if (namedItem == null)

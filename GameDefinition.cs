@@ -10,13 +10,13 @@ namespace Waterlily
         public string author { get; set; }
         public string userLocation { get; set; }
         public List<string> intro { get; set; }
-        public List<Item> items { get; set; }
-        public List<Location> locations { get; set; }
+        public List<PropertyCollection> items { get; set; }
+        public List<PropertyCollection> locations { get; set; }
         public List<Command> commands { get; set; }
         public List<Action> actions { get; set; }
     }
 
-    public class Item
+    public class PropertyCollection
     {
         public Dictionary<string, string> properties { get; set; }
 
@@ -26,6 +26,14 @@ namespace Waterlily
                 return properties[property];
             else
                 return "";
+        }
+
+        public bool isProp(string property)
+        {
+            if (properties.ContainsKey(property))
+                return properties[property] == "1";
+            else
+                return false;
         }
 
         public void setProp(string property, string value)
