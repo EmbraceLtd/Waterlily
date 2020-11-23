@@ -53,24 +53,6 @@ namespace Waterlily
         }
     }
 
-    public class Location
-    {
-        public string number { get; set; }
-        public string title { get; set; }
-        public string description { get; set; }
-        public string destNorth { get; set; } = "-1";
-        public string destSouth { get; set; } = "-1";
-        public string destEast { get; set; } = "-1";
-        public string destWest { get; set; } = "-1";
-        public string destSouthWest { get; set; } = "-1";
-        public string destSouthEast { get; set; } = "-1";
-        public string destNorthWest { get; set; } = "-1";
-        public string destNorthEast { get; set; } = "-1";
-        public string destUp { get; set; } = "-1";
-        public string destDown { get; set; } = "-1";
-        public bool showedDescription { get; set; }
-    }
-
     public class PendingAction
     {
         public string location { get; set; }
