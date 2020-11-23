@@ -155,95 +155,190 @@ namespace Waterlily
                 cmd = "wait";
 
             var sentence = cmd.Split(' ');
-            var verb = sentence[0].ToUpper();
-            var obj = sentence.Count() > 1 ? sentence[1] : string.Empty;
+            var verb = sentence[0].ToLower();
+            var objName = sentence.Count() > 1 ? sentence[1] : string.Empty;
 
-            switch (verb)
+            foreach(var gamec in gameDefinition.commands)
             {
-                case "WAIT":
-                case "SLEEP":
-                    WaitAction(verb);
-                    break;
-                case "LOAD":
-                    LoadAction(obj);
-                    break;
-                case "EXIT":
-                case "Q":
-                    cont = false;
-                    break;
-                case "LOOK" when obj == string.Empty:
-                case "WHERE":
-                    DescribeWorld(brief: false);
-                    break;
-                case "GET":
-                case "TAKE":
-                    PickupAction(obj);
-                    break;
-                case "FUCK":
-                    FuckAction(obj);
-                    break;
-                case "DROP":
-                    DropAction(obj);
-                    break;
-                case "INV":
-                case "INVENTORY":
-                    InventoryAction();
-                    break;
-                case "EXAMINE":
-                case "LOOK":
-                    ExamineAction(obj);
-                    break;
-                case "OPEN":
-                    OpenAction(obj);
-                    break;
-                case "BREAK":
-                    BreakAction(obj);
-                    break;
-                case "S":
-                case "SOUTH":
-                    GoAction(myLocation.getProp("destSouth"));
-                    break;
-                case "N":
-                case "NORTH":
-                    GoAction(myLocation.getProp("destNorth"));
-                    break;
-                case "E":
-                case "EAST":
-                    GoAction(myLocation.getProp("destEast"));
-                    break;
-                case "W":
-                case "WEST":
-                    GoAction(myLocation.getProp("destWest"));
-                    break;
-                case "SW":
-                case "SOUTHWEST":
-                    GoAction(myLocation.getProp("destSouthWest"));
-                    break;
-                case "SE":
-                case "SOUTHEAST":
-                    GoAction(myLocation.getProp("destSouthEast"));
-                    break;
-                case "NW":
-                case "NORTHWEST":
-                    GoAction(myLocation.getProp("destNorthWest"));
-                    break;
-                case "NE":
-                case "NORTHEAST":
-                    GoAction(myLocation.getProp("destNorthEast"));
-                    break;
-                case "U":
-                case "UP":
-                    GoAction(myLocation.getProp("destUp"));
-                    break;
-                case "D":
-                case "DOWN":
-                    GoAction(myLocation.getProp("destDown"));
-                    break;
-                default:
-                    Console.WriteLine("You gotta be kidding!");
-                    break;
+                if(gamec.verbs.Contains(verb))
+                {
+                    ProcessAction(gamec.targetAction, objName);
+                }
             }
         }
+
+        private static void ProcessAction(string targetAction, string objectName)
+        {
+            Action theAction = null;
+            foreach (var action in gameDefinition.actions)
+            {
+                if (action.name == targetAction)
+                    theAction = action;
+            }
+
+            if (theAction != null)
+            {
+                foreach(var cond in theAction.conditions)
+                {
+                    var result = InterpretCondition(FixString(cond.condition, objectName));
+                    if (result == false)
+                    {
+                        Console.WriteLine(FixString(cond.failureMessage, objectName));
+                        return;
+                    }
+                }
+
+                var fixedOp = new List<string>();
+                foreach(var o in theAction.operations)
+                    fixedOp.Add(FixString(o, objectName));
+
+                CommitOperations(fixedOp);
+
+                Console.WriteLine(FixString(theAction.completedMessage, objectName));
+            }
+        }
+
+        private static void CommitOperations(List<string> operations)
+        {
+            foreach (var op in operations)
+            {
+                var p = op.Split('.');
+                var ope = p[0];
+                var obj = p[1];
+                var prp = p[2];
+                var val = p[3];
+
+                if (ope == "set")
+                {
+                    var _object = GetItemByName(obj);
+                    _object.setProp(prp, val);
+                }
+            }
+        }
+
+        private static bool InterpretCondition(string cnd)
+        {
+            var p = cnd.Split('.');
+            var ope = p[0];
+            var obj = p[1];
+            var prp = p[2];
+            var cmp = p[3];
+            var val = p[4];
+
+            if (ope == "get")
+            {
+                var _object = GetItemByName(obj);
+                var objVal = _object.getProp(prp);
+                if (cmp == "eq")
+                    return (objVal == val);
+
+                if (cmp == "ne")
+                    return (objVal != val);
+            }
+
+            return false;
+        }
+
+        private static string FixString(string s, string objectName)
+        {
+            return s.Replace("{obj}", objectName).Replace("{userLocation}", userLocation);
+        }
+
+        //private static void ProcessCommand2(string cmd)
+        //{
+        //    if (string.IsNullOrWhiteSpace(cmd))
+        //        cmd = "wait";
+
+        //    var sentence = cmd.Split(' ');
+        //    var verb = sentence[0].ToUpper();
+        //    var obj = sentence.Count() > 1 ? sentence[1] : string.Empty;
+
+        //    switch (verb)
+        //    {
+        //        case "WAIT":
+        //        case "SLEEP":
+        //            WaitAction(verb);
+        //            break;
+        //        case "LOAD":
+        //            LoadAction(obj);
+        //            break;
+        //        case "EXIT":
+        //        case "Q":
+        //            cont = false;
+        //            break;
+        //        case "LOOK" when obj == string.Empty:
+        //        case "WHERE":
+        //            DescribeWorld(brief: false);
+        //            break;
+        //        case "GET":
+        //        case "TAKE":
+        //            PickupAction(obj);
+        //            break;
+        //        case "FUCK":
+        //            FuckAction(obj);
+        //            break;
+        //        case "DROP":
+        //            DropAction(obj);
+        //            break;
+        //        case "INV":
+        //        case "INVENTORY":
+        //            InventoryAction();
+        //            break;
+        //        case "EXAMINE":
+        //        case "LOOK":
+        //            ExamineAction(obj);
+        //            break;
+        //        case "OPEN":
+        //            OpenAction(obj);
+        //            break;
+        //        case "BREAK":
+        //            BreakAction(obj);
+        //            break;
+        //        case "S":
+        //        case "SOUTH":
+        //            GoAction(myLocation.getProp("destSouth"));
+        //            break;
+        //        case "N":
+        //        case "NORTH":
+        //            GoAction(myLocation.getProp("destNorth"));
+        //            break;
+        //        case "E":
+        //        case "EAST":
+        //            GoAction(myLocation.getProp("destEast"));
+        //            break;
+        //        case "W":
+        //        case "WEST":
+        //            GoAction(myLocation.getProp("destWest"));
+        //            break;
+        //        case "SW":
+        //        case "SOUTHWEST":
+        //            GoAction(myLocation.getProp("destSouthWest"));
+        //            break;
+        //        case "SE":
+        //        case "SOUTHEAST":
+        //            GoAction(myLocation.getProp("destSouthEast"));
+        //            break;
+        //        case "NW":
+        //        case "NORTHWEST":
+        //            GoAction(myLocation.getProp("destNorthWest"));
+        //            break;
+        //        case "NE":
+        //        case "NORTHEAST":
+        //            GoAction(myLocation.getProp("destNorthEast"));
+        //            break;
+        //        case "U":
+        //        case "UP":
+        //            GoAction(myLocation.getProp("destUp"));
+        //            break;
+        //        case "D":
+        //        case "DOWN":
+        //            GoAction(myLocation.getProp("destDown"));
+        //            break;
+        //        default:
+        //            Console.WriteLine("You gotta be kidding!");
+        //            break;
+        //    }
+        //}
 
         private static void ProcessPendingActions()
         {

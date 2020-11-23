@@ -43,6 +43,14 @@ namespace Waterlily
             else
                 properties.Add(property, value);
         }
+
+        public void trueProp(string property)
+        {
+            if (properties.ContainsKey(property))
+                properties[property] = "1";
+            else
+                properties.Add(property, "1");
+        }
     }
 
     public class Location
