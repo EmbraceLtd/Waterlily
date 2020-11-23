@@ -68,7 +68,7 @@
       "number": 1,
       "title": "Main Street",
       "description": "Overlooking Main Street, Flatville. It's a hazy morning. Church bells are heard from afar.\r\nBehind you is the Central Bank building.",
-      "destSouth": 2
+      "destSouth": 2,
     },
     {
       "number": 2,
@@ -89,6 +89,171 @@
       "description": "You are at the the banks of River Shanty, at the ferry pier.",
       "destNorthEast": 2
     }
-
+  ],
+  "commands": [
+    {
+      "verbs": [ "get", "take", "grab", "pick", "snatch" ],
+      "targetAction": "takeAction"
+    },
+    {
+      "verbs": [ "drop", "lose" ],
+      "targetAction": "dropAction"
+    },
+    {
+      "verbs": [ "wait", "sleep" ],
+      "targetAction": "waitAction"
+    },
+    {
+      "verbs": [ "load" ],
+      "targetAction": "loadAction"
+    },
+    {
+      "verbs": [ "exit", "die", "quit", "q", "x" ],
+      "targetAction": "quitAction"
+    },
+    {
+      "verbs": [ "inventory", "inv", "list" ],
+      "targetAction": "inventoryAction"
+    },
+    {
+      "verbs": [ "examine" ],
+      "targetAction": "examineAction"
+    },
+    {
+      "verbs": [ "open" ],
+      "targetAction": "OpenAction"
+    },
+    {
+      "verbs": [ "break", "smash" ],
+      "targetAction": "breakAction"
+    },
+    {
+      "verbs": [ "south", "s" ],
+      "targetAction": "goSouthAction"
+    },
+    {
+      "verbs": [ "north", "n" ],
+      "targetAction": "goNorthAction"
+    },
+    {
+      "verbs": [ "west", "w" ],
+      "targetAction": "goWestAction"
+    },
+    {
+      "verbs": [ "east", "e" ],
+      "targetAction": "goEastAction"
+    },
+    {
+      "verbs": [ "northwest", "nw" ],
+      "targetAction": "goNwAction"
+    },
+    {
+      "verbs": [ "northeast", "ne" ],
+      "targetAction": "goNeAction"
+    },
+    {
+      "verbs": [ "southwest", "sw" ],
+      "targetAction": "goSwAction"
+    },
+    {
+      "verbs": [ "southeast", "se" ],
+      "targetAction": "goSeAction"
+    },
+    {
+      "verbs": [ "up" ],
+      "targetAction": "goUpAction"
+    },
+    {
+      "verbs": [ "down" ],
+      "targetAction": "goDownAction"
+    }
+  ],
+  "actions": [
+    {
+      "name": "takeAction",
+      "conditions": [
+        {
+          "condition": "get.{obj}.carry.ne.1",
+          "failureMessage": "You already have the {obj}"
+        },
+        {
+          "condition": "get.{obj}.location.eq.{userLocation}",
+          "failureMessage": "The {obj} isn't here"
+        },
+        {
+          "condition": "get.{obj}.canTake.eq.1",
+          "failureMessage": "You can't take the {obj}"
+        }
+      ],
+      "operations": [
+        "set.{obj}.carry.1"
+      ],
+      "CompletedMessage": "You take the {obj}"
+    },
+    {
+      "name": "dropAction",
+      "conditions": [
+        {
+          "condition": "get.{obj}.carry.eq.1",
+          "failureMessage": "You don't have the {obj}"
+        }
+      ],
+      "operations": [
+        "clear.{obj}.carry"
+      ],
+      "completedMessage": "You drop the {obj}"
+    },
+    {
+      "name": "waitAction",
+      "conditions": [],
+      "operations": [ "wait" ],
+      "completedMessage": "You {verb}. Time passes."
+    },
+    {
+      "name": "examineCommand",
+      "conditions": [],
+      "operations": [ "get.{obj}.longDescription.write" ],
+      "completedMessage": ""
+    },
+    {
+      "name": "openAction",
+      "conditions": [
+        {
+          "condition": "get.{obj}.location.eq.{userLocation}",
+          "failureMessage": "The {obj} isn't here"
+        },
+        {
+          "condition": "get.{obj}.isOpen.ne.1",
+          "failureMessage": "The {obj} is already open."
+        },
+        {
+          "condition": "get.{obj}.canOpen.eq.1",
+          "failureMessage": "The {obj} can't be opened."
+        }
+      ],
+      "operations": [
+        "set.{obj}.isOpen.1"
+      ]
+    },
+    {
+      "name": "breakAction",
+      "conditions": [
+        {
+          "condition": "get.{obj}.location.eq.{userLocation}",
+          "failureMessage": "The {obj} isn't here"
+        },
+        {
+          "condition": "get.{obj}.isBroken.ne.1",
+          "failureMessage": "The {obj} is already broken."
+        },
+        {
+          "condition": "get.{obj}.canBreak.eq.1",
+          "failureMessage": "The {obj} can't be broken."
+        }
+      ],
+      "operations": [
+        "set.{obj}.isbroken.1"
+      ]
+    }
   ]
 }

@@ -66,14 +66,21 @@ namespace Waterlily
 
     public class Command
     {
-        public List<string> commands { get; set; }
+        public List<string> verbs { get; set; }
         public string targetAction { get; set; }
     }
 
     public class Action
     {
         public string name { get; set; }
-        public List<string> conditions { get; set; }
+        public List<Condition> conditions { get; set; }
         public List<string> operations { get; set; }
+        public string completedMessage { get; set; }
+    }
+
+    public class Condition
+    {
+        public string condition { get; set; }
+        public string failureMessage { get; set; }
     }
 }
