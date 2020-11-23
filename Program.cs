@@ -101,16 +101,17 @@ namespace Waterlily
 
         private static void ShowDestinations()
         {
-            Console.Write($"You can go {(myLocation.getProp("destNorth") != "-1" ? "north " : string.Empty)}");
-            Console.Write($"{(myLocation.getProp("destNorthWest") != "-1" ? "northwest " : string.Empty)}");
-            Console.Write($"{(myLocation.getProp("destNorthEast") != "-1" ? "northeast " : string.Empty)}");
-            Console.Write($"{(myLocation.getProp("destSouth") != "-1" ? "south " : string.Empty)}");
-            Console.Write($"{(myLocation.getProp("destSouthWest") != "-1" ? "southwest " : string.Empty)}");
-            Console.Write($"{(myLocation.getProp("destSouthEast") != "-1" ? "southeast " : string.Empty)}");
-            Console.Write($"{(myLocation.getProp("destEast") != "-1" ? "east " : string.Empty)}");
-            Console.Write($"{(myLocation.getProp("destWest") != "-1" ? "west " : string.Empty)}"); 
-            Console.Write($"{(myLocation.getProp("destUp") != "-1" ? "up " : string.Empty)}");
-            Console.Write($"{(myLocation.getProp("destDown") != "-1" ? "down " : string.Empty)}");
+            Console.Write($"You can go ");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destNorth")) ? "north " : string.Empty)}");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destNorthWest")) ? "northwest " : string.Empty)}");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destNorthEast")) ? "northeast " : string.Empty)}");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destSouth")) ? "south " : string.Empty)}");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destSouthWest")) ? "southwest " : string.Empty)}");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destSouthEast")) ? "southeast " : string.Empty)}");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destEast")) ? "east " : string.Empty)}");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destWest")) ? "west " : string.Empty)}"); 
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destUp")) ? "up " : string.Empty)}");
+            Console.Write($"{(!string.IsNullOrEmpty(myLocation.getProp("destDown")) ? "down " : string.Empty)}");
             Console.WriteLine();
         }
 
@@ -180,21 +181,21 @@ namespace Waterlily
             {
                 foreach(var cond in theAction.conditions)
                 {
-                    var result = InterpretCondition(FixString(cond.condition, objectName));
+                    var result = InterpretCondition(cond.condition.FixString(objectName, userLocation));
                     if (result == false)
                     {
-                        Console.WriteLine(FixString(cond.failureMessage, objectName));
+                        Console.WriteLine(cond.failureMessage.FixString(objectName, userLocation));
                         return;
                     }
                 }
 
                 var fixedOp = new List<string>();
                 foreach(var o in theAction.operations)
-                    fixedOp.Add(FixString(o, objectName));
+                    fixedOp.Add(o.FixString(objectName, userLocation));
 
                 CommitOperations(fixedOp);
 
-                Console.WriteLine(FixString(theAction.completedMessage, objectName));
+                Console.WriteLine(theAction.completedMessage.FixString(objectName, userLocation));
             }
         }
 
@@ -204,14 +205,33 @@ namespace Waterlily
             {
                 var p = op.Split('.');
                 var ope = p[0];
-                var obj = p[1];
-                var prp = p[2];
-                var val = p[3];
 
                 if (ope == "set")
                 {
+                    var obj = p[1];
+                    var prp = p[2];
+                    var val = p[3];
+
                     var _object = GetItemByName(obj);
                     _object.setProp(prp, val);
+                }
+
+                if (ope == "write")
+                {
+                    var typ = p[1];
+                    var obj = p[2];
+                    var prp = p[3];
+
+                    PropertyCollection _object = null;
+
+                    if (typ=="item")
+                        _object = GetItemByName(obj);
+
+                    if (typ == "loc")
+                        _object = GetLocationByNumber(obj);
+
+                    if (_object != null)
+                        Console.WriteLine(_object.getProp(prp));
                 }
             }
         }
@@ -220,13 +240,14 @@ namespace Waterlily
         {
             var p = cnd.Split('.');
             var ope = p[0];
-            var obj = p[1];
-            var prp = p[2];
-            var cmp = p[3];
-            var val = p[4];
 
             if (ope == "get")
             {
+                var obj = p[1];
+                var prp = p[2];
+                var cmp = p[3];
+                var val = p[4];
+
                 var _object = GetItemByName(obj);
                 var objVal = _object.getProp(prp);
                 if (cmp == "eq")
@@ -236,12 +257,16 @@ namespace Waterlily
                     return (objVal != val);
             }
 
-            return false;
-        }
+            if (ope == "write")
+            {
+                var obj = p[1];
+                var prp = p[2];
+                var _object = GetItemByName(obj);
+                var objVal = _object.getProp(prp);
+                Console.WriteLine(objVal);
+            }
 
-        private static string FixString(string s, string objectName)
-        {
-            return s.Replace("{obj}", objectName).Replace("{userLocation}", userLocation);
+            return false;
         }
 
         //private static void ProcessCommand2(string cmd)
@@ -752,6 +777,10 @@ namespace Waterlily
             collection = JsonConvert.DeserializeObject<GameDefinition>(json);
 
             InitializeDefaultStrings(collection);
+
+
+
+
         }
 
         private static bool ReadConfig(string customConfig)
@@ -792,6 +821,14 @@ namespace Waterlily
                 text = reader.ReadToEnd();
             }
             return text;
+        }
+    }
+
+    public static class Util
+    {
+        public static string FixString(this string s, string objectName, string userLocation)
+        {
+            return s.Replace("{obj}", objectName).Replace("{userLocation}", userLocation);
         }
     }
 }
