@@ -222,16 +222,40 @@ namespace Waterlily
                     var obj = p[2];
                     var prp = p[3];
 
-                    PropertyCollection _object = null;
+                    if (obj == "*" && typ=="item")
+                    {
+                        List<PropertyCollection> objects = null;
+                        if (p.Length == 7)
+                            objects = GetItemsByFilter(p[4], p[5], p[6]);
+                        else
+                            objects = GetAllItems();
 
-                    if (typ=="item")
-                        _object = GetItemByName(obj);
+                        if (objects != null)
+                        {
+                            foreach (var o in objects)
+                                Console.WriteLine($"{o.getProp(prp)} ");
 
-                    if (typ == "loc")
-                        _object = GetLocationByNumber(obj);
+                            Console.WriteLine();
+                        }
+                    }
+                    else
+                    { 
+                        PropertyCollection _object = null;
 
-                    if (_object != null)
-                        Console.WriteLine(_object.getProp(prp));
+                        if (typ=="item")
+                            _object = GetItemByName(obj);
+
+                        if (typ == "loc")
+                            _object = GetLocationByNumber(obj);
+
+                        if (_object != null)
+                            Console.WriteLine(_object.getProp(prp));
+                    }
+                }
+
+                if (ope == "print")
+                {
+                    Console.WriteLine(p[1]);
                 }
             }
         }
@@ -734,6 +758,22 @@ namespace Waterlily
         private static List<PropertyCollection> GetMyItems()
         {
             return gameDefinition.items.Where(i => i.getProp("carry") == "1").ToList();
+        }
+
+        private static List<PropertyCollection> GetAllItems()
+        {
+            return gameDefinition.items.ToList();
+        }
+
+        private static List<PropertyCollection> GetItemsByFilter(string wPrp, string wCmp, string wVal)
+        {
+            if (wCmp=="eq")
+                return gameDefinition.items.Where(i => i.getProp(wPrp) == wVal).ToList();
+            else if (wCmp == "ne")
+                return gameDefinition.items.Where(i => i.getProp(wPrp) != wVal).ToList();
+            else
+                return new List<PropertyCollection>();
+
         }
 
         private static PropertyCollection GetItemByName(string name)

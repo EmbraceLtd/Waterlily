@@ -278,6 +278,15 @@
       "conditions": [],
       "operations": [ "write.loc.{userLocation}.description" ],
       "completedMessage": ""
+    },
+    {
+      "name": "inventoryAction",
+      "conditions": [],
+      "operations": [
+        "print.You are carrying:",
+        "write.item.*.shortDescription.carry.eq.1"
+      ],
+      "completedMessage": ""
     }
   ]
 }
