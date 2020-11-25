@@ -185,15 +185,15 @@
       "name": "takeAction",
       "conditions": [
         {
-          "condition": "get.{obj}.carry.ne.1",
+          "condition": "get.item.{obj}.carry.ne.1",
           "failureMessage": "You already have the {obj}"
         },
         {
-          "condition": "get.{obj}.location.eq.{userLocation}",
+          "condition": "get.item.{obj}.location.eq.{userLocation}",
           "failureMessage": "The {obj} isn't here"
         },
         {
-          "condition": "get.{obj}.canTake.eq.1",
+          "condition": "get.item.{obj}.canTake.eq.1",
           "failureMessage": "You can't take the {obj}"
         }
       ],
@@ -206,7 +206,7 @@
       "name": "dropAction",
       "conditions": [
         {
-          "condition": "get.{obj}.carry.eq.1",
+          "condition": "get.item.{obj}.carry.eq.1",
           "failureMessage": "You don't have the {obj}"
         }
       ],
@@ -231,15 +231,15 @@
       "name": "openAction",
       "conditions": [
         {
-          "condition": "get.{obj}.location.eq.{userLocation}",
+          "condition": "get.item.{obj}.location.eq.{userLocation}",
           "failureMessage": "The {obj} isn't here"
         },
         {
-          "condition": "get.{obj}.isOpen.ne.1",
+          "condition": "get.item.{obj}.isOpen.ne.1",
           "failureMessage": "The {obj} is already open."
         },
         {
-          "condition": "get.{obj}.canOpen.eq.1",
+          "condition": "get.item.{obj}.canOpen.eq.1",
           "failureMessage": "The {obj} can't be opened."
         }
       ],
@@ -252,19 +252,19 @@
       "name": "breakAction",
       "conditions": [
         {
-          "condition": "get.{obj}.location.eq.{userLocation}",
+          "condition": "get.item.{obj}.location.eq.{userLocation}",
           "failureMessage": "The {obj} isn't here"
         },
         {
-          "condition": "get.{obj}.isBroken.ne.1",
+          "condition": "get.item.{obj}.isBroken.ne.1",
           "failureMessage": "The {obj} is already broken."
         },
         {
-          "condition": "get.{obj}.canBreak.eq.1",
+          "condition": "get.item.{obj}.canBreak.eq.1",
           "failureMessage": "The {obj} can't be broken."
         },
         {
-          "condition": "get.hammer.carry.eq.1",
+          "condition": "get.item.hammer.carry.eq.1",
           "failureMessage": "You don't have anything to break the {obj} with."
         }
       ],
@@ -285,6 +285,34 @@
       "operations": [
         "print.You are carrying:",
         "write.item.*.shortDescription.carry.eq.1"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goNorthAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destNorth.ne.-1",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "set.self.location.{destNorth}",
+        "write.loc.{userLocation}.description"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goSouthAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destSouth.ne.-1",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "set.self.location.{destSouth}",
+        "write.loc.{userLocation}.description"
       ],
       "completedMessage": ""
     }

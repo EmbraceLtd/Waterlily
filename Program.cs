@@ -190,10 +190,10 @@ namespace Waterlily
                 }
 
                 var fixedOp = new List<string>();
-                foreach(var o in theAction.operations)
+                foreach (var o in theAction.operations)
                     fixedOp.Add(o.FixString(objectName, userLocation));
 
-                CommitOperations(fixedOp);
+                CommitOperations(theAction.operations);
 
                 Console.WriteLine(theAction.completedMessage.FixString(objectName, userLocation));
             }
@@ -212,8 +212,18 @@ namespace Waterlily
                     var prp = p[2];
                     var val = p[3];
 
-                    var _object = GetItemByName(obj);
-                    _object.setProp(prp, val);
+                    if (obj == "self" && prp == "location")
+                    {
+                        var loc = GetLocationByNumber(userLocation);
+                        var dst = val.Replace("{", "").Replace("}", "");
+                        var mval = loc.getProp(dst);
+                        userLocation = mval;
+                    }
+                    else
+                    {
+                        var _object = GetItemByName(obj);
+                        _object.setProp(prp, val);
+                    }
                 }
 
                 if (ope == "write")
@@ -265,20 +275,36 @@ namespace Waterlily
             var p = cnd.Split('.');
             var ope = p[0];
 
+            //get.loc.{userLocation}.destNorth.ne.-1
             if (ope == "get")
             {
-                var obj = p[1];
-                var prp = p[2];
-                var cmp = p[3];
-                var val = p[4];
+                var typ = p[1];
+                var obj = p[2];
+                var prp = p[3];
+                var cmp = p[4];
+                var val = p[5];
 
-                var _object = GetItemByName(obj);
-                var objVal = _object.getProp(prp);
+                string objVal = string.Empty;
+
+                if (typ == "item")
+                {
+                    var _object = GetItemByName(obj);
+                    objVal = _object.getProp(prp);
+                }
+
+                if (typ == "loc")
+                {
+                    var loc = GetLocationByNumber(obj);
+                    var lval = prp.Replace("{", "").Replace("}", "");
+                    objVal = loc.getProp(lval);
+                }
+
                 if (cmp == "eq")
                     return (objVal == val);
 
                 if (cmp == "ne")
                     return (objVal != val);
+                
             }
 
             if (ope == "write")
