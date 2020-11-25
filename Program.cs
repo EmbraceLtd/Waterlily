@@ -139,7 +139,7 @@ namespace Waterlily
             foreach (var line in gameDefinition.intro)
                 Console.WriteLine($"*  {line}");
             Console.WriteLine("*");
-            Console.WriteLine("******   Powered by Waterlily Engine by Tommy Sjöblom   ****   Type 'about' for more info   *******");
+            Console.WriteLine("************************   Powered by Waterlily Engine by Tommy Sjöblom  Type 'about' for more info");
             Console.WriteLine();
         }
 
@@ -275,7 +275,7 @@ namespace Waterlily
                 GoAction(dest);
             }
 
-            if (ope=="about")
+            if (ope == "about")
             {
                 ShowGnuLicense();
             }
@@ -913,6 +913,19 @@ namespace Waterlily
             Console.WriteLine();
             Console.WriteLine("You should have received a copy of the GNU General Public License");
             Console.WriteLine("along with this program.  If not, see <https://www.gnu.org/licenses/>.");
+            Console.WriteLine();
+            Console.WriteLine("AUTHOR'S NOTICE AND DISCLAIMER");
+            Console.WriteLine();
+            Console.WriteLine("The Waterlily Engine gives game creators large freedom to create");
+            Console.WriteLine("new worlds and distribute game content beyond the author's control.");
+            Console.WriteLine();
+            Console.WriteLine("I, the author of the Waterlily Game Engine software, will accept");
+            Console.WriteLine("NO RESPONSIBILITY whatsoever for the content of games created");
+            Console.WriteLine("by others, in the event that players find the content controversial");
+            Console.WriteLine("or ethically, morally, politically or in ANY OTHER WAY disturbing.");
+            Console.WriteLine();
+            Console.WriteLine("Such complaints MUST be directed to the game creator who created the");
+            Console.WriteLine("the content in question. Thank you.");
         }
     }
 
