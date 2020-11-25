@@ -178,6 +178,10 @@
     {
       "verbs": [ "look" ],
       "targetAction": "lookAction"
+    },
+    {
+      "verbs": [ "go" ],
+      "targetAction": "goAction"
     }
   ],
   "actions": [
@@ -276,7 +280,7 @@
     {
       "name": "lookAction",
       "conditions": [],
-      "operations": [ "write.loc.{userLocation}.description" ],
+      "operations": [ "desc" ],
       "completedMessage": ""
     },
     {
@@ -292,13 +296,12 @@
       "name": "goNorthAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destNorth.ne.-1",
+          "condition": "get.loc.{userLocation}.destNorth.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
       "operations": [
-        "set.self.location.{destNorth}",
-        "write.loc.{userLocation}.description"
+        "go.{destNorth}"
       ],
       "completedMessage": ""
     },
@@ -306,13 +309,129 @@
       "name": "goSouthAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destSouth.ne.-1",
+          "condition": "get.loc.{userLocation}.destSouth.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
       "operations": [
-        "set.self.location.{destSouth}",
-        "write.loc.{userLocation}.description"
+        "go.{destSouth}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goEastAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destEast.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{destEast}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goWestAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destWest.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{destWest}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goSwAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destSouthWest.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{destSouthWest}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goSeAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destSouthEast.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{destSouthEast}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goNwAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destNorthWest.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{destNorthWest}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goNeAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destNorthEast.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{destNorthEast}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goDownAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destDown.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{destDown}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goUpAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.destUp.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{destUp}"
+      ],
+      "completedMessage": ""
+    },
+    {
+      "name": "goAction",
+      "conditions": [
+        {
+          "condition": "get.loc.{userLocation}.{obj}.ne.",
+          "failureMessage": "You can't go that way"
+        }
+      ],
+      "operations": [
+        "go.{obj}"
       ],
       "completedMessage": ""
     }
