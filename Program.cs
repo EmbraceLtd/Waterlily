@@ -279,6 +279,11 @@ namespace Waterlily
             {
                 ShowGnuLicense();
             }
+
+            if (ope == "die")
+            {
+                cont = false;
+            }
         }
 
         private static bool InterpretCondition(string cnd)

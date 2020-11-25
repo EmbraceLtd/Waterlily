@@ -186,6 +186,10 @@
     {
       "verbs": [ "about" ],
       "targetAction": "aboutAction"
+    },
+    {
+      "verbs": [ "die", "quit", "q", "exit", "x" ],
+      "targetAction": "dieAction"
     }
   ],
   "actions": [
@@ -443,6 +447,11 @@
       "name": "aboutAction",
       "conditions": [],
       "operations": [ "about" ]
+    },
+    {
+      "name": "dieAction",
+      "conditions": [],
+      "operations": [ "die" ]
     }
   ]
 }
