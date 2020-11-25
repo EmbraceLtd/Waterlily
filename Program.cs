@@ -189,13 +189,78 @@ namespace Waterlily
                     }
                 }
 
-                var fixedOp = new List<string>();
                 foreach (var o in theAction.operations)
-                    fixedOp.Add(o.FixString(objectName, userLocation));
-
-                CommitOperations(theAction.operations);
+                    CommitOperation(o.FixString(objectName, userLocation));
 
                 Console.WriteLine(theAction.completedMessage.FixString(objectName, userLocation));
+            }
+        }
+
+        private static void CommitOperation(string op)
+        {
+            var p = op.Split('.');
+            var ope = p[0];
+
+            if (ope == "set")
+            {
+                var obj = p[1];
+                var prp = p[2];
+                var val = p[3];
+
+                if (obj == "self" && prp == "location")
+                {
+                    var loc = GetLocationByNumber(userLocation);
+                    var dst = val.Replace("{", "").Replace("}", "");
+                    var mval = loc.getProp(dst);
+                    userLocation = mval;
+                }
+                else
+                {
+                    var _object = GetItemByName(obj);
+                    _object.setProp(prp, val);
+                }
+            }
+
+            if (ope == "write")
+            {
+                var typ = p[1];
+                var obj = p[2];
+                var prp = p[3];
+
+                if (obj == "*" && typ == "item")
+                {
+                    List<PropertyCollection> objects = null;
+                    if (p.Length == 7)
+                        objects = GetItemsByFilter(p[4], p[5], p[6]);
+                    else
+                        objects = GetAllItems();
+
+                    if (objects != null)
+                    {
+                        foreach (var o in objects)
+                            Console.WriteLine($"{o.getProp(prp)} ");
+
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    PropertyCollection _object = null;
+
+                    if (typ == "item")
+                        _object = GetItemByName(obj);
+
+                    if (typ == "loc")
+                        _object = GetLocationByNumber(obj);
+
+                    if (_object != null)
+                        Console.WriteLine(_object.getProp(prp));
+                }
+            }
+
+            if (ope == "print")
+            {
+                Console.WriteLine(p[1]);
             }
         }
 
