@@ -78,7 +78,7 @@
         "title": "The park",
         "description": "You are in a park. Birds are singing and doing whatever birds do.",
         "destNorth": "1",
-        "destSouthWest": "4"
+        "destSouth": "4"
       }
     },
     {
@@ -94,7 +94,7 @@
         "number": "4",
         "title": "Ferry pier",
         "description": "You are at the the banks of River Shanty, at the ferry pier.",
-        "destNorthEast": "2"
+        "destNorth": "2"
       }
     }
   ],
@@ -129,7 +129,7 @@
     },
     {
       "verbs": [ "open" ],
-      "targetAction": "OpenAction"
+      "targetAction": "openAction"
     },
     {
       "verbs": [ "break", "smash" ],
@@ -231,12 +231,15 @@
       "name": "waitAction",
       "conditions": [],
       "operations": [ "wait" ],
-      "completedMessage": "You {verb}. Time passes."
+      "completedMessage": "You wait. Time passes."
     },
     {
       "name": "examineAction",
       "conditions": [],
-      "operations": [ "write.item.{obj}.longDescription" ],
+      "operations": [
+        "write.item.{obj}.longDescription", 
+        "set.{obj}.wasExamined.1"
+      ],
       "completedMessage": ""
     },
     {
@@ -453,5 +456,37 @@
       "conditions": [],
       "operations": [ "die" ]
     }
+  ],
+  "triggerActions": [
+    {
+      "name": "explosionAction",
+      "conditions": [],
+      "operations": [ "die" ],
+      "completedMessage": "BOOM",
+      "objectName": "bottle",
+      "triggerAction": "dropAction",
+      "location": "2",
+      "active": false,
+      "completed": false,
+      "pendingCount": 1
+    },
+    {
+      "name": "explosionAction",
+      "conditions": [
+        {
+          "condition": "get.item.{obj}.wasExamined.ne.1",
+          "failureMessage": ""
+        }
+      ],
+      "operations": [ "die" ],
+      "completedMessage": "BOOM",
+      "objectName": "bottle",
+      "triggerAction": "takeAction",
+      "location": "2",
+      "active": false,
+      "completed": false,
+      "pendingCount": 0
+    }
   ]
+
 }

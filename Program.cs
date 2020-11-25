@@ -15,7 +15,6 @@ namespace Waterlily
         private static string userLocation;
         private static PropertyCollection myLocation;
         private static bool cont = true;
-        private static List<PendingAction> pendingActions;
         private static int turnCount;
         private static string dashline = new string('*', 99);
 
@@ -117,7 +116,6 @@ namespace Waterlily
 
         private static bool InitializeWorld(string customConfig = "")
         {
-            pendingActions = new List<PendingAction>();
             turnCount = 1;
 
             if (ReadConfig(customConfig))
@@ -139,7 +137,7 @@ namespace Waterlily
             foreach (var line in gameDefinition.intro)
                 Console.WriteLine($"*  {line}");
             Console.WriteLine("*");
-            Console.WriteLine("************************   Powered by Waterlily Engine by Tommy Sjöblom  Type 'about' for more info");
+            Console.WriteLine("************   Powered by Waterlily Engine by Tommy Sjöblom  Type 'about' for more info   *********");
             Console.WriteLine();
         }
 
@@ -148,6 +146,17 @@ namespace Waterlily
             userLocation = gameDefinition.userLocation;
             myLocation = GetLocationByNumber(userLocation);
             cont = true;
+        }
+
+        private static void ProcessPendingActions()
+        {
+            foreach (var p in gameDefinition.triggerActions.Where(a => a.active && !a.completed))
+            {
+                if (p.pendingCount-- == 0)
+                {
+                    ProcessAction(p, p.objectName);
+                }
+            }
         }
 
         private static void ProcessCommand(string cmd)
@@ -177,9 +186,26 @@ namespace Waterlily
                     theAction = action;
             }
 
+            ProcessAction(theAction, objectName);
+            TriggerPendingActions(targetAction,objectName);
+        }
+
+        private static void TriggerPendingActions(string targetAction, string objectName)
+        {
+            foreach(var pend in gameDefinition.triggerActions)
+            {
+                if (targetAction==pend.triggerAction && objectName==pend.objectName)
+                {
+                    pend.active = true;
+                }
+            }
+        }
+
+        private static void ProcessAction(Action theAction, string objectName)
+        {
             if (theAction != null)
             {
-                foreach(var cond in theAction.conditions)
+                foreach (var cond in theAction.conditions)
                 {
                     var result = InterpretCondition(cond.condition.FixString(objectName, userLocation));
                     if (result == false)
@@ -192,7 +218,8 @@ namespace Waterlily
                 foreach (var o in theAction.operations)
                     CommitOperation(o.FixString(objectName, userLocation));
 
-                Console.WriteLine(theAction.completedMessage.FixString(objectName, userLocation));
+                if (!string.IsNullOrEmpty(theAction.completedMessage))
+                    Console.WriteLine(theAction.completedMessage.FixString(objectName, userLocation));
             }
         }
 
@@ -431,24 +458,24 @@ namespace Waterlily
         //    }
         //}
 
-        private static void ProcessPendingActions()
-        {
-            foreach (var pendAction in pendingActions)
-            {
-                if (pendAction.action == "detonate" && pendAction.active && !pendAction.completed)
-                    Detonate(pendAction);
-            }
+        //private static void ProcessPendingActions2()
+        //{
+        //    foreach (var pendAction in pendingActions)
+        //    {
+        //        if (pendAction.action == "detonate" && pendAction.active && !pendAction.completed)
+        //            Detonate(pendAction);
+        //    }
 
-            pendingActions.RemoveAll(p => p.completed);
+        //    pendingActions.RemoveAll(p => p.completed);
 
-            foreach (var pendAction in pendingActions)
-            {
-                if (!pendAction.active)
-                    pendAction.active = true;
-            }
-        }
+        //    foreach (var pendAction in pendingActions)
+        //    {
+        //        if (!pendAction.active)
+        //            pendAction.active = true;
+        //    }
+        //}
 
-        private static void Detonate(PendingAction pendAction)
+        private static void Detonate(PendingAction2 pendAction)
         {
             if (pendAction.item == "bottle")
             {
@@ -641,39 +668,39 @@ namespace Waterlily
             return null;
         }
 
-        private static void DropAction(string obj)
-        {
-            if (string.IsNullOrEmpty(obj))
-                Console.WriteLine($"Drop what?");
-            else
-            {
-                var myItems = new List<PropertyCollection>();
-                if (obj.ToUpper() == "ALL")
-                {
-                    myItems = GetMyItems();
-                }
-                else
-                {
-                    var item = GetItemByName(obj);
-                    if (item != null)
-                        myItems.Add(item);
-                }
-                foreach(var item in myItems)
-                {
-                    if (item.getProp("carry")=="1")
-                    {
-                        item.setProp("carry", "0");
-                        Console.WriteLine($"You {(item.getProp("explosive") == "1" ? "very carefully put down" : "drop")} the {item.getProp("examinedTitle")}.");
-                        if (item.getProp("title") == "bottle")
-                            pendingActions.Add(new PendingAction { action = "detonate", item = "bottle", location = userLocation});
-                    }
-                    else
-                    {
-                        Console.WriteLine("You ain't got it!");
-                    }
-                }
-            }
-        }
+        //private static void DropAction(string obj)
+        //{
+        //    if (string.IsNullOrEmpty(obj))
+        //        Console.WriteLine($"Drop what?");
+        //    else
+        //    {
+        //        var myItems = new List<PropertyCollection>();
+        //        if (obj.ToUpper() == "ALL")
+        //        {
+        //            myItems = GetMyItems();
+        //        }
+        //        else
+        //        {
+        //            var item = GetItemByName(obj);
+        //            if (item != null)
+        //                myItems.Add(item);
+        //        }
+        //        foreach(var item in myItems)
+        //        {
+        //            if (item.getProp("carry")=="1")
+        //            {
+        //                item.setProp("carry", "0");
+        //                Console.WriteLine($"You {(item.getProp("explosive") == "1" ? "very carefully put down" : "drop")} the {item.getProp("examinedTitle")}.");
+        //                if (item.getProp("title") == "bottle")
+        //                    pendingActions.Add(new PendingAction2 { action = "detonate", item = "bottle", location = userLocation});
+        //            }
+        //            else
+        //            {
+        //                Console.WriteLine("You ain't got it!");
+        //            }
+        //        }
+        //    }
+        //}
 
         private static void FuckAction(string obj)
         {

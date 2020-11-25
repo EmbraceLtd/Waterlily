@@ -14,6 +14,7 @@ namespace Waterlily
         public List<PropertyCollection> locations { get; set; }
         public List<Command> commands { get; set; }
         public List<Action> actions { get; set; }
+        public List<TriggerAction> triggerActions { get; set; }
     }
 
     public class PropertyCollection
@@ -53,7 +54,7 @@ namespace Waterlily
         }
     }
 
-    public class PendingAction
+    public class PendingAction2
     {
         public string location { get; set; }
         public string item { get; set; }
@@ -74,6 +75,15 @@ namespace Waterlily
         public List<Condition> conditions { get; set; }
         public List<string> operations { get; set; }
         public string completedMessage { get; set; }
+        public int pendingCount { get; set; } = 0;
+    }
+
+    public class TriggerAction : Action
+    {
+        public string triggerAction { get; set; }
+        public bool active { get; set; }
+        public bool completed { get; set; }
+        public string objectName { get; set; }
     }
 
     public class Condition
