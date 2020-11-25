@@ -139,7 +139,7 @@ namespace Waterlily
             foreach (var line in gameDefinition.intro)
                 Console.WriteLine($"*  {line}");
             Console.WriteLine("*");
-            Console.WriteLine("**************************************************** Powered by Waterlily Engine by Tommy Sjöblom *");
+            Console.WriteLine("******   Powered by Waterlily Engine by Tommy Sjöblom   ****   Type 'about' for more info   *******");
             Console.WriteLine();
         }
 
@@ -273,6 +273,11 @@ namespace Waterlily
                 var prop = p[1].StripBrackets();
                 var dest = myLocation.getProp(prop);
                 GoAction(dest);
+            }
+
+            if (ope=="about")
+            {
+                ShowGnuLicense();
             }
         }
 
@@ -890,12 +895,34 @@ namespace Waterlily
             }
             return text;
         }
+
+        private static void ShowGnuLicense()
+        {
+            Console.WriteLine("WATERLILY Adventure Game Engine");
+            Console.WriteLine("Copyright (C) 2020  Tommy Sjöblom");
+            Console.WriteLine();
+            Console.WriteLine("This program is free software: you can redistribute it and/or modify");
+            Console.WriteLine("it under the terms of the GNU General Public License as published by");
+            Console.WriteLine("the Free Software Foundation, either version 3 of the License, or");
+            Console.WriteLine("(at your option) any later version.");
+            Console.WriteLine();
+            Console.WriteLine("This program is distributed in the hope that it will be useful,");
+            Console.WriteLine("but WITHOUT ANY WARRANTY; without even the implied warranty of");
+            Console.WriteLine("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the");
+            Console.WriteLine("GNU General Public License for more details.");
+            Console.WriteLine();
+            Console.WriteLine("You should have received a copy of the GNU General Public License");
+            Console.WriteLine("along with this program.  If not, see <https://www.gnu.org/licenses/>.");
+        }
     }
 
     public static class Util
     {
         public static string FixString(this string s, string objectName, string userLocation)
         {
+            if (s == null)
+                return null;
+
             return s.Replace("{obj}", objectName).Replace("{userLocation}", userLocation);
         }
 
