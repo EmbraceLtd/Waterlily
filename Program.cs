@@ -314,7 +314,7 @@ namespace Waterlily
 
             if (ope=="desc")
             {
-                DescribeWorld();
+                DescribeWorld(brief: false);
             }
 
             if (ope == "go")
