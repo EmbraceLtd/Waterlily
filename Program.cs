@@ -356,7 +356,7 @@ namespace Waterlily
             var ope = p[0];
 
             //get.loc.{userLocation}.destNorth.ne.-1
-            if (ope == "get")
+            if (ope == "if")
             {
                 var typ = p[1];
                 var obj = p[2];

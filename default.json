@@ -197,15 +197,15 @@
       "name": "takeAction",
       "conditions": [
         {
-          "condition": "get.item.{obj}.carry.ne.1",
+          "condition": "if.item.{obj}.carry.ne.1",
           "failureMessage": "You already have the {obj}"
         },
         {
-          "condition": "get.item.{obj}.location.eq.{userLocation}",
+          "condition": "if.item.{obj}.location.eq.{userLocation}",
           "failureMessage": "The {obj} isn't here"
         },
         {
-          "condition": "get.item.{obj}.canTake.eq.1",
+          "condition": "if.item.{obj}.canTake.eq.1",
           "failureMessage": "You can't take the {obj}"
         }
       ],
@@ -218,7 +218,7 @@
       "name": "dropAction",
       "conditions": [
         {
-          "condition": "get.item.{obj}.carry.eq.1",
+          "condition": "if.item.{obj}.carry.eq.1",
           "failureMessage": "You don't have the {obj}"
         }
       ],
@@ -246,15 +246,15 @@
       "name": "openAction",
       "conditions": [
         {
-          "condition": "get.item.{obj}.location.eq.{userLocation}",
+          "condition": "if.item.{obj}.location.eq.{userLocation}",
           "failureMessage": "The {obj} isn't here"
         },
         {
-          "condition": "get.item.{obj}.isOpen.ne.1",
+          "condition": "if.item.{obj}.isOpen.ne.1",
           "failureMessage": "The {obj} is already open."
         },
         {
-          "condition": "get.item.{obj}.canOpen.eq.1",
+          "condition": "if.item.{obj}.canOpen.eq.1",
           "failureMessage": "The {obj} can't be opened."
         }
       ],
@@ -267,19 +267,19 @@
       "name": "breakAction",
       "conditions": [
         {
-          "condition": "get.item.{obj}.location.eq.{userLocation}",
+          "condition": "if.item.{obj}.location.eq.{userLocation}",
           "failureMessage": "The {obj} isn't here"
         },
         {
-          "condition": "get.item.{obj}.isBroken.ne.1",
+          "condition": "if.item.{obj}.isBroken.ne.1",
           "failureMessage": "The {obj} is already broken."
         },
         {
-          "condition": "get.item.{obj}.canBreak.eq.1",
+          "condition": "if.item.{obj}.canBreak.eq.1",
           "failureMessage": "The {obj} can't be broken."
         },
         {
-          "condition": "get.item.hammer.carry.eq.1",
+          "condition": "if.item.hammer.carry.eq.1",
           "failureMessage": "You don't have anything to break the {obj} with."
         }
       ],
@@ -307,7 +307,7 @@
       "name": "goNorthAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destNorth.ne.",
+          "condition": "if.loc.{userLocation}.destNorth.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -320,7 +320,7 @@
       "name": "goSouthAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destSouth.ne.",
+          "condition": "if.loc.{userLocation}.destSouth.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -333,7 +333,7 @@
       "name": "goEastAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destEast.ne.",
+          "condition": "if.loc.{userLocation}.destEast.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -346,7 +346,7 @@
       "name": "goWestAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destWest.ne.",
+          "condition": "if.loc.{userLocation}.destWest.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -359,7 +359,7 @@
       "name": "goSwAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destSouthWest.ne.",
+          "condition": "if.loc.{userLocation}.destSouthWest.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -372,7 +372,7 @@
       "name": "goSeAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destSouthEast.ne.",
+          "condition": "if.loc.{userLocation}.destSouthEast.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -385,7 +385,7 @@
       "name": "goNwAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destNorthWest.ne.",
+          "condition": "if.loc.{userLocation}.destNorthWest.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -398,7 +398,7 @@
       "name": "goNeAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destNorthEast.ne.",
+          "condition": "if.loc.{userLocation}.destNorthEast.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -411,7 +411,7 @@
       "name": "goDownAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destDown.ne.",
+          "condition": "if.loc.{userLocation}.destDown.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -424,7 +424,7 @@
       "name": "goUpAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.destUp.ne.",
+          "condition": "if.loc.{userLocation}.destUp.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -437,7 +437,7 @@
       "name": "goAction",
       "conditions": [
         {
-          "condition": "get.loc.{userLocation}.{obj}.ne.",
+          "condition": "if.loc.{userLocation}.{obj}.ne.",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -477,7 +477,7 @@
       "name": "explosionAction",
       "conditions": [
         {
-          "condition": "get.item.{obj}.wasExamined.ne.1",
+          "condition": "if.item.{obj}.wasExamined.ne.1",
           "failureMessage": ""
         }
       ],
@@ -494,7 +494,7 @@
       "name": "openSafeAction",
       "conditions": [
         {
-          "condition": "get.item.{obj}.wasExamined.ne.1",
+          "condition": "if.item.{obj}.wasExamined.ne.1",
           "failureMessage": ""
         }
       ],
