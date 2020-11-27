@@ -194,7 +194,7 @@ namespace Waterlily
         {
             foreach(var pend in gameDefinition.triggerActions)
             {
-                if (targetAction==pend.triggerAction && objectName==pend.objectName)
+                if (targetAction == pend.triggerAction && objectName == pend.objectName)
                 {
                     pend.active = true;
                 }
@@ -207,7 +207,10 @@ namespace Waterlily
             {
                 foreach (var cond in theAction.conditions)
                 {
-                    var result = InterpretCondition(cond.condition.FixString(objectName, userLocation));
+                    var result = InterpretCondition(cond.condition.FixString(objectName, userLocation), out bool unknown);
+                    if (unknown)
+                        return;
+
                     if (result == false)
                     {
                         Console.WriteLine(cond.failureMessage.FixString(objectName, userLocation));
@@ -230,21 +233,40 @@ namespace Waterlily
 
             if (ope == "set")
             {
-                var obj = p[1];
-                var prp = p[2];
-                var val = p[3];
+                var typ = p[1];
+                var obj = p[2];
+                var prp = p[3];
+                var val = p[4];
 
-                if (obj == "self" && prp == "location")
+                if (typ == "self" && prp == "location")
                 {
                     var loc = GetLocationByNumber(userLocation);
                     var dst = val.Replace("{", "").Replace("}", "");
                     var mval = loc.getProp(dst);
                     userLocation = mval;
                 }
-                else
+                else if (typ == "item")
                 {
                     var _object = GetItemByName(obj);
                     _object.setProp(prp, val);
+                }
+                else if (typ == "loc")
+                {
+                    var loc = GetLocationByNumber(obj);
+                    loc.setProp(prp, val);
+                }
+
+            }
+
+            if (ope=="clear")
+            {
+                var typ = p[1];
+                var obj = p[2];
+                var prp = p[3];
+                if (typ == "item")
+                {
+                    var _object = GetItemByName(obj);
+                    _object.setProp(prp, "");
                 }
             }
 
@@ -309,12 +331,27 @@ namespace Waterlily
 
             if (ope == "die")
             {
-                cont = false;
+                
+                if (p.Length > 1)
+                {
+                    var obj = GetItemByName(p[1]);
+                    var loc = obj.getProp(p[2]);
+                    cont = (loc == userLocation);
+                }
+                else
+                    cont = false;
+            }
+
+            if (ope=="dest")
+            {
+                ShowDestinations();
             }
         }
 
-        private static bool InterpretCondition(string cnd)
+        private static bool InterpretCondition(string cnd, out bool unknown)
         {
+            unknown = false;
+
             var p = cnd.Split('.');
             var ope = p[0];
 
@@ -332,12 +369,25 @@ namespace Waterlily
                 if (typ == "item")
                 {
                     var _object = GetItemByName(obj);
+                    if (_object == null) 
+                    {
+                        unknown = true;
+                        return true;
+                    }
+
                     objVal = _object.getProp(prp);
                 }
 
                 if (typ == "loc")
                 {
                     var loc = GetLocationByNumber(obj);
+                    if (loc == null)
+                    {
+                        unknown = true;
+                        return true;
+                    }
+
+
                     var lval = prp.Replace("{", "").Replace("}", "");
                     objVal = loc.getProp(lval);
                 }
@@ -355,6 +405,12 @@ namespace Waterlily
                 var obj = p[1];
                 var prp = p[2];
                 var _object = GetItemByName(obj);
+                if (_object == null)
+                {
+                    unknown = true;
+                    return true;
+                }
+
                 var objVal = _object.getProp(prp);
                 Console.WriteLine(objVal);
             }

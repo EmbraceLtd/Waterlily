@@ -210,7 +210,7 @@
         }
       ],
       "operations": [
-        "set.{obj}.carry.1"
+        "set.item.{obj}.carry.1"
       ],
       "CompletedMessage": "You take the {obj}"
     },
@@ -223,7 +223,7 @@
         }
       ],
       "operations": [
-        "clear.{obj}.carry"
+        "clear.item.{obj}.carry"
       ],
       "completedMessage": "You drop the {obj}"
     },
@@ -237,8 +237,8 @@
       "name": "examineAction",
       "conditions": [],
       "operations": [
-        "write.item.{obj}.longDescription", 
-        "set.{obj}.wasExamined.1"
+        "write.item.{obj}.longDescription",
+        "set.item.{obj}.wasExamined.1"
       ],
       "completedMessage": ""
     },
@@ -259,7 +259,7 @@
         }
       ],
       "operations": [
-        "set.{obj}.isOpen.1"
+        "set.item.{obj}.isOpen.1"
       ],
       "completedMessage": "You open the {obj}."
     },
@@ -284,7 +284,7 @@
         }
       ],
       "operations": [
-        "set.{obj}.isbroken.1"
+        "set.item.{obj}.isbroken.1"
       ],
       "completedMessage": "You break the {obj}"
     },
@@ -461,7 +461,7 @@
     {
       "name": "explosionAction",
       "conditions": [],
-      "operations": [ "die" ],
+      "operations": [ "die.bottle.location" ],
       "completedMessage": "BOOM",
       "objectName": "bottle",
       "triggerAction": "dropAction",
@@ -483,6 +483,21 @@
       "objectName": "bottle",
       "triggerAction": "takeAction",
       "location": "2",
+      "active": false,
+      "completed": false,
+      "pendingCount": 0
+    },
+    {
+      "name": "breakWindowAction",
+      "conditions": [],
+      "operations": [
+        "set.loc.1.destNorth.3",
+        "dest"
+      ],
+      "completedMessage": "",
+      "objectName": "window",
+      "triggerAction": "breakAction",
+      "location": "1",
       "active": false,
       "completed": false,
       "pendingCount": 0
