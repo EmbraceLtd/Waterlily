@@ -336,7 +336,7 @@ namespace Waterlily
                 {
                     var obj = GetItemByName(p[1]);
                     var loc = obj.getProp(p[2]);
-                    cont = (loc == userLocation);
+                    cont = (loc != userLocation);
                 }
                 else
                     cont = false;
