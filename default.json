@@ -461,8 +461,11 @@
     {
       "name": "explosionAction",
       "conditions": [],
-      "operations": [ "die.bottle.location" ],
-      "completedMessage": "BOOM",
+      "operations": [
+        "die.bottle.location",
+        "set.item.bottle.location.-1"
+      ],
+      "completedMessage": "* BOOM *",
       "objectName": "bottle",
       "triggerAction": "dropAction",
       "location": "2",
@@ -472,6 +475,23 @@
     },
     {
       "name": "explosionAction",
+      "conditions": [
+        {
+          "condition": "get.item.{obj}.wasExamined.ne.1",
+          "failureMessage": ""
+        }
+      ],
+      "operations": [ "die" ],
+      "completedMessage": "* BOOM *",
+      "objectName": "bottle",
+      "triggerAction": "takeAction",
+      "location": "2",
+      "active": false,
+      "completed": false,
+      "pendingCount": 0
+    },
+    {
+      "name": "openSafeAction",
       "conditions": [
         {
           "condition": "get.item.{obj}.wasExamined.ne.1",
