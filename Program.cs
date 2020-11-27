@@ -364,6 +364,9 @@ namespace Waterlily
                 var cmp = p[4];
                 var val = p[5];
 
+                if (val == "{empty}")
+                    val = "";
+
                 string objVal = string.Empty;
 
                 if (typ == "item")

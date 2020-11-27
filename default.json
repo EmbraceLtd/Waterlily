@@ -307,7 +307,7 @@
       "name": "goNorthAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destNorth.ne.",
+          "condition": "if.loc.{userLocation}.destNorth.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -320,7 +320,7 @@
       "name": "goSouthAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destSouth.ne.",
+          "condition": "if.loc.{userLocation}.destSouth.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -333,7 +333,7 @@
       "name": "goEastAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destEast.ne.",
+          "condition": "if.loc.{userLocation}.destEast.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -346,7 +346,7 @@
       "name": "goWestAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destWest.ne.",
+          "condition": "if.loc.{userLocation}.destWest.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -359,7 +359,7 @@
       "name": "goSwAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destSouthWest.ne.",
+          "condition": "if.loc.{userLocation}.destSouthWest.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -372,7 +372,7 @@
       "name": "goSeAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destSouthEast.ne.",
+          "condition": "if.loc.{userLocation}.destSouthEast.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -385,7 +385,7 @@
       "name": "goNwAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destNorthWest.ne.",
+          "condition": "if.loc.{userLocation}.destNorthWest.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -398,7 +398,7 @@
       "name": "goNeAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destNorthEast.ne.",
+          "condition": "if.loc.{userLocation}.destNorthEast.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -411,7 +411,7 @@
       "name": "goDownAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destDown.ne.",
+          "condition": "if.loc.{userLocation}.destDown.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -424,7 +424,7 @@
       "name": "goUpAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.destUp.ne.",
+          "condition": "if.loc.{userLocation}.destUp.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
@@ -437,7 +437,7 @@
       "name": "goAction",
       "conditions": [
         {
-          "condition": "if.loc.{userLocation}.{obj}.ne.",
+          "condition": "if.loc.{userLocation}.{obj}.ne.{empty}",
           "failureMessage": "You can't go that way"
         }
       ],
