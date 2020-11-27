@@ -511,10 +511,9 @@
       "name": "breakWindowAction",
       "conditions": [],
       "operations": [
-        "set.loc.1.destNorth.3",
-        "dest"
+        "set.loc.1.destNorth.3"
       ],
-      "completedMessage": "",
+      "completedMessage": "A passage has opened",
       "objectName": "window",
       "triggerAction": "breakAction",
       "location": "1",
