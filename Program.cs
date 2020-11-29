@@ -193,19 +193,7 @@ namespace Waterlily
             }
 
             ProcessAction(theAction, objectName);
-            //TriggerPendingActions(targetAction,objectName);
         }
-
-        //private static void TriggerPendingActions(string targetAction, string objectName)
-        //{
-        //    foreach(var pend in gameDefinition.triggerActions)
-        //    {
-        //        if (targetAction == pend.triggerAction && objectName == pend.objectName)
-        //        {
-        //            pend.active = true;
-        //        }
-        //    }
-        //}
 
         private static void ProcessAction(Action theAction, string objectName)
         {
@@ -556,143 +544,143 @@ namespace Waterlily
         //    }
         //}
 
-        private static void Detonate(PendingAction2 pendAction)
-        {
-            if (pendAction.item == "bottle")
-            {
-                var loc = GetLocationByNumber(pendAction.location);
-                Console.WriteLine($"The {pendAction.item} explodes in the {loc.getProp("title")}. A large bang is heard all over town!");
-                var safe = GetItemByName("safe");
-                safe.setProp("isOpen", "1");
-                safe.setProp("longDescription", "The safe has been blown up");
-                GetItemByName("money").setProp("location","3");
-                GetItemByName("bottle").setProp("location", "-1");
+        //private static void Detonate(PendingAction2 pendAction)
+        //{
+        //    if (pendAction.item == "bottle")
+        //    {
+        //        var loc = GetLocationByNumber(pendAction.location);
+        //        Console.WriteLine($"The {pendAction.item} explodes in the {loc.getProp("title")}. A large bang is heard all over town!");
+        //        var safe = GetItemByName("safe");
+        //        safe.setProp("isOpen", "1");
+        //        safe.setProp("longDescription", "The safe has been blown up");
+        //        GetItemByName("money").setProp("location","3");
+        //        GetItemByName("bottle").setProp("location", "-1");
 
-                if (pendAction.location == userLocation)
-                    cont = false;
+        //        if (pendAction.location == userLocation)
+        //            cont = false;
 
-                pendAction.active = false;
-                pendAction.completed = true;
-            }
-        }
+        //        pendAction.active = false;
+        //        pendAction.completed = true;
+        //    }
+        //}
 
-        private static void WaitAction(string verb)
-        {
-            Console.WriteLine($"You {verb.ToLower()}. Time passes.");
-        }
+        //private static void WaitAction(string verb)
+        //{
+        //    Console.WriteLine($"You {verb.ToLower()}. Time passes.");
+        //}
 
-        private static void LoadAction(string obj)
-        {
-            var configPath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                obj);
+        //private static void LoadAction(string obj)
+        //{
+        //    var configPath = Path.Combine(
+        //        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+        //        obj);
 
-            Console.WriteLine(configPath);
+        //    Console.WriteLine(configPath);
 
-            if (string.IsNullOrEmpty(Path.GetExtension(configPath)))
-                configPath = new StringBuilder(configPath).Append(".json").ToString();
+        //    if (string.IsNullOrEmpty(Path.GetExtension(configPath)))
+        //        configPath = new StringBuilder(configPath).Append(".json").ToString();
 
-            if (File.Exists(configPath))
-            {
-                if (InitializeWorld(configPath))
-                {
-                    InitMessage();
-                    MainSettings();
-                    DescribeWorld();
-                }
-            }
-            else
-            {
-                Console.WriteLine($"Can't find {configPath}");
-            }
-        }
+        //    if (File.Exists(configPath))
+        //    {
+        //        if (InitializeWorld(configPath))
+        //        {
+        //            InitMessage();
+        //            MainSettings();
+        //            DescribeWorld();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine($"Can't find {configPath}");
+        //    }
+        //}
 
-        private static void OpenAction(string obj)
-        {
-            var item = GetItemByName(obj);
-            if (item != null)
-            {
-                if (item.getProp("location") == userLocation)
-                {
-                    if (item.getProp("canOpen") == "1")
-                    {
-                        if (item.getProp("isOpen") != "1")
-                        {
-                            Console.WriteLine($"You open the {item.getProp("examinedTitle")}.");
-                            item.setProp("isOpen", "1");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"The {item.getProp("examinedTitle")} is already open!");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"The {item.getProp("examinedTitle")} can't be opened.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("It ain't here!");
-                }
-            }
-        }
+        //private static void OpenAction(string obj)
+        //{
+        //    var item = GetItemByName(obj);
+        //    if (item != null)
+        //    {
+        //        if (item.getProp("location") == userLocation)
+        //        {
+        //            if (item.getProp("canOpen") == "1")
+        //            {
+        //                if (item.getProp("isOpen") != "1")
+        //                {
+        //                    Console.WriteLine($"You open the {item.getProp("examinedTitle")}.");
+        //                    item.setProp("isOpen", "1");
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine($"The {item.getProp("examinedTitle")} is already open!");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                Console.WriteLine($"The {item.getProp("examinedTitle")} can't be opened.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("It ain't here!");
+        //        }
+        //    }
+        //}
 
-        private static void BreakAction(string obj)
-        {
-            var item = GetItemByName(obj);
-            if (item != null)
-            {
-                if (item.getProp("location") == userLocation)
-                {
-                    if (item.isProp("canBreak"))
-                    {
-                        var breakItem = GetBreakingTool();
-                        if (breakItem != null)
-                        {
-                            if (item.isProp("explosive"))
-                            {
-                                Console.WriteLine($"You break the {item.getProp("examinedTitle")} with the {breakItem.getProp("title")}.");
-                                Console.WriteLine($"KABOOM! It explodes and you are blown to bits!");
-                                cont = false;
-                            }
-                            else
-                            {
-                                if (item.isProp("isBroken"))
-                                {
-                                    Console.WriteLine($"You break the {item.getProp("examinedTitle")} with the {breakItem.getProp("title")}.");
-                                    item.setProp("shortDescription", new StringBuilder(item.getProp("shortDescription").Insert(2, "broken ")).ToString());
-                                    item.setProp("longDescription", new StringBuilder(item.getProp("longDescription")).Replace("closed", "broken").ToString());
-                                    item.setProp("isBroken", "1");
+        //private static void BreakAction(string obj)
+        //{
+        //    var item = GetItemByName(obj);
+        //    if (item != null)
+        //    {
+        //        if (item.getProp("location") == userLocation)
+        //        {
+        //            if (item.isProp("canBreak"))
+        //            {
+        //                var breakItem = GetBreakingTool();
+        //                if (breakItem != null)
+        //                {
+        //                    if (item.isProp("explosive"))
+        //                    {
+        //                        Console.WriteLine($"You break the {item.getProp("examinedTitle")} with the {breakItem.getProp("title")}.");
+        //                        Console.WriteLine($"KABOOM! It explodes and you are blown to bits!");
+        //                        cont = false;
+        //                    }
+        //                    else
+        //                    {
+        //                        if (item.isProp("isBroken"))
+        //                        {
+        //                            Console.WriteLine($"You break the {item.getProp("examinedTitle")} with the {breakItem.getProp("title")}.");
+        //                            item.setProp("shortDescription", new StringBuilder(item.getProp("shortDescription").Insert(2, "broken ")).ToString());
+        //                            item.setProp("longDescription", new StringBuilder(item.getProp("longDescription")).Replace("closed", "broken").ToString());
+        //                            item.setProp("isBroken", "1");
 
-                                    if (userLocation == "1" && obj == "window")
-                                    {
-                                        myLocation.setProp("destNorth", "3");
-                                        ShowDestinations();
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"The {item.getProp("examinedTitle")} is already broken!");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine($"You don't have anything to break the {item.getProp("examinedTitle")} with.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"The {item.getProp("examinedTitle")} can't be broken.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("It ain't here!");
-                }
-            }
-        }
+        //                            if (userLocation == "1" && obj == "window")
+        //                            {
+        //                                myLocation.setProp("destNorth", "3");
+        //                                ShowDestinations();
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            Console.WriteLine($"The {item.getProp("examinedTitle")} is already broken!");
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine($"You don't have anything to break the {item.getProp("examinedTitle")} with.");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                Console.WriteLine($"The {item.getProp("examinedTitle")} can't be broken.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("It ain't here!");
+        //        }
+        //    }
+        //}
 
         private static void GoAction(string destination)
         {
@@ -709,45 +697,45 @@ namespace Waterlily
             }
         }
 
-        private static void ExamineAction(string obj)
-        {
-            var item = GetItemByName(obj);
-            if (item != null)
-            {
-                if (item.getProp("location") == userLocation)
-                {
-                    Console.WriteLine(item.getProp("longDescription"));
-                    item.setProp("wasExamined", "1");
-                    item.setProp("shortDescription", item.getProp("examinedShortDescription"));
-                }
-                else
-                {
-                    Console.WriteLine("It ain't here!");
-                }
-            }
-        }
+        //private static void ExamineAction(string obj)
+        //{
+        //    var item = GetItemByName(obj);
+        //    if (item != null)
+        //    {
+        //        if (item.getProp("location") == userLocation)
+        //        {
+        //            Console.WriteLine(item.getProp("longDescription"));
+        //            item.setProp("wasExamined", "1");
+        //            item.setProp("shortDescription", item.getProp("examinedShortDescription"));
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("It ain't here!");
+        //        }
+        //    }
+        //}
 
-        private static void InventoryAction()
-        {
-            Console.WriteLine("You are carrying: ");
-            var myItems = GetMyItems();
+        //private static void InventoryAction()
+        //{
+        //    Console.WriteLine("You are carrying: ");
+        //    var myItems = GetMyItems();
 
-            if (!myItems.Any())
-                Console.WriteLine("   not a damn thing!");
+        //    if (!myItems.Any())
+        //        Console.WriteLine("   not a damn thing!");
 
-            foreach (var item in GetMyItems())
-                Console.WriteLine($"   {item.getProp("shortDescription")}. ");
-        }
+        //    foreach (var item in GetMyItems())
+        //        Console.WriteLine($"   {item.getProp("shortDescription")}. ");
+        //}
 
-        private static PropertyCollection GetBreakingTool()
-        {
-            foreach (var item in GetMyItems())
-            {
-                if (item.getProp("canBreakTool") == "1")
-                    return item;
-            }
-            return null;
-        }
+        //private static PropertyCollection GetBreakingTool()
+        //{
+        //    foreach (var item in GetMyItems())
+        //    {
+        //        if (item.getProp("canBreakTool") == "1")
+        //            return item;
+        //    }
+        //    return null;
+        //}
 
         //private static void DropAction(string obj)
         //{
