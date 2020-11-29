@@ -210,7 +210,8 @@
         }
       ],
       "operations": [
-        "set.item.{obj}.carry.1"
+        "set.item.{obj}.carry.1",
+        "trig.takeBottleExplosionAction"
       ],
       "CompletedMessage": "You take the {obj}"
     },
