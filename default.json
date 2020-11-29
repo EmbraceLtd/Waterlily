@@ -284,7 +284,8 @@
         }
       ],
       "operations": [
-        "set.item.{obj}.isbroken.1"
+        "set.item.{obj}.isbroken.1",
+        "trig.breakWindowAction"
       ],
       "completedMessage": "You break the {obj}"
     },
@@ -459,7 +460,7 @@
   ],
   "triggerActions": [
     {
-      "name": "explosionAction",
+      "name": "dropBottleExplosionAction",
       "conditions": [],
       "operations": [
         "die.bottle.location",
@@ -474,7 +475,7 @@
       "pendingCount": 1
     },
     {
-      "name": "explosionAction",
+      "name": "takeBottleExplosionAction",
       "conditions": [
         {
           "condition": "if.item.{obj}.wasExamined.ne.1",
@@ -486,6 +487,18 @@
       "objectName": "bottle",
       "triggerAction": "takeAction",
       "location": "2",
+      "active": false,
+      "completed": false,
+      "pendingCount": 0
+    },
+    {
+      "name": "openSafeAction",
+      "conditions": [],
+      "operations": [ "set.item.safe.isOpen.1" ],
+      "completedMessage": "",
+      "objectName": "",
+      "triggerAction": "goSouthAction",
+      "location": "3",
       "active": false,
       "completed": false,
       "pendingCount": 0
@@ -509,7 +522,12 @@
     },
     {
       "name": "breakWindowAction",
-      "conditions": [],
+      "conditions": [
+        {
+          "condition": "if.item.{obj}.title.eq.window",
+          "failureMessage": ""
+        }
+      ],
       "operations": [
         "set.loc.1.destNorth.3"
       ],

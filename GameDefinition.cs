@@ -80,10 +80,9 @@ namespace Waterlily
 
     public class TriggerAction : Action
     {
-        public string triggerAction { get; set; }
+        public string objectName { get; set; }
         public bool active { get; set; }
         public bool completed { get; set; }
-        public string objectName { get; set; }
     }
 
     public class Condition

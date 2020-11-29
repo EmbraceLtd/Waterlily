@@ -150,13 +150,19 @@ namespace Waterlily
 
         private static void ProcessPendingActions()
         {
-            foreach (var p in gameDefinition.triggerActions.Where(a => a.active && !a.completed))
+            do
             {
-                if (p.pendingCount-- == 0)
+                foreach (var p in gameDefinition.triggerActions.Where(a => a.active && !a.completed))
                 {
-                    ProcessAction(p, p.objectName);
+                    if (p.pendingCount-- == 0)
+                    {
+                        ProcessAction(p, p.objectName);
+                        p.active = false;
+                        p.completed = true;
+                    }
                 }
-            }
+            } 
+            while (gameDefinition.triggerActions.Where(a => a.active && !a.completed).Any());
         }
 
         private static void ProcessCommand(string cmd)
@@ -187,19 +193,19 @@ namespace Waterlily
             }
 
             ProcessAction(theAction, objectName);
-            TriggerPendingActions(targetAction,objectName);
+            //TriggerPendingActions(targetAction,objectName);
         }
 
-        private static void TriggerPendingActions(string targetAction, string objectName)
-        {
-            foreach(var pend in gameDefinition.triggerActions)
-            {
-                if (targetAction == pend.triggerAction && objectName == pend.objectName)
-                {
-                    pend.active = true;
-                }
-            }
-        }
+        //private static void TriggerPendingActions(string targetAction, string objectName)
+        //{
+        //    foreach(var pend in gameDefinition.triggerActions)
+        //    {
+        //        if (targetAction == pend.triggerAction && objectName == pend.objectName)
+        //        {
+        //            pend.active = true;
+        //        }
+        //    }
+        //}
 
         private static void ProcessAction(Action theAction, string objectName)
         {
@@ -342,9 +348,20 @@ namespace Waterlily
                     cont = false;
             }
 
-            if (ope=="dest")
+            if (ope == "dest")
             {
                 ShowDestinations();
+            }
+
+            if (ope == "trig")
+            {
+                var nAct = p[1];
+                var tAct = getTriggerAction(nAct);
+                if (tAct!=null)
+                {
+                    if (!tAct.completed)
+                        tAct.active = true;
+                }
             }
         }
 
@@ -419,6 +436,11 @@ namespace Waterlily
             }
 
             return false;
+        }
+
+        private static TriggerAction getTriggerAction(string actionName)
+        {
+            return gameDefinition.triggerActions.FirstOrDefault(t => t.name == actionName);
         }
 
         //private static void ProcessCommand2(string cmd)
