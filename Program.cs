@@ -119,7 +119,7 @@ namespace Waterlily
         {
             turnCount = 1;
 
-            if (ReadConfig(customConfig))
+            if (ReadConfig(customConfig, out string errorMessage))
             {
                 InitMessage();
                 MainSettings();
@@ -127,7 +127,10 @@ namespace Waterlily
                 return true;
             }
             else
+            {
+                Console.WriteLine($"Error reading game config: {errorMessage}");
                 return false;
+            }
         }
 
         private static void InitMessage()
@@ -509,8 +512,9 @@ namespace Waterlily
             return null;
         }
 
-        private static bool ReadSettingsFromFile(ref GameDefinition collection, string file)
+        private static bool ReadSettingsFromFile(ref GameDefinition collection, string file, out string errorMessage)
         {
+            errorMessage = string.Empty;
             if (File.Exists(file))
             {
                 var json = File.ReadAllText(file);
@@ -521,39 +525,72 @@ namespace Waterlily
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Problems reading config: {ex.Message}");
+                    errorMessage = ex.Message;
                     return false;
                 }
             }
             else
             {
-                Console.WriteLine($"Can't find file {file}");
+                errorMessage = $"Can't find file {file}";
                 return false;
             }
         }
 
-        private static void ReadSettings(ref GameDefinition collection, string file)
+        private static bool ReadSettings(ref GameDefinition collection, string file, out string errorMessage)
         {
-            var json = GetStringFromResource(file);
-            collection = JsonConvert.DeserializeObject<GameDefinition>(json);
+            errorMessage = "";
+            try
+            {
+                var json = GetStringFromResource(file);
+                collection = JsonConvert.DeserializeObject<GameDefinition>(json);
 
-            InitializeDefaultStrings(collection);
+                InitializeDefaultStrings(collection);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
         }
 
-        private static bool ReadConfig(string customConfig)
+        private static bool ReadConfig(string customConfig, out string errorMessage)
         {
+            errorMessage = "";
             if (string.IsNullOrEmpty(customConfig))
             {
-                ReadSettings(ref gameDefinition, "default.json");
-                return true;
+                if (!ReadSettings(ref gameDefinition, "default.json", out errorMessage))
+                    return false;
             }
             else
             {
                 if (!customConfig.ToLower().EndsWith(".json"))
                     customConfig = new StringBuilder(customConfig).Append(".json").ToString();
 
-                return ReadSettingsFromFile(ref gameDefinition, customConfig);
+                if (!ReadSettingsFromFile(ref gameDefinition, customConfig, out errorMessage))
+                    return false;
             }
+
+            return ValidateConfig(out errorMessage);
+        }
+
+        private static bool ValidateConfig(out string errorMessage)
+        {
+            var ret = true;
+            var sb = new StringBuilder();
+
+            // Trigger actions
+
+            var dupNames = gameDefinition.triggerActions.GroupBy(t => t.name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
+            if (dupNames.Any())
+            {
+                sb.AppendLine("Duplicate found i trigger action names:");
+                dupNames.ForEach(d => sb.AppendLine($"  {d}"));
+                ret = false;
+            }
+
+            errorMessage = sb.ToString();
+            return ret;
         }
 
         private static void InitializeDefaultStrings(GameDefinition collection)
