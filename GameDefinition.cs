@@ -90,4 +90,11 @@ namespace Waterlily
         public string condition { get; set; }
         public string failureMessage { get; set; }
     }
+
+    public class LastCommand
+    {
+        public string Verb { get; set; }
+        public string Object { get; set; }
+    }
+
 }

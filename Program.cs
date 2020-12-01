@@ -14,6 +14,7 @@ namespace Waterlily
         private static GameDefinition gameDefinition;
         private static string userLocation;
         private static PropertyCollection myLocation;
+        private static LastCommand lastCommand = new LastCommand();
         private static bool cont = true;
         private static int turnCount;
         private static string dashline = new string('*', 99);
@@ -150,19 +151,22 @@ namespace Waterlily
 
         private static void ProcessPendingActions()
         {
-            do
-            {
+            //do
+            //{
                 foreach (var p in gameDefinition.triggerActions.Where(a => a.active && !a.completed))
                 {
                     if (p.pendingCount-- == 0)
                     {
-                        ProcessAction(p, p.objectName);
-                        p.active = false;
-                        p.completed = true;
+                        if (ProcessAction(p, p.objectName))
+                        {
+                            p.completed = true;
+                            p.active = false;
+                        }
                     }
                 }
-            } 
-            while (gameDefinition.triggerActions.Where(a => a.active && !a.completed).Any());
+            //}
+            //while (gameDefinition.triggerActions.Where(a => a.active && !a.completed).Any());
+            //while (gameDefinition.triggerActions.Where(a => a.active).Any()) ;
         }
 
         private static void ProcessCommand(string cmd)
@@ -173,6 +177,9 @@ namespace Waterlily
             var sentence = cmd.Split(' ');
             var verb = sentence[0].ToLower();
             var objName = sentence.Count() > 1 ? sentence[1] : string.Empty;
+
+            lastCommand.Verb = verb;
+            lastCommand.Object = objName;
 
             foreach(var gamec in gameDefinition.commands)
             {
@@ -185,17 +192,12 @@ namespace Waterlily
 
         private static void ProcessAction(string targetAction, string objectName)
         {
-            Action theAction = null;
-            foreach (var action in gameDefinition.actions)
-            {
-                if (action.name == targetAction)
-                    theAction = action;
-            }
-
-            ProcessAction(theAction, objectName);
+            var theAction = gameDefinition.actions.FirstOrDefault(a => a.name == targetAction);
+            if (theAction != null)
+                ProcessAction(theAction, objectName);
         }
 
-        private static void ProcessAction(Action theAction, string objectName)
+        private static bool ProcessAction(Action theAction, string objectName)
         {
             if (theAction != null)
             {
@@ -203,12 +205,14 @@ namespace Waterlily
                 {
                     var result = InterpretCondition(cond.condition.FixString(objectName, userLocation), out bool unknown);
                     if (unknown)
-                        return;
+                        return false;
 
                     if (result == false)
                     {
-                        Console.WriteLine(cond.failureMessage.FixString(objectName, userLocation));
-                        return;
+                        if (!string.IsNullOrEmpty(cond.failureMessage))
+                            Console.WriteLine(cond.failureMessage.FixString(objectName, userLocation));
+
+                        return false;
                     }
                 }
 
@@ -217,7 +221,10 @@ namespace Waterlily
 
                 if (!string.IsNullOrEmpty(theAction.completedMessage))
                     Console.WriteLine(theAction.completedMessage.FixString(objectName, userLocation));
+
+                return true;
             }
+            return false;
         }
 
         private static void CommitOperation(string op)
@@ -345,10 +352,13 @@ namespace Waterlily
             {
                 var nAct = p[1];
                 var tAct = getTriggerAction(nAct);
-                if (tAct!=null)
+                if (tAct != null)
                 {
-                    if (!tAct.completed)
-                        tAct.active = true;
+                    if (tAct.objectName == lastCommand.Object)
+                    {
+                        if (!tAct.completed)
+                            tAct.active = true;
+                    }
                 }
             }
         }
@@ -431,257 +441,6 @@ namespace Waterlily
             return gameDefinition.triggerActions.FirstOrDefault(t => t.name == actionName);
         }
 
-        //private static void ProcessCommand2(string cmd)
-        //{
-        //    if (string.IsNullOrWhiteSpace(cmd))
-        //        cmd = "wait";
-
-        //    var sentence = cmd.Split(' ');
-        //    var verb = sentence[0].ToUpper();
-        //    var obj = sentence.Count() > 1 ? sentence[1] : string.Empty;
-
-        //    switch (verb)
-        //    {
-        //        case "WAIT":
-        //        case "SLEEP":
-        //            WaitAction(verb);
-        //            break;
-        //        case "LOAD":
-        //            LoadAction(obj);
-        //            break;
-        //        case "EXIT":
-        //        case "Q":
-        //            cont = false;
-        //            break;
-        //        case "LOOK" when obj == string.Empty:
-        //        case "WHERE":
-        //            DescribeWorld(brief: false);
-        //            break;
-        //        case "GET":
-        //        case "TAKE":
-        //            PickupAction(obj);
-        //            break;
-        //        case "FUCK":
-        //            FuckAction(obj);
-        //            break;
-        //        case "DROP":
-        //            DropAction(obj);
-        //            break;
-        //        case "INV":
-        //        case "INVENTORY":
-        //            InventoryAction();
-        //            break;
-        //        case "EXAMINE":
-        //        case "LOOK":
-        //            ExamineAction(obj);
-        //            break;
-        //        case "OPEN":
-        //            OpenAction(obj);
-        //            break;
-        //        case "BREAK":
-        //            BreakAction(obj);
-        //            break;
-        //        case "S":
-        //        case "SOUTH":
-        //            GoAction(myLocation.getProp("destSouth"));
-        //            break;
-        //        case "N":
-        //        case "NORTH":
-        //            GoAction(myLocation.getProp("destNorth"));
-        //            break;
-        //        case "E":
-        //        case "EAST":
-        //            GoAction(myLocation.getProp("destEast"));
-        //            break;
-        //        case "W":
-        //        case "WEST":
-        //            GoAction(myLocation.getProp("destWest"));
-        //            break;
-        //        case "SW":
-        //        case "SOUTHWEST":
-        //            GoAction(myLocation.getProp("destSouthWest"));
-        //            break;
-        //        case "SE":
-        //        case "SOUTHEAST":
-        //            GoAction(myLocation.getProp("destSouthEast"));
-        //            break;
-        //        case "NW":
-        //        case "NORTHWEST":
-        //            GoAction(myLocation.getProp("destNorthWest"));
-        //            break;
-        //        case "NE":
-        //        case "NORTHEAST":
-        //            GoAction(myLocation.getProp("destNorthEast"));
-        //            break;
-        //        case "U":
-        //        case "UP":
-        //            GoAction(myLocation.getProp("destUp"));
-        //            break;
-        //        case "D":
-        //        case "DOWN":
-        //            GoAction(myLocation.getProp("destDown"));
-        //            break;
-        //        default:
-        //            Console.WriteLine("You gotta be kidding!");
-        //            break;
-        //    }
-        //}
-
-        //private static void ProcessPendingActions2()
-        //{
-        //    foreach (var pendAction in pendingActions)
-        //    {
-        //        if (pendAction.action == "detonate" && pendAction.active && !pendAction.completed)
-        //            Detonate(pendAction);
-        //    }
-
-        //    pendingActions.RemoveAll(p => p.completed);
-
-        //    foreach (var pendAction in pendingActions)
-        //    {
-        //        if (!pendAction.active)
-        //            pendAction.active = true;
-        //    }
-        //}
-
-        //private static void Detonate(PendingAction2 pendAction)
-        //{
-        //    if (pendAction.item == "bottle")
-        //    {
-        //        var loc = GetLocationByNumber(pendAction.location);
-        //        Console.WriteLine($"The {pendAction.item} explodes in the {loc.getProp("title")}. A large bang is heard all over town!");
-        //        var safe = GetItemByName("safe");
-        //        safe.setProp("isOpen", "1");
-        //        safe.setProp("longDescription", "The safe has been blown up");
-        //        GetItemByName("money").setProp("location","3");
-        //        GetItemByName("bottle").setProp("location", "-1");
-
-        //        if (pendAction.location == userLocation)
-        //            cont = false;
-
-        //        pendAction.active = false;
-        //        pendAction.completed = true;
-        //    }
-        //}
-
-        //private static void WaitAction(string verb)
-        //{
-        //    Console.WriteLine($"You {verb.ToLower()}. Time passes.");
-        //}
-
-        //private static void LoadAction(string obj)
-        //{
-        //    var configPath = Path.Combine(
-        //        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-        //        obj);
-
-        //    Console.WriteLine(configPath);
-
-        //    if (string.IsNullOrEmpty(Path.GetExtension(configPath)))
-        //        configPath = new StringBuilder(configPath).Append(".json").ToString();
-
-        //    if (File.Exists(configPath))
-        //    {
-        //        if (InitializeWorld(configPath))
-        //        {
-        //            InitMessage();
-        //            MainSettings();
-        //            DescribeWorld();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine($"Can't find {configPath}");
-        //    }
-        //}
-
-        //private static void OpenAction(string obj)
-        //{
-        //    var item = GetItemByName(obj);
-        //    if (item != null)
-        //    {
-        //        if (item.getProp("location") == userLocation)
-        //        {
-        //            if (item.getProp("canOpen") == "1")
-        //            {
-        //                if (item.getProp("isOpen") != "1")
-        //                {
-        //                    Console.WriteLine($"You open the {item.getProp("examinedTitle")}.");
-        //                    item.setProp("isOpen", "1");
-        //                }
-        //                else
-        //                {
-        //                    Console.WriteLine($"The {item.getProp("examinedTitle")} is already open!");
-        //                }
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine($"The {item.getProp("examinedTitle")} can't be opened.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("It ain't here!");
-        //        }
-        //    }
-        //}
-
-        //private static void BreakAction(string obj)
-        //{
-        //    var item = GetItemByName(obj);
-        //    if (item != null)
-        //    {
-        //        if (item.getProp("location") == userLocation)
-        //        {
-        //            if (item.isProp("canBreak"))
-        //            {
-        //                var breakItem = GetBreakingTool();
-        //                if (breakItem != null)
-        //                {
-        //                    if (item.isProp("explosive"))
-        //                    {
-        //                        Console.WriteLine($"You break the {item.getProp("examinedTitle")} with the {breakItem.getProp("title")}.");
-        //                        Console.WriteLine($"KABOOM! It explodes and you are blown to bits!");
-        //                        cont = false;
-        //                    }
-        //                    else
-        //                    {
-        //                        if (item.isProp("isBroken"))
-        //                        {
-        //                            Console.WriteLine($"You break the {item.getProp("examinedTitle")} with the {breakItem.getProp("title")}.");
-        //                            item.setProp("shortDescription", new StringBuilder(item.getProp("shortDescription").Insert(2, "broken ")).ToString());
-        //                            item.setProp("longDescription", new StringBuilder(item.getProp("longDescription")).Replace("closed", "broken").ToString());
-        //                            item.setProp("isBroken", "1");
-
-        //                            if (userLocation == "1" && obj == "window")
-        //                            {
-        //                                myLocation.setProp("destNorth", "3");
-        //                                ShowDestinations();
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            Console.WriteLine($"The {item.getProp("examinedTitle")} is already broken!");
-        //                        }
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    Console.WriteLine($"You don't have anything to break the {item.getProp("examinedTitle")} with.");
-        //                }
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine($"The {item.getProp("examinedTitle")} can't be broken.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("It ain't here!");
-        //        }
-        //    }
-        //}
-
         private static void GoAction(string destination)
         {
             if (destination != "-1")
@@ -695,186 +454,6 @@ namespace Waterlily
             {
                 Console.WriteLine("You can't go there!");
             }
-        }
-
-        //private static void ExamineAction(string obj)
-        //{
-        //    var item = GetItemByName(obj);
-        //    if (item != null)
-        //    {
-        //        if (item.getProp("location") == userLocation)
-        //        {
-        //            Console.WriteLine(item.getProp("longDescription"));
-        //            item.setProp("wasExamined", "1");
-        //            item.setProp("shortDescription", item.getProp("examinedShortDescription"));
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("It ain't here!");
-        //        }
-        //    }
-        //}
-
-        //private static void InventoryAction()
-        //{
-        //    Console.WriteLine("You are carrying: ");
-        //    var myItems = GetMyItems();
-
-        //    if (!myItems.Any())
-        //        Console.WriteLine("   not a damn thing!");
-
-        //    foreach (var item in GetMyItems())
-        //        Console.WriteLine($"   {item.getProp("shortDescription")}. ");
-        //}
-
-        //private static PropertyCollection GetBreakingTool()
-        //{
-        //    foreach (var item in GetMyItems())
-        //    {
-        //        if (item.getProp("canBreakTool") == "1")
-        //            return item;
-        //    }
-        //    return null;
-        //}
-
-        //private static void DropAction(string obj)
-        //{
-        //    if (string.IsNullOrEmpty(obj))
-        //        Console.WriteLine($"Drop what?");
-        //    else
-        //    {
-        //        var myItems = new List<PropertyCollection>();
-        //        if (obj.ToUpper() == "ALL")
-        //        {
-        //            myItems = GetMyItems();
-        //        }
-        //        else
-        //        {
-        //            var item = GetItemByName(obj);
-        //            if (item != null)
-        //                myItems.Add(item);
-        //        }
-        //        foreach(var item in myItems)
-        //        {
-        //            if (item.getProp("carry")=="1")
-        //            {
-        //                item.setProp("carry", "0");
-        //                Console.WriteLine($"You {(item.getProp("explosive") == "1" ? "very carefully put down" : "drop")} the {item.getProp("examinedTitle")}.");
-        //                if (item.getProp("title") == "bottle")
-        //                    pendingActions.Add(new PendingAction2 { action = "detonate", item = "bottle", location = userLocation});
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine("You ain't got it!");
-        //            }
-        //        }
-        //    }
-        //}
-
-        private static void FuckAction(string obj)
-        {
-            if (string.IsNullOrEmpty(obj))
-                Console.WriteLine($"Hey!");
-            else
-            {
-                var item = GetItemByName(obj);
-                if (item != null)
-                {
-                    if (item.getProp("location") == userLocation)
-                    {
-                        if (item.getProp("title") == "bottle")
-                        {
-                            Console.WriteLine("KABOOM! The bottle of nitroglycerine explodes in your tender parts. Should have been more careful!");
-                            cont = false;
-                        }
-                        else
-                        {
-                            Console.WriteLine($"You don't want to do that! I'm serious!");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("It ain't here!");
-                    }
-                }
-            }
-        }
-
-        private static void PickupAction(string obj)
-        {
-            if (string.IsNullOrEmpty(obj))
-                Console.WriteLine($"Get what?");
-            else
-            {
-                var itemsHere = new List<PropertyCollection>();
-                if (obj.ToUpper() == "ALL")
-                {
-                    itemsHere = GetItemsByLocation(userLocation);
-                }
-                else
-                {
-                    var item = GetItemByName(obj);
-                    if (item != null)
-                        itemsHere.Add(item);
-                }
-
-                foreach (var item in itemsHere)
-                {
-                    if (item.getProp("canTake") == "1")
-                    {
-                        if (item.getProp("location") == userLocation)
-                        {
-                            if (item.getProp("carry") != "1")
-                            {
-                                item.setProp("carry", "1");
-                                if (item.getProp("explosive") == "1")
-                                {
-                                    if (item.getProp("wasExamined") != "1")
-                                    {
-                                        Console.WriteLine($"KABOOM! The {item.getProp("examinedTitle")} explodes in your hand. Should have been more careful!");
-                                        cont = false;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine($"You very carefully pick up the {item.getProp("title")}.");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"You got the {item.getProp("title")}!");
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("You got it already!");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("It ain't here!");
-                        }
-                    }
-                    else
-                    {
-                        if (obj.ToUpper() != "ALL")
-                            Console.WriteLine("You can't!");
-                    }
-                }
-            }
-        }
-
-        private static bool HaveItem(string obj)
-        {
-            var qItem = GetItemByName(obj);
-            if (qItem != null)
-            {
-                foreach(var item in GetMyItems())
-                {
-                    if (item == qItem)
-                        return true;
-                }
-            }
-            return false;
         }
 
         private static void MoveMyItems(string location)
@@ -916,14 +495,18 @@ namespace Waterlily
 
         private static PropertyCollection GetItemByName(string name)
         {
-            var namedItem = gameDefinition.items.Where(i => i.getProp("title").ToUpper() == name.ToUpper()).FirstOrDefault();
-            if (namedItem == null)
+            if (!string.IsNullOrEmpty(name))
             {
-                Console.WriteLine("What's that?!");
-                return null;
+                var namedItem = gameDefinition.items.Where(i => i.getProp("title").ToUpper() == name.ToUpper()).FirstOrDefault();
+                if (namedItem == null)
+                {
+                    Console.WriteLine("What's that?!");
+                    return null;
+                }
+                else
+                    return namedItem;
             }
-            else
-                return namedItem;
+            return null;
         }
 
         private static bool ReadSettingsFromFile(ref GameDefinition collection, string file)

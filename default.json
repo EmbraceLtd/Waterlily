@@ -224,7 +224,8 @@
         }
       ],
       "operations": [
-        "clear.item.{obj}.carry"
+        "clear.item.{obj}.carry",
+        "trig.dropBottleExplosionAction"
       ],
       "completedMessage": "You drop the {obj}"
     },
@@ -462,7 +463,12 @@
   "triggerActions": [
     {
       "name": "dropBottleExplosionAction",
-      "conditions": [],
+      "conditions": [
+        {
+          "condition": "if.item.{obj}.title.eq.bottle",
+          "failureMessage": ""
+        }
+      ],
       "operations": [
         "die.bottle.location",
         "set.item.bottle.location.-1"
@@ -478,6 +484,10 @@
     {
       "name": "takeBottleExplosionAction",
       "conditions": [
+        {
+          "condition": "if.item.{obj}.title.eq.bottle",
+          "failureMessage": ""
+        },
         {
           "condition": "if.item.{obj}.wasExamined.ne.1",
           "failureMessage": ""
