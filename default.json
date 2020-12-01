@@ -480,7 +480,8 @@
       ],
       "operations": [
         "die.bottle.location",
-        "set.item.bottle.location.-1"
+        "set.item.bottle.location.-1",
+        "trig.openSafeAction"
       ],
       "completedMessage": "* BOOM *",
       "objectName": "bottle",
@@ -513,29 +514,21 @@
     },
     {
       "name": "openSafeAction",
-      "conditions": [],
-      "operations": [ "set.item.safe.isOpen.1" ],
+      "conditions": [
+        {
+          "condition": "if.item.bottle.location.eq.2",
+          "failureMessage": ""
+        }
+      ],
+      "operations": [
+        "set.item.safe.isOpen.1",
+        "set.item.safe.longDescription.The safe door has been blown away",
+        "set.item.money.location.2"
+      ],
       "completedMessage": "",
       "objectName": "",
       "triggerAction": "goSouthAction",
       "location": "3",
-      "active": false,
-      "completed": false,
-      "pendingCount": 0
-    },
-    {
-      "name": "openSafeAction",
-      "conditions": [
-        {
-          "condition": "if.item.{obj}.wasExamined.ne.1",
-          "failureMessage": ""
-        }
-      ],
-      "operations": [ "die" ],
-      "completedMessage": "BOOM",
-      "objectName": "bottle",
-      "triggerAction": "takeAction",
-      "location": "2",
       "active": false,
       "completed": false,
       "pendingCount": 0
