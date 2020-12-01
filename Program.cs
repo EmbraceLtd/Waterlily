@@ -579,12 +579,35 @@ namespace Waterlily
             var ret = true;
             var sb = new StringBuilder();
 
-            // Trigger actions
+            List<string> dupNames;
 
-            var dupNames = gameDefinition.triggerActions.GroupBy(t => t.name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
+            // Items 
+
+            dupNames = gameDefinition.items.GroupBy(t => t.name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
             if (dupNames.Any())
             {
-                sb.AppendLine("Duplicate found i trigger action names:");
+                sb.AppendLine("Duplicate found in item names:");
+                dupNames.ForEach(d => sb.AppendLine($"  {d}"));
+                ret = false;
+            }
+
+            // Items 
+
+            dupNames = gameDefinition.locations.GroupBy(t => t.name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
+            if (dupNames.Any())
+            {
+                sb.AppendLine("Duplicate found in location names:");
+                dupNames.ForEach(d => sb.AppendLine($"  {d}"));
+                ret = false;
+            }
+
+
+            // Trigger actions
+
+            dupNames = gameDefinition.triggerActions.GroupBy(t => t.name).Where(g => g.Count() > 1).Select(y => y.Key).ToList();
+            if (dupNames.Any())
+            {
+                sb.AppendLine("Duplicate found i triggerAction names:");
                 dupNames.ForEach(d => sb.AppendLine($"  {d}"));
                 ret = false;
             }
