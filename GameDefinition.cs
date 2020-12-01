@@ -19,6 +19,7 @@ namespace Waterlily
 
     public class PropertyCollection
     {
+        public string name { get; set; }
         public Dictionary<string, string> properties { get; set; }
 
         public string getProp(string property)

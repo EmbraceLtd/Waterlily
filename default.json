@@ -9,6 +9,7 @@
   ],
   "items": [
     {
+      "name": "smallHammer",
       "properties": {
         "title": "hammer",
         "shortDescription": "a small hammer",
@@ -20,6 +21,7 @@
       }
     },
     {
+      "name": "nitroBottle",
       "properties": {
         "title": "bottle",
         "examinedTitle": "bottle of nitroglycerine",
@@ -34,6 +36,7 @@
       }
     },
     {
+      "name": "bankWindow",
       "properties": {
         "title": "window",
         "shortDescription": "a window",
@@ -43,6 +46,7 @@
       }
     },
     {
+      "name": "bankSafe",
       "properties": {
         "title": "safe",
         "shortDescription": "a safe",
@@ -51,6 +55,7 @@
       }
     },
     {
+      "name": "safeMoney",
       "properties": {
         "title": "money",
         "examinedTitle": "100 dollars",
@@ -65,6 +70,7 @@
   ],
   "locations": [
     {
+      "name": "main",
       "properties": {
         "number": "1",
         "title": "Main Street",
@@ -73,6 +79,7 @@
       }
     },
     {
+      "name": "park",
       "properties": {
         "number": "2",
         "title": "The park",
@@ -82,6 +89,7 @@
       }
     },
     {
+      "name": "bank",
       "properties": {
         "number": "3",
         "title": "Bank manager's office",
@@ -90,6 +98,7 @@
       }
     },
     {
+      "name": "pier",
       "properties": {
         "number": "4",
         "title": "Ferry pier",
