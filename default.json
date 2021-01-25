@@ -479,14 +479,15 @@
         }
       ],
       "operations": [
+        "trig.openSafeAction",
         "die.bottle.location",
         "set.item.bottle.location.-1",
-        "trig.openSafeAction"
+        "set.item.bottle.dropLocation.{userLocation}"
       ],
       "completedMessage": "* BOOM *",
       "objectName": "bottle",
       "triggerAction": "dropAction",
-      "location": "2",
+      "location": "3",
       "active": false,
       "completed": false,
       "pendingCount": 1
@@ -516,7 +517,7 @@
       "name": "openSafeAction",
       "conditions": [
         {
-          "condition": "if.item.bottle.location.eq.2",
+          "condition": "if.item.bottle.dropLocation.eq.3",
           "failureMessage": ""
         }
       ],

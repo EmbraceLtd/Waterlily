@@ -141,7 +141,7 @@ namespace Waterlily
             foreach (var line in gameDefinition.intro)
                 Console.WriteLine($"*  {line}");
             Console.WriteLine("*");
-            Console.WriteLine("************   Powered by Waterlily Engine by Tommy Sjöblom  Type 'about' for more info   *********");
+            Console.WriteLine("***********************************Powered*by*Waterlily*Engine*************************************");
             Console.WriteLine();
         }
 
