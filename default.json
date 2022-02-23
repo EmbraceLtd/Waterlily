@@ -51,6 +51,11 @@
       "location": -1,
       "canTake": true,
       "canUse": true
+    },
+    {
+      "title": "man",
+      "shortDescription": "an old man",
+      "location":  5
     }
   ],
   "locations": [
@@ -75,10 +80,43 @@
     },
     {
       "number": 4,
+      "title": "River bank",
+      "description": "You are at the banks of River Shanty, at the ferry pier.",
+      "destNorthEast": 2,
+      "destSouth": 5
+    },
+    {
+      "number": 5,
       "title": "Ferry pier",
-      "description": "You are at the the banks of River Shanty, at the ferry pier.",
+      "description": "You are on the ferry pier. An old man is sitting on a bench.",
       "destNorthEast": 2
     }
-
+  ],
+  "phrases": [
+    {
+      "subject": "man",
+      "sortOrder": 1,
+      "line": "Howdy stranger!"
+    },
+    {
+      "subject": "man",
+      "sortOrder": 2,
+      "line": "How's it going son?"
+    },
+    {
+      "subject": "man",
+      "sortOrder": 3,
+      "line": "If you're looking for the ferry, it won't be here for another hour!"
+    },
+    {
+      "subject": "man",
+      "sortOrder": 4,
+      "line": "Tickets are two dollars for one way"
+    },
+    {
+      "subject": "man",
+      "sortOrder": 3,
+      "line": "You could try swimming, if you're not afraid of them big fishes..."
+    }
   ]
 }

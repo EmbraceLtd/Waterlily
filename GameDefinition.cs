@@ -60,4 +60,11 @@ namespace Waterlily
         public bool active { get; set; } = false;
         public bool completed { get; set; } = false;
     }
+
+    public class Phrase
+    {
+        public string subject { get; set; }
+        public int sortOrder { get; set; }
+        public string line { get; set; }
+    }
 }

@@ -138,7 +138,9 @@ namespace Waterlily
             foreach (var line in gameDefinition.intro)
                 Console.WriteLine($"*  {line}");
             Console.WriteLine("*");
-            Console.WriteLine("**************************************************** Powered by Waterlily Engine by Tommy Sjöblom *");
+            Console.WriteLine("* Powered by Waterlily Engine by Tommy Sjöblom");
+            Console.WriteLine("*");
+            Console.WriteLine("***************************************************************************************************");
             Console.WriteLine();
         }
 
@@ -238,6 +240,10 @@ namespace Waterlily
                 case "D":
                 case "DOWN":
                     GoAction(myLocation.destDown);
+                    break;
+                case "TALK":
+                case "SPEAK":
+                    TalkAction(obj);
                     break;
                 default:
                     Console.WriteLine("You gotta be kidding!");
@@ -342,6 +348,11 @@ namespace Waterlily
                     Console.WriteLine("It ain't here!");
                 }
             }
+        }
+
+        private static void TalkAction(string obj)
+        {
+
         }
 
         private static void BreakAction(string obj)
