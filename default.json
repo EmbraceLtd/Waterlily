@@ -55,7 +55,15 @@
     {
       "title": "man",
       "shortDescription": "an old man",
-      "location":  5
+      "location": 5,
+      "canTalk": true,
+      "phrases": [
+        "Howdy stranger!",
+        "How's it going son?",
+        "If you're looking for the ferry, it won't be here for another hour!",
+        "Tickets are two dollars for one way",
+        "You could try swimming, if you're not afraid of them big fishes..."
+      ]
     }
   ],
   "locations": [
@@ -90,33 +98,6 @@
       "title": "Ferry pier",
       "description": "You are on the ferry pier. An old man is sitting on a bench.",
       "destNorthEast": 2
-    }
-  ],
-  "phrases": [
-    {
-      "subject": "man",
-      "sortOrder": 1,
-      "line": "Howdy stranger!"
-    },
-    {
-      "subject": "man",
-      "sortOrder": 2,
-      "line": "How's it going son?"
-    },
-    {
-      "subject": "man",
-      "sortOrder": 3,
-      "line": "If you're looking for the ferry, it won't be here for another hour!"
-    },
-    {
-      "subject": "man",
-      "sortOrder": 4,
-      "line": "Tickets are two dollars for one way"
-    },
-    {
-      "subject": "man",
-      "sortOrder": 3,
-      "line": "You could try swimming, if you're not afraid of them big fishes..."
     }
   ]
 }

@@ -18,6 +18,7 @@ namespace Waterlily
         private static List<PendingAction> pendingActions;
         private static int turnCount;
         private static string dashline = new string('*', 99);
+        private static List<Tuple<string, int, List<Phrase>>> phraseList;
 
         static void Main(string[] args)
         {
@@ -243,6 +244,8 @@ namespace Waterlily
                     break;
                 case "TALK":
                 case "SPEAK":
+                case "SAY":
+                case "CONVERSE":
                     TalkAction(obj);
                     break;
                 default:
@@ -352,7 +355,30 @@ namespace Waterlily
 
         private static void TalkAction(string obj)
         {
+            var item = GetItemByName(obj);
+            if (item != null)
+            {
+                if (item.location == userLocation)
+                {
+                    Console.WriteLine($"You talk to the {item.title}.");
 
+                    if (item.canTalk)
+                    {
+                        if (item.phraseIndex + 1 > item.phrases.Count)
+                            item.phraseIndex = 0;
+
+                        Console.WriteLine($"The {item.title} says: {item.phrases[item.phraseIndex++]}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nothing happens.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"The {item.title} isn't here.");
+                }
+            }
         }
 
         private static void BreakAction(string obj)

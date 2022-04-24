@@ -32,6 +32,9 @@ namespace Waterlily
         public bool isOpen { get; set; } = false;
         public bool isBroken { get; set; } = false;
         public bool canBreakTool { get; set; } = false;
+        public bool canTalk { get; set; } = false;
+        public int phraseIndex { get; set; } = 0;
+        public List<string> phrases { get; set; } = new List<string>();
     }
 
     public class Location
