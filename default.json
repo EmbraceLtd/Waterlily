@@ -12,7 +12,7 @@
       "title": "hammer",
       "shortDescription": "a small hammer",
       "longDescription": "The hammer has a wooden handle and looks well used",
-      "location": 1,
+      "location": 8,
       "canTake": true,
       "canUse": true,
       "canBreakTool": true
@@ -46,8 +46,6 @@
       "title": "money",
       "examinedTitle": "100 dollars",
       "shortDescription": "some money",
-      "examinedShortDescription": "100 dollars",
-      "longDescription": "Ten 10 dollar bills.",
       "location": -1,
       "canTake": true,
       "canUse": true
@@ -55,8 +53,10 @@
     {
       "title": "man",
       "shortDescription": "an old man",
+      "longDescription": "The man looks old and tired. He looks at you with a curious expression.",
       "location": 5,
       "canTalk": true,
+      "alive": true,
       "phrases": [
         "Howdy stranger!",
         "How's it going son?",
@@ -64,21 +64,65 @@
         "Tickets are two dollars for one way",
         "You could try swimming, if you're not afraid of them big fishes..."
       ]
+    },
+    {
+      "title": "Eli",
+      "shortDescription": "Eli",
+      "longDescription": "Eli is a stout man in his 40s. He looks at you with a true salesman's false eye.",
+      "location": 10,
+      "canTalk": true,
+      "alive": true,
+      "namedPerson": true,
+      "phrases": [
+        "Hello there, partner! Eli is the name.",
+        "What can I get you, son?",
+        "I have some fresh chewing gum right here! Only one dollar!",
+        "Here is a real bargain: This fine jewel once belonged to the Emperor Napoleon himself! I swear! 50 dollars!",
+        "Well, how about some nails. 5 bucks a box."
+      ]
+    },
+    {
+      "title": "gum",
+      "shortDescription": "some chewing gum",
+      "longDescription": "A pack of chewing gum",
+      "location": -1,
+      "canBuy": true,
+      "price": 1
+    },
+    {
+      "title": "jewel",
+      "shortDescription": "a jewel",
+      "longDescription": "The jewel glows in the sun",
+      "location": -1,
+      "canBuy": true,
+      "price": 50
+    },
+
+    {
+      "title": "nails",
+      "shortDescription": "a box of nails",
+      "longDescription": "The box looks opened and feels half full",
+      "location": -1,
+      "canBuy": true,
+      "price": 5
     }
+
+
   ],
   "locations": [
     {
       "number": 1,
       "title": "Main Street",
       "description": "Overlooking Main Street, Flatville. It's a hazy morning. Church bells are heard from afar.\r\nBehind you is the Central Bank building.",
-      "destSouth": 2
+      "destSouth": 2,
+      "destEast": 9
     },
     {
       "number": 2,
       "title": "The park",
       "description": "You are in a park. Birds are singing and doing whatever birds do.",
       "destNorth": 1,
-      "destSouthWest": 4
+      "destSouth": 4
     },
     {
       "number": 3,
@@ -90,14 +134,47 @@
       "number": 4,
       "title": "River bank",
       "description": "You are at the banks of River Shanty, at the ferry pier.",
-      "destNorthEast": 2,
+      "destNorth": 2,
       "destSouth": 5
     },
     {
       "number": 5,
       "title": "Ferry pier",
       "description": "You are on the ferry pier. An old man is sitting on a bench.",
-      "destNorthEast": 2
+      "destNorth": 4,
+      "destSouth": 6
+    },
+    {
+      "number": 6,
+      "title": "River Shanty",
+      "description": "You are in the river.",
+      "destNorth": 5,
+      "destSouth": 7,
+      "destDown": 8
+    },
+    {
+      "number": 7,
+      "title": "River Shanty",
+      "description": "You are in the river. You are caught up by a strong swirl."
+    },
+    {
+      "number": 8,
+      "title": "River bottom",
+      "description": "You are at the bottom of the river.",
+      "destUp": 6
+    },
+    {
+      "number": 9,
+      "title": "Outside Eli's Store",
+      "description": "You in Main Street, outside Eli's Store'",
+      "destWest": 1,
+      "destNorth": 10
+    },
+    {
+      "number": 10,
+      "title": "Eli's Store'",
+      "description": "You are in Eli's Store. The shelves are filled with useful merchandise. Eli stands behind the counter.",
+      "destSouth": 9
     }
   ]
 }

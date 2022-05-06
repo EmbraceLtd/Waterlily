@@ -13,19 +13,19 @@ namespace Waterlily
     {
         private static GameDefinition gameDefinition;
         private static int userLocation;
+        private static int userCash;
         private static Location myLocation;
         private static bool cont = true;
         private static List<PendingAction> pendingActions;
         private static int turnCount;
         private static string dashline = new string('*', 99);
-        private static List<Tuple<string, int, List<Phrase>>> phraseList;
+        private static int userHealth;
 
         static void Main(string[] args)
         {
             var custom = args.Count() > 0 ? args[0] : string.Empty;
             if (InitializeWorld(custom))
             {
-
                 while (cont)
                 {
                     while (cont)
@@ -33,9 +33,10 @@ namespace Waterlily
                         Console.Write($"{turnCount++}> ");
                         var userCommand = GetCommand();
                         ProcessCommand(userCommand);
+                        CheckHealth();
                         ProcessPendingActions();
                     }
-                    Console.WriteLine("You left this world in a puff of smoke! You are very dead.");
+                    Console.WriteLine("\r\nWe are sorry for your unfortunate demise.\r\n\r\nGAME OVER\r\n");
                     Console.Write("Revive? (Y/n)");
                     var revive = Reader.ReadLine().ToUpper();
 
@@ -53,7 +54,7 @@ namespace Waterlily
             string cmd;
             try
             {
-                cmd = Reader.ReadLine(60000);
+                cmd = Reader.ReadLine(30000);
             }
             catch (TimeoutException)
             {
@@ -102,23 +103,31 @@ namespace Waterlily
 
         private static void ShowDestinations()
         {
-            Console.Write($"You can go {(myLocation.destNorth > -1 ? "north " : string.Empty)}");
-            Console.Write($"{(myLocation.destNorthWest > -1 ? "northwest " : string.Empty)}");
-            Console.Write($"{(myLocation.destNorthEast > -1 ? "northeast " : string.Empty)}");
-            Console.Write($"{(myLocation.destSouth > -1 ? "south " : string.Empty)}");
-            Console.Write($"{(myLocation.destSouthWest > -1 ? "southwest " : string.Empty)}");
-            Console.Write($"{(myLocation.destSouthEast > -1 ? "southeast " : string.Empty)}");
-            Console.Write($"{(myLocation.destEast > -1 ? "east " : string.Empty)}");
-            Console.Write($"{(myLocation.destWest > -1 ? "west " : string.Empty)}"); 
-            Console.Write($"{(myLocation.destUp > -1 ? "up " : string.Empty)}");
-            Console.Write($"{(myLocation.destDown > -1 ? "down " : string.Empty)}");
-            Console.WriteLine();
+            var destinations = new StringBuilder();
+
+            destinations.Append($"{(myLocation.destNorth > -1 ? "north " : string.Empty)}");
+            destinations.Append($"{(myLocation.destNorthWest > -1 ? "northwest " : string.Empty)}");
+            destinations.Append($"{(myLocation.destNorthEast > -1 ? "northeast " : string.Empty)}");
+            destinations.Append($"{(myLocation.destSouth > -1 ? "south " : string.Empty)}");
+            destinations.Append($"{(myLocation.destSouthWest > -1 ? "southwest " : string.Empty)}");
+            destinations.Append($"{(myLocation.destSouthEast > -1 ? "southeast " : string.Empty)}");
+            destinations.Append($"{(myLocation.destEast > -1 ? "east " : string.Empty)}");
+            destinations.Append($"{(myLocation.destWest > -1 ? "west " : string.Empty)}"); 
+            destinations.Append($"{(myLocation.destUp > -1 ? "up " : string.Empty)}");
+            destinations.Append($"{(myLocation.destDown > -1 ? "down " : string.Empty)}");
+
+            if (destinations.Length == 0)
+                destinations.Append("nowhere");
+
+            Console.WriteLine($"You can go: {destinations}");
         }
 
         private static bool InitializeWorld(string customConfig = "")
         {
             pendingActions = new List<PendingAction>();
             turnCount = 1;
+            userCash = 0;
+            userHealth = 100;
 
             if (ReadConfig(customConfig))
             {
@@ -248,9 +257,29 @@ namespace Waterlily
                 case "CONVERSE":
                     TalkAction(obj);
                     break;
+                case "BUY":
+                    BuyAction(obj);
+                    break;
                 default:
                     Console.WriteLine("You gotta be kidding!");
                     break;
+            }
+        }
+
+        private static void CheckHealth()
+        {
+            if (myLocation.number == 8)
+            {
+                userHealth -= 25;
+                if (userHealth <= 25)
+                {
+                    Console.WriteLine("You are running out of air. Better swim up!");
+                }
+                if (userHealth <= 0)
+                {
+                    Console.WriteLine("You are out of air.");
+                    cont = false;
+                }
             }
         }
 
@@ -258,8 +287,17 @@ namespace Waterlily
         {
             foreach (var pendAction in pendingActions)
             {
-                if (pendAction.action == "detonate" && pendAction.active && !pendAction.completed)
-                    Detonate(pendAction);
+                if (pendAction.iterations > 0 && pendAction.active)
+                    pendAction.iterations--;
+
+                if (pendAction.iterations == 0)
+                {
+                    if (pendAction.action == "detonate" && pendAction.active && !pendAction.completed)
+                        Detonate(pendAction);
+
+                    if (pendAction.action == "diebyfish" && pendAction.active && !pendAction.completed)
+                        DieByFish(pendAction);
+                }
             }
 
             pendingActions.RemoveAll(p => p.completed);
@@ -277,18 +315,40 @@ namespace Waterlily
             {
                 var loc = GetLocationByNumber(pendAction.location);
                 Console.WriteLine($"The {pendAction.item} explodes in the {loc.title}. A large bang is heard all over town!");
-                var safe = GetItemByName("safe");
-                safe.isOpen = true;
-                safe.longDescription = "The safe has been blown up";
-                GetItemByName("money").location = 3;
-                GetItemByName("bottle").location = -1;
+
+                if (pendAction.location == 3)
+                {
+                    var safe = GetItemByName("safe");
+                    safe.isOpen = true;
+                    safe.longDescription = "The safe has been blown up";
+                    GetItemByName("money").location = 3;
+                    GetItemByName("bottle").location = -1;
+                }
+
+                if (pendAction.location == 5)
+                {
+                    var man = GetItemByName("man");
+                    man.shortDescription = "a dead old man";
+                    man.longDescription = "The old man has died from the explosion.";
+                    man.canTalk = false;
+                    GetItemByName("bottle").location = -1;
+                }
 
                 if (pendAction.location == userLocation)
+                {
+                    Console.WriteLine("You are blown to bits!");
                     cont = false;
+                }
 
                 pendAction.active = false;
                 pendAction.completed = true;
             }
+        }
+
+        private static void DieByFish(PendingAction pendAction)
+        {
+            Console.WriteLine($"You're getting tired of swimming. Suddenly something pulls you under water.\r\nA large fish with razor sharp teeth appears and smiles at you.\r\nIt opens its mouth and waits for a while before biting a big chunk out of your stomach.");
+            cont = false;
         }
 
         private static void WaitAction(string verb)
@@ -353,6 +413,45 @@ namespace Waterlily
             }
         }
 
+        private static void BuyAction(string obj)
+        {
+            var item = GetItemByName(obj);
+            if (item != null)
+            {
+                if (item.location == userLocation)
+                {
+                    if (item.canBuy)
+                    {
+                        if (!item.carry)
+                        {
+                            if (userCash >= item.price)
+                            {
+                                Console.WriteLine($"You buy the {item.examinedTitle}.");
+                                item.carry = true;
+                                userCash -= item.price;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Eli says: I'm sorry son, you don't seem to have enough money to buy the {item.title}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You already have the {item.examinedTitle}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{(item.namedPerson?"":"The ")}{item.examinedTitle} is not for sale.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("It ain't here!");
+                }
+            }
+        }
+
         private static void TalkAction(string obj)
         {
             var item = GetItemByName(obj);
@@ -360,14 +459,29 @@ namespace Waterlily
             {
                 if (item.location == userLocation)
                 {
-                    Console.WriteLine($"You talk to the {item.title}.");
+                    Console.WriteLine($"You talk to {(item.namedPerson ? "":"the ")}{item.title}.");
 
                     if (item.canTalk)
                     {
                         if (item.phraseIndex + 1 > item.phrases.Count)
                             item.phraseIndex = 0;
 
-                        Console.WriteLine($"The {item.title} says: {item.phrases[item.phraseIndex++]}");
+
+                        Console.WriteLine($"{(item.namedPerson ? "" : "The ")}{item.title} says: {item.phrases[item.phraseIndex]}");
+
+                        if (item.title=="Eli")
+                        {
+                            if (item.phraseIndex == 2 && GetItemByName("gum").location == -1)
+                                GetItemByName("gum").location = 10;
+
+                            if (item.phraseIndex == 3 && GetItemByName("jewel").location == -1)
+                                GetItemByName("jewel").location = 10;
+
+                            if (item.phraseIndex == 4 && GetItemByName("nails").location == -1)
+                                GetItemByName("nails").location = 10;
+                        }
+
+                        item.phraseIndex++;
                     }
                     else
                     {
@@ -376,7 +490,7 @@ namespace Waterlily
                 }
                 else
                 {
-                    Console.WriteLine($"The {item.title} isn't here.");
+                    Console.WriteLine($"{(item.namedPerson ? "" : "The ")}{item.title} isn't here.");
                 }
             }
         }
@@ -441,6 +555,18 @@ namespace Waterlily
         {
             if (destination > -1)
             {
+                if (destination == 6 && myLocation.number == 8)
+                {
+                    userHealth = 100;
+                    Console.WriteLine("You gasp for air!");
+                }
+
+                if (destination == 6 && myLocation.number == 5)
+                    Console.WriteLine("You jump into the river and start swimming");
+
+                if (destination == 7)
+                    pendingActions.Add(new PendingAction { action = "diebyfish", location = userLocation, iterations = 8 });
+
                 userLocation = destination;
                 MoveMyItems(destination);
                 myLocation = GetLocationByNumber(destination);
@@ -459,7 +585,10 @@ namespace Waterlily
             {
                 if (item.location == userLocation)
                 {
-                    Console.WriteLine(item.longDescription);
+                    if (item.title == "money")
+                        Console.WriteLine($"{userCash} dollar{(userCash > 1 ? "s" : "")}");
+                    else
+                        Console.WriteLine(item.longDescription);
                     item.wasExamined = true;
                     item.shortDescription = item.examinedShortDescription;
                 }
@@ -479,7 +608,11 @@ namespace Waterlily
                 Console.WriteLine("   not a damn thing!");
 
             foreach (var item in GetMyItems())
-                Console.WriteLine($"   {item.shortDescription}. ");
+                if (item.title != "money")
+                    Console.WriteLine($"   {item.shortDescription}. ");
+
+            if (userCash > 0)
+                Console.WriteLine($"   {userCash} dollar{(userCash > 1 ? "s" : "")}");
         }
 
         private static Item GetBreakingTool()
@@ -575,13 +708,12 @@ namespace Waterlily
 
                 foreach (var item in itemsHere)
                 {
-                    if (item.canTake)
+                    if (item.canTake || item.canBuy)
                     {
                         if (item.location == userLocation)
                         {
                             if (!item.carry)
                             {
-                                item.carry = true;
                                 if (item.explosive)
                                 {
                                     if (!item.wasExamined)
@@ -591,12 +723,27 @@ namespace Waterlily
                                     }
                                     else
                                     {
+                                        item.carry = true;
                                         Console.WriteLine($"You very carefully pick up the {item.title}.");
                                     }
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"You got the {item.title}!");
+                                    if (item.canTake)
+                                    {
+                                        item.carry = true;
+                                        Console.WriteLine($"You got the {item.title}!");
+
+                                        if (item.title == "money")
+                                            userCash = 100;
+                                    }
+                                    else if (item.canBuy)
+                                    {
+                                        if (item.location == 10 && userLocation == 10)
+                                        {
+                                            Console.WriteLine($"Eli says: You have to pay for that my friend! That'll be {item.price} dollar{(item.price > 1 ? "s" : "")}!");
+                                        }
+                                    }
                                 }
                             }
                             else
