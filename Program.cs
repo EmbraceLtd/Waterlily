@@ -344,7 +344,7 @@ namespace Waterlily
             if (pendAction.item == "bottle")
             {
                 var loc = GetLocationByNumber(pendAction.location);
-                Console.WriteLine($"The {pendAction.item} explodes in the {loc.title}. A large bang is heard all over town!");
+                Console.WriteLine($"The {pendAction.item} explodes in {(pendAction.location == 10 ? "" : "the ")}{loc.title}. A large bang is heard all over town!");
 
                 if (pendAction.location == 3)
                 {
@@ -363,6 +363,25 @@ namespace Waterlily
                     man.canTalk = false;
                     loc.description = "You are on the ferry pier. An dead old man is lying on a bench.";
                     GetItemByName("bottle").location = -1;
+                }
+
+                if (pendAction.location == 10)
+                {
+                    var man = GetItemByName("eli");
+                    man.shortDescription = "Eli's dead body";
+                    man.longDescription = "Eli was a stout man in his 40s. He lies dead on the floor.";
+                    man.canTalk = false;
+                    loc.description = "You are in Eli's Store. The shelves are filled with useful merchandise. Eli's body lies behind the counter.";
+                    GetItemByName("bottle").location = -1;
+                    GetItemByName("gum").canBuy = false;
+                    GetItemByName("gum").canTake = true;
+                    GetItemByName("gum").location = 10;
+                    GetItemByName("jewel").canBuy = false;
+                    GetItemByName("jewel").canTake = true;
+                    GetItemByName("jewel").location = 10;
+                    GetItemByName("nails").canBuy = false;
+                    GetItemByName("nails").canTake = true;
+                    GetItemByName("nails").location = 10;
                 }
 
                 if (pendAction.location == gameDefinition.userLocation)

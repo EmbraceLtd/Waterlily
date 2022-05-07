@@ -1,9 +1,9 @@
 ﻿
 HELP
 
-Syntax for commands is
+The syntax for commands is one or two words.
 
-[verb] [object]
+  verb [object]
 
 Available verbs:
 
