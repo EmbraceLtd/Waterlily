@@ -798,7 +798,7 @@ namespace Waterlily
                                         Console.WriteLine($"You got the {item.title}!");
 
                                         if (item.title == "money")
-                                            gameDefinition.userCash = 100;
+                                            gameDefinition.userCash += 100;
                                     }
                                     else if (item.canBuy)
                                     {
