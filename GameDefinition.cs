@@ -9,9 +9,13 @@ namespace Waterlily
         public string name { get; set; }
         public string author { get; set; }
         public int userLocation { get; set; }
+        public int userCash { get; set; }
+        public int userHealth { get; set; }
+        public int turnCount { get; set; }
         public List<string> intro { get; set; }
         public List<Item> items { get; set; }
         public List<Location> locations { get; set; }
+        public List<PendingAction> pendingActions { get; set; }
     }
 
     public class Item

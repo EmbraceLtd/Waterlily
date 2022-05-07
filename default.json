@@ -1,12 +1,16 @@
 ﻿{
   "name": "Deerwood 1.0",
   "author": "Tommy Sjöblom",
-  "userLocation": 1,
   "intro": [
     "DEERWOOD 1.0",
     "An Epic Adventure",
     "By Tommy Sjöblom"
   ],
+  "userLocation": 1,
+  "userHealth": 100,
+  "userCash": 0,
+  "turnCount": 1,
+  "pendingActions": [],
   "items": [
     {
       "title": "hammer",

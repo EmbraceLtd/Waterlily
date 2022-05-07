@@ -12,14 +12,15 @@ namespace Waterlily
     class Program
     {
         private static GameDefinition gameDefinition;
-        private static int userLocation;
-        private static int userCash;
+        private static string dashline = new string('*', 99);
         private static Location myLocation;
         private static bool cont = true;
-        private static List<PendingAction> pendingActions;
-        private static int turnCount;
-        private static string dashline = new string('*', 99);
-        private static int userHealth;
+
+        //private static int turnCount;
+        //private static int gameDefinition.userLocation;
+        //private static int userCash;
+        //private static int userHealth;
+        //private static List<PendingAction> gameDefinition.pendingActions;
 
         static void Main(string[] args)
         {
@@ -30,7 +31,7 @@ namespace Waterlily
                 {
                     while (cont)
                     {
-                        Console.Write($"{turnCount++}> ");
+                        Console.Write($"{gameDefinition.turnCount++}> ");
                         var userCommand = GetCommand();
                         ProcessCommand(userCommand);
                         CheckHealth();
@@ -92,7 +93,7 @@ namespace Waterlily
             }
             ShowDestinations();
 
-            var itemsHere = GetItemsByLocation(userLocation);
+            var itemsHere = GetItemsByLocation(gameDefinition.userLocation);
             if (itemsHere.Any())
             {
                 Console.WriteLine("You can see: ");
@@ -124,10 +125,10 @@ namespace Waterlily
 
         private static bool InitializeWorld(string customConfig = "")
         {
-            pendingActions = new List<PendingAction>();
-            turnCount = 1;
-            userCash = 0;
-            userHealth = 100;
+            //gameDefinition.pendingActions = new List<PendingAction>();
+            //gameDefinition.turnCount = 1;
+            //gameDefinition.userCash = 0;
+            //gameDefinition.userHealth = 100;
 
             if (ReadConfig(customConfig))
             {
@@ -156,8 +157,7 @@ namespace Waterlily
 
         private static void MainSettings()
         {
-            userLocation = gameDefinition.userLocation;
-            myLocation = GetLocationByNumber(userLocation);
+            myLocation = GetLocationByNumber(gameDefinition.userLocation);
             cont = true;
         }
 
@@ -270,12 +270,12 @@ namespace Waterlily
         {
             if (myLocation.number == 8)
             {
-                userHealth -= 25;
-                if (userHealth <= 25)
+                gameDefinition.userHealth -= 25;
+                if (gameDefinition.userHealth <= 25)
                 {
                     Console.WriteLine("You are running out of air. Better swim up!");
                 }
-                if (userHealth <= 0)
+                if (gameDefinition.userHealth <= 0)
                 {
                     Console.WriteLine("You are out of air.");
                     cont = false;
@@ -285,7 +285,7 @@ namespace Waterlily
 
         private static void ProcessPendingActions()
         {
-            foreach (var pendAction in pendingActions)
+            foreach (var pendAction in gameDefinition.pendingActions)
             {
                 if (pendAction.iterations > 0 && pendAction.active)
                     pendAction.iterations--;
@@ -300,9 +300,9 @@ namespace Waterlily
                 }
             }
 
-            pendingActions.RemoveAll(p => p.completed);
+            gameDefinition.pendingActions.RemoveAll(p => p.completed);
 
-            foreach (var pendAction in pendingActions)
+            foreach (var pendAction in gameDefinition.pendingActions)
             {
                 if (!pendAction.active)
                     pendAction.active = true;
@@ -334,7 +334,7 @@ namespace Waterlily
                     GetItemByName("bottle").location = -1;
                 }
 
-                if (pendAction.location == userLocation)
+                if (pendAction.location == gameDefinition.userLocation)
                 {
                     Console.WriteLine("You are blown to bits!");
                     cont = false;
@@ -387,7 +387,7 @@ namespace Waterlily
             var item = GetItemByName(obj);
             if (item != null)
             {
-                if (item.location == userLocation)
+                if (item.location == gameDefinition.userLocation)
                 {
                     if (item.canOpen)
                     {
@@ -418,17 +418,17 @@ namespace Waterlily
             var item = GetItemByName(obj);
             if (item != null)
             {
-                if (item.location == userLocation)
+                if (item.location == gameDefinition.userLocation)
                 {
                     if (item.canBuy)
                     {
                         if (!item.carry)
                         {
-                            if (userCash >= item.price)
+                            if (gameDefinition.userCash >= item.price)
                             {
                                 Console.WriteLine($"You buy the {item.examinedTitle}.");
                                 item.carry = true;
-                                userCash -= item.price;
+                                gameDefinition.userCash -= item.price;
                             }
                             else
                             {
@@ -457,7 +457,7 @@ namespace Waterlily
             var item = GetItemByName(obj);
             if (item != null)
             {
-                if (item.location == userLocation)
+                if (item.location == gameDefinition.userLocation)
                 {
                     Console.WriteLine($"You talk to {(item.namedPerson ? "":"the ")}{item.title}.");
 
@@ -500,7 +500,7 @@ namespace Waterlily
             var item = GetItemByName(obj);
             if (item != null)
             {
-                if (item.location == userLocation)
+                if (item.location == gameDefinition.userLocation)
                 {
                     if (item.canBreak)
                     {
@@ -522,7 +522,7 @@ namespace Waterlily
                                     item.longDescription = new StringBuilder(item.longDescription).Replace("closed", "broken").ToString();
                                     item.isBroken = true;
 
-                                    if (userLocation == 1 && obj == "window")
+                                    if (gameDefinition.userLocation == 1 && obj == "window")
                                     {
                                         myLocation.destNorth = 3;
                                         ShowDestinations();
@@ -557,7 +557,7 @@ namespace Waterlily
             {
                 if (destination == 6 && myLocation.number == 8)
                 {
-                    userHealth = 100;
+                    gameDefinition.userHealth = 100;
                     Console.WriteLine("You gasp for air!");
                 }
 
@@ -565,9 +565,9 @@ namespace Waterlily
                     Console.WriteLine("You jump into the river and start swimming");
 
                 if (destination == 7)
-                    pendingActions.Add(new PendingAction { action = "diebyfish", location = userLocation, iterations = 8 });
+                    gameDefinition.pendingActions.Add(new PendingAction { action = "diebyfish", location = gameDefinition.userLocation, iterations = 8 });
 
-                userLocation = destination;
+                gameDefinition.userLocation = destination;
                 MoveMyItems(destination);
                 myLocation = GetLocationByNumber(destination);
                 DescribeWorld();
@@ -583,10 +583,10 @@ namespace Waterlily
             var item = GetItemByName(obj);
             if (item != null)
             {
-                if (item.location == userLocation)
+                if (item.location == gameDefinition.userLocation)
                 {
                     if (item.title == "money")
-                        Console.WriteLine($"{userCash} dollar{(userCash > 1 ? "s" : "")}");
+                        Console.WriteLine($"{gameDefinition.userCash} dollar{(gameDefinition.userCash > 1 ? "s" : "")}");
                     else
                         Console.WriteLine(item.longDescription);
                     item.wasExamined = true;
@@ -611,8 +611,8 @@ namespace Waterlily
                 if (item.title != "money")
                     Console.WriteLine($"   {item.shortDescription}. ");
 
-            if (userCash > 0)
-                Console.WriteLine($"   {userCash} dollar{(userCash > 1 ? "s" : "")}");
+            if (gameDefinition.userCash > 0)
+                Console.WriteLine($"   {gameDefinition.userCash} dollar{(gameDefinition.userCash > 1 ? "s" : "")}");
         }
 
         private static Item GetBreakingTool()
@@ -649,7 +649,7 @@ namespace Waterlily
                         item.carry = false;
                         Console.WriteLine($"You {(item.explosive ? "very carefully put down" : "drop")} the {item.examinedTitle}.");
                         if (item.title == "bottle")
-                            pendingActions.Add(new PendingAction { action = "detonate", item = "bottle", location = userLocation});
+                            gameDefinition.pendingActions.Add(new PendingAction { action = "detonate", item = "bottle", location = gameDefinition.userLocation});
                     }
                     else
                     {
@@ -668,7 +668,7 @@ namespace Waterlily
                 var item = GetItemByName(obj);
                 if (item != null)
                 {
-                    if (item.location == userLocation)
+                    if (item.location == gameDefinition.userLocation)
                     {
                         if (item.title == "bottle")
                         {
@@ -697,7 +697,7 @@ namespace Waterlily
                 var itemsHere = new List<Item>();
                 if (obj.ToUpper() == "ALL")
                 {
-                    itemsHere = GetItemsByLocation(userLocation);
+                    itemsHere = GetItemsByLocation(gameDefinition.userLocation);
                 }
                 else
                 {
@@ -710,7 +710,7 @@ namespace Waterlily
                 {
                     if (item.canTake || item.canBuy)
                     {
-                        if (item.location == userLocation)
+                        if (item.location == gameDefinition.userLocation)
                         {
                             if (!item.carry)
                             {
@@ -735,11 +735,11 @@ namespace Waterlily
                                         Console.WriteLine($"You got the {item.title}!");
 
                                         if (item.title == "money")
-                                            userCash = 100;
+                                            gameDefinition.userCash = 100;
                                     }
                                     else if (item.canBuy)
                                     {
-                                        if (item.location == 10 && userLocation == 10)
+                                        if (item.location == 10 && gameDefinition.userLocation == 10)
                                         {
                                             Console.WriteLine($"Eli says: You have to pay for that my friend! That'll be {item.price} dollar{(item.price > 1 ? "s" : "")}!");
                                         }
