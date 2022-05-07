@@ -81,8 +81,8 @@
         "Hello there, partner! Eli is the name.",
         "What can I get you, son?",
         "I have some fresh chewing gum right here! Only one dollar!",
-        "Here is a real bargain: This fine jewel once belonged to the Emperor Napoleon himself! I swear! 50 dollars!",
-        "Well, how about some nails. 5 bucks a box."
+        "Well, how about some nails. 5 bucks a box.",
+        "Here is a real bargain: This fine jewel once belonged to the Emperor Napoleon himself! I swear! 50 dollars!"
       ]
     },
     {
@@ -124,7 +124,7 @@
     {
       "number": 2,
       "title": "The park",
-      "description": "You are in a park. Birds are singing and doing whatever birds do.",
+      "description": "You are in a park. Birds are singing and doing whatever birds do.\r\nA small bottle lies in the grass.",
       "destNorth": 1,
       "destSouth": 4
     },
@@ -159,7 +159,7 @@
     {
       "number": 7,
       "title": "River Shanty",
-      "description": "You are in the river. You are caught up by a strong swirl."
+      "description": "You are in the river. You are caught up in a strong swirl."
     },
     {
       "number": 8,
@@ -170,13 +170,13 @@
     {
       "number": 9,
       "title": "Outside Eli's Store",
-      "description": "You in Main Street, outside Eli's Store'",
+      "description": "You are in Main Street, outside Eli's Store",
       "destWest": 1,
       "destNorth": 10
     },
     {
       "number": 10,
-      "title": "Eli's Store'",
+      "title": "Eli's Store",
       "description": "You are in Eli's Store. The shelves are filled with useful merchandise. Eli stands behind the counter.",
       "destSouth": 9
     }

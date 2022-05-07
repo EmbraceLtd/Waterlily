@@ -24,6 +24,8 @@ namespace Waterlily
 
         static void Main(string[] args)
         {
+            Print("banner.txt");
+
             var custom = args.Count() > 0 ? args[0] : string.Empty;
             if (InitializeWorld(custom))
             {
@@ -48,6 +50,14 @@ namespace Waterlily
                     }
                 }
             }
+        }
+
+        private static void Print(string file)
+        {
+            var text = File.ReadAllText($".\\{file}");
+            var lines = text.Split(Environment.NewLine);
+            foreach (var line in lines)
+                Console.WriteLine(line);
         }
 
         private static string GetCommand()
@@ -125,11 +135,6 @@ namespace Waterlily
 
         private static bool InitializeWorld(string customConfig = "")
         {
-            //gameDefinition.pendingActions = new List<PendingAction>();
-            //gameDefinition.turnCount = 1;
-            //gameDefinition.userCash = 0;
-            //gameDefinition.userHealth = 100;
-
             if (ReadConfig(customConfig))
             {
                 InitMessage();
@@ -141,17 +146,19 @@ namespace Waterlily
                 return false;
         }
 
-        private static void InitMessage()
+        private static void InitMessage(string loadMessage = "")
         {
-            Console.Clear();
-            Console.WriteLine(dashline);
-            Console.WriteLine("*");
+            //Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine();
             foreach (var line in gameDefinition.intro)
-                Console.WriteLine($"*  {line}");
-            Console.WriteLine("*");
-            Console.WriteLine("* Powered by Waterlily Engine by Tommy Sjöblom");
-            Console.WriteLine("*");
-            Console.WriteLine("***************************************************************************************************");
+                Console.WriteLine($"   {line}");
+            Console.WriteLine();
+            if (!string.IsNullOrEmpty(loadMessage))
+            {
+                Console.WriteLine();
+                Console.WriteLine($"You resumed your gameplay from {loadMessage}");
+            }
             Console.WriteLine();
         }
 
@@ -177,7 +184,7 @@ namespace Waterlily
                     WaitAction(verb);
                     break;
                 case "LOAD":
-                    LoadAction(obj);
+                    LoadAction(obj, userResume: true);
                     break;
                 case "EXIT":
                 case "Q":
@@ -264,10 +271,29 @@ namespace Waterlily
                 case "SAVE":
                     SaveGameAction(obj);
                     break;
+                case "DIR":
+                    DirAction();
+                    break;
+                case "HELP":
+                    Print("help.txt");
+                    break;
                 default:
                     Console.WriteLine("You gotta be kidding!");
                     break;
             }
+        }
+
+        private static void DirAction()
+        {
+            var files = Directory.GetFiles(".", "waterlily-savegame-*.json");
+            Console.WriteLine("Directory of game files:");
+            foreach (var file in files)
+                Console.WriteLine(GetSavegameFromFilename(file));
+        }
+
+        private static string GetSavegameFromFilename(string file)
+        {
+            return $"   {file.Split('.')[1].Split('-')[2]}";
         }
 
         private static void CheckHealth()
@@ -335,6 +361,7 @@ namespace Waterlily
                     man.shortDescription = "a dead old man";
                     man.longDescription = "The old man has died from the explosion.";
                     man.canTalk = false;
+                    loc.description = "You are on the ferry pier. An dead old man is lying on a bench.";
                     GetItemByName("bottle").location = -1;
                 }
 
@@ -360,13 +387,12 @@ namespace Waterlily
             Console.WriteLine($"You {verb.ToLower()}. Time passes.");
         }
 
-        private static void LoadAction(string obj)
+        private static void LoadAction(string obj, bool userResume = false)
         {
-            var configPath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                obj);
+            if (userResume)
+                obj = new StringBuilder($".\\waterlily-savegame-{obj}.json").ToString();
 
-            Console.WriteLine(configPath);
+            var configPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), obj);
 
             if (string.IsNullOrEmpty(Path.GetExtension(configPath)))
                 configPath = new StringBuilder(configPath).Append(".json").ToString();
@@ -375,9 +401,9 @@ namespace Waterlily
             {
                 if (InitializeWorld(configPath))
                 {
-                    InitMessage();
-                    MainSettings();
-                    DescribeWorld();
+                    //InitMessage(userResume ? configPath : String.Empty);
+                    //MainSettings();
+                    //DescribeWorld();
                 }
             }
             else
@@ -561,12 +587,15 @@ namespace Waterlily
             {
                 if (destination == 6 && myLocation.number == 8)
                 {
-                    gameDefinition.userHealth = 100;
                     Console.WriteLine("You gasp for air!");
+                    gameDefinition.userHealth = 100;
                 }
 
                 if (destination == 6 && myLocation.number == 5)
-                    Console.WriteLine("You jump into the river and start swimming");
+                    Console.WriteLine("You jump into the river and start swimming.");
+
+                if (destination == 8 && myLocation.number == 6)
+                    Console.WriteLine("You take a deep breath and dive down.");
 
                 if (destination == 7)
                     gameDefinition.pendingActions.Add(new PendingAction { action = "diebyfish", location = gameDefinition.userLocation, iterations = 8 });
@@ -729,6 +758,8 @@ namespace Waterlily
                                     {
                                         item.carry = true;
                                         Console.WriteLine($"You very carefully pick up the {item.title}.");
+                                        var loc = GetLocationByNumber(2);
+                                        loc.description = "You are in a park. Birds are singing and doing whatever birds do.";
                                     }
                                 }
                                 else
@@ -771,8 +802,26 @@ namespace Waterlily
 
         private static void SaveGameAction(string obj)
         {
-            Console.WriteLine($"You saved your game progress to {obj}.json");
-            File.WriteAllText($".\\{obj}.json", JsonConvert.SerializeObject(gameDefinition));
+            var filename = $".\\waterlily-savegame-{obj}.json";
+            if (!File.Exists(filename))
+            {
+                File.WriteAllText(filename, JsonConvert.SerializeObject(gameDefinition));
+                Console.WriteLine($"You saved your game progress to {obj}.json");
+            }
+            else
+            {
+                Console.Write($"A save game with the name {obj} already exists. Overwrite? (y/N)");
+                var resp = Console.ReadLine();
+                if (resp.ToUpper() == "Y")
+                {
+                    File.WriteAllText(filename, JsonConvert.SerializeObject(gameDefinition));
+                    Console.WriteLine($"You saved your game progress to {obj}.json");
+                }
+                else
+                {
+                    Console.WriteLine("The game was not saved.");
+                }
+            }
         }
 
         private static bool HaveItem(string obj)

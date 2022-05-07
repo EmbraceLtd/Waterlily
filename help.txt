@@ -1,0 +1,37 @@
+﻿
+HELP
+
+Syntax for commands is
+
+[verb] [object]
+
+Available verbs:
+
+LOAD                            Load a saved game
+SAVE                            Save a game
+DIR                             List saved game files
+
+WAIT, SLEEP                     Wait. A turn passes. (or just press Enter, or wait for 30 seconds)
+EXIT, Q                         Quit gameplay
+LOOK, WHERE                     Describe surroundings
+GET, TAKE                       Pick up object
+DROP                            Drop object
+INVENTORY, INV, LIST            Show inventory of carried items
+BUY                             Purchase an object (if in a store and carrying cash)
+OPEN                            Open an object
+BREAK                           Break an object (requires a tool)
+TALK, SPEAK, SAY, CONVERSE      Talk to someone
+
+Directions:
+
+SOUTH, S
+NORTH, N
+EAST, E
+WEST, W
+SOUTHEAST, SE
+SOUTHWEST, SW
+NORTHEAST, NE
+NORTHWEST, NW
+UP, U
+DOWN, D
+
