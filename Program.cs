@@ -524,10 +524,10 @@ namespace Waterlily
                                 GetItemByName("gum").location = 10;
 
                             if (item.phraseIndex == 3 && GetItemByName("jewel").location == -1)
-                                GetItemByName("jewel").location = 10;
+                                GetItemByName("nails").location = 10;
 
                             if (item.phraseIndex == 4 && GetItemByName("nails").location == -1)
-                                GetItemByName("nails").location = 10;
+                                GetItemByName("jewel").location = 10;
                         }
 
                         item.phraseIndex++;
