@@ -6,11 +6,19 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace Waterlily
 {
     class Program
     {
+        [DllImport("kernel32.dll", ExactSpelling = true)]
+        static extern IntPtr GetConsoleWindow();
+        static IntPtr ThisConsole = GetConsoleWindow();
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
         private static GameDefinition gameDefinition;
         private static string dashline = new string('*', 99);
         private static Location myLocation;
@@ -24,6 +32,7 @@ namespace Waterlily
 
         static void Main(string[] args)
         {
+            ShowWindow(ThisConsole, 3);
             Print("banner.txt");
 
             var custom = args.Count() > 0 ? args[0] : string.Empty;
