@@ -656,7 +656,7 @@ namespace Waterlily
             Console.WriteLine("You are carrying: ");
             var myItems = GetMyItems();
 
-            if (!myItems.Any())
+            if (!myItems.Any() && gameDefinition.userCash == 0)
                 Console.WriteLine("   not a damn thing!");
 
             foreach (var item in GetMyItems())
