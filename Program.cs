@@ -199,6 +199,7 @@ namespace Waterlily
                     break;
                 case "INV":
                 case "INVENTORY":
+                case "LIST":
                     InventoryAction();
                     break;
                 case "EXAMINE":
@@ -260,6 +261,9 @@ namespace Waterlily
                 case "BUY":
                     BuyAction(obj);
                     break;
+                case "SAVE":
+                    SaveGameAction(obj);
+                    break;
                 default:
                     Console.WriteLine("You gotta be kidding!");
                     break;
@@ -271,7 +275,7 @@ namespace Waterlily
             if (myLocation.number == 8)
             {
                 gameDefinition.userHealth -= 25;
-                if (gameDefinition.userHealth <= 25)
+                if (gameDefinition.userHealth == 25)
                 {
                     Console.WriteLine("You are running out of air. Better swim up!");
                 }
@@ -763,6 +767,12 @@ namespace Waterlily
                     }
                 }
             }
+        }
+
+        private static void SaveGameAction(string obj)
+        {
+            Console.WriteLine($"You saved your game progress to {obj}.json");
+            File.WriteAllText($".\\{obj}.json", JsonConvert.SerializeObject(gameDefinition));
         }
 
         private static bool HaveItem(string obj)
