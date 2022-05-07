@@ -52,9 +52,9 @@ namespace Waterlily
             }
         }
 
-        private static void Print(string file)
+        private static void Print(string resource)
         {
-            var text = File.ReadAllText($".\\{file}");
+            var text = GetStringFromResource(resource);
             var lines = text.Split(Environment.NewLine);
             foreach (var line in lines)
                 Console.WriteLine(line);
@@ -523,10 +523,10 @@ namespace Waterlily
                             if (item.phraseIndex == 2 && GetItemByName("gum").location == -1)
                                 GetItemByName("gum").location = 10;
 
-                            if (item.phraseIndex == 3 && GetItemByName("jewel").location == -1)
+                            if (item.phraseIndex == 3 && GetItemByName("nails").location == -1)
                                 GetItemByName("nails").location = 10;
 
-                            if (item.phraseIndex == 4 && GetItemByName("nails").location == -1)
+                            if (item.phraseIndex == 4 && GetItemByName("jewel").location == -1)
                                 GetItemByName("jewel").location = 10;
                         }
 
