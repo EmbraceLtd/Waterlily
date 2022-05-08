@@ -123,23 +123,23 @@ namespace Waterlily
 
         private static void ShowDestinations()
         {
-            var destinations = new StringBuilder();
+            var destinations = new List<string>();
 
-            destinations.Append($"{(myLocation.destNorth > -1 ? "north " : string.Empty)}");
-            destinations.Append($"{(myLocation.destNorthWest > -1 ? "northwest " : string.Empty)}");
-            destinations.Append($"{(myLocation.destNorthEast > -1 ? "northeast " : string.Empty)}");
-            destinations.Append($"{(myLocation.destSouth > -1 ? "south " : string.Empty)}");
-            destinations.Append($"{(myLocation.destSouthWest > -1 ? "southwest " : string.Empty)}");
-            destinations.Append($"{(myLocation.destSouthEast > -1 ? "southeast " : string.Empty)}");
-            destinations.Append($"{(myLocation.destEast > -1 ? "east " : string.Empty)}");
-            destinations.Append($"{(myLocation.destWest > -1 ? "west " : string.Empty)}"); 
-            destinations.Append($"{(myLocation.destUp > -1 ? "up " : string.Empty)}");
-            destinations.Append($"{(myLocation.destDown > -1 ? "down " : string.Empty)}");
+            if (myLocation.destNorth > -1) destinations.Add("north");
+            if (myLocation.destNorthWest > -1) destinations.Add("northwest");
+            if (myLocation.destNorthEast > -1) destinations.Add("northeast");
+            if (myLocation.destSouth > -1) destinations.Add("south");
+            if (myLocation.destSouthWest > -1) destinations.Add("southwest");
+            if (myLocation.destSouthEast > -1) destinations.Add("southeast");
+            if (myLocation.destEast > -1) destinations.Add("east");
+            if (myLocation.destWest > -1) destinations.Add("west");
+            if (myLocation.destUp > -1) destinations.Add("up");
+            if (myLocation.destDown > -1) destinations.Add("down");
 
-            if (destinations.Length == 0)
-                destinations.Append("nowhere");
+            if (destinations.Count == 0)
+                destinations.Add("nowhere");
 
-            Console.WriteLine($"You can go: {destinations}");
+            Console.WriteLine($"You can go: {string.Join(", ", destinations)}");
         }
 
         private static bool InitializeWorld(string customConfig = "")
