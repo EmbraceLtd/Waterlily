@@ -12,6 +12,7 @@ namespace Waterlily
         public int userCash { get; set; }
         public int userHealth { get; set; }
         public int turnCount { get; set; }
+        public bool goodBreath { get; set; }
         public List<string> intro { get; set; }
         public List<Item> items { get; set; }
         public List<Location> locations { get; set; }
@@ -34,6 +35,7 @@ namespace Waterlily
         public bool canOpen { get; set; } = false;
         public bool canBuy { get; set; } = false;
         public bool canBreak { get; set; } = false;
+        public bool canChew { get; set; }
         public bool isOpen { get; set; } = false;
         public bool isBroken { get; set; } = false;
         public bool canBreakTool { get; set; } = false;

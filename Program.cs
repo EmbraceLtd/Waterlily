@@ -286,9 +286,43 @@ namespace Waterlily
                 case "HELP":
                     Print("help.txt");
                     break;
+                case "CHEW":
+                    ChewAction(obj);
+                    break;
                 default:
                     Console.WriteLine("You gotta be kidding!");
                     break;
+            }
+        }
+
+        private static void ChewAction(string obj)
+        {
+            var item = GetItemByName(obj);
+            if (item != null)
+            {
+                if (item.location == gameDefinition.userLocation)
+                {
+                    if (item.canChew)
+                    {
+                        if (item.carry)
+                        {
+                            Console.WriteLine($"You chew the {item.title}.{(item.title == "gum" ? " Your breath improves dramatically!" : "")}");
+                            gameDefinition.goodBreath = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You don't have the {item.title}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The {item.title} can't be chewed.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("It ain't here!");
+                }
             }
         }
 

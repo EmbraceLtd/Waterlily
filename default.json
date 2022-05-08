@@ -9,6 +9,7 @@
   "userLocation": 1,
   "userHealth": 100,
   "userCash": 3,
+  "goodBreath": false,
   "turnCount": 1,
   "pendingActions": [],
   "items": [
@@ -91,6 +92,7 @@
       "longDescription": "A pack of chewing gum",
       "location": -1,
       "canBuy": true,
+      "canChew": true,
       "price": 1
     },
     {
