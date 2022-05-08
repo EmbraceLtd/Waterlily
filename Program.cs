@@ -353,7 +353,7 @@ namespace Waterlily
             if (pendAction.item == "bottle")
             {
                 var loc = GetLocationByNumber(pendAction.location);
-                Console.WriteLine($"The {pendAction.item} explodes in {(pendAction.location == 10 ? "" : "the ")}{loc.title}. A large bang is heard all over town!");
+                Console.WriteLine($"{Kaboom()}The {pendAction.item} explodes in {(pendAction.location == 10 ? "" : "the ")}{loc.title}. A large bang is heard all over town!");
 
                 if (pendAction.location == 3)
                 {
@@ -568,7 +568,7 @@ namespace Waterlily
                             if (item.explosive)
                             {
                                 Console.WriteLine($"You break the {item.examinedTitle} with the {breakItem.title}.");
-                                Console.WriteLine($"KABOOM! It explodes and you are blown to bits!");
+                                Console.WriteLine($"{Kaboom()}It explodes and you are blown to bits!");
                                 cont = false;
                             }
                             else
@@ -609,6 +609,10 @@ namespace Waterlily
             }
         }
 
+        private static string Kaboom()
+        {
+            return "\r\n            KABOOM\r\n\r\n";
+        }
         private static void GoAction(int destination)
         {
             if (destination > -1)
@@ -733,7 +737,7 @@ namespace Waterlily
                     {
                         if (item.title == "bottle")
                         {
-                            Console.WriteLine("KABOOM! The bottle of nitroglycerine explodes in your tender parts. Should have been more careful!");
+                            Console.WriteLine($"{Kaboom()}The bottle of nitroglycerine explodes in your tender parts. Should have been more careful!");
                             cont = false;
                         }
                         else
@@ -779,7 +783,7 @@ namespace Waterlily
                                 {
                                     if (!item.wasExamined)
                                     {
-                                        Console.WriteLine($"KABOOM! The {item.examinedTitle} explodes in your hand. Should have been more careful!");
+                                        Console.WriteLine($"{Kaboom()}The {item.examinedTitle} explodes in your hand. Should have been more careful!");
                                         cont = false;
                                     }
                                     else
