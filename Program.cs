@@ -380,7 +380,7 @@ namespace Waterlily
                     man.shortDescription = "Eli's dead body";
                     man.longDescription = "Eli was a stout man in his 40s. He lies dead on the floor.";
                     man.canTalk = false;
-                    loc.description = "You are in Eli's Store. The shelves are filled with useful merchandise. Eli's body lies behind the counter.";
+                    loc.description = "You are in Eli's Store. Eli's body lies behind the counter.";
                     GetItemByName("bottle").location = -1;
                     GetItemByName("gum").canBuy = false;
                     GetItemByName("gum").canTake = true;
@@ -808,7 +808,7 @@ namespace Waterlily
                                     {
                                         if (item.location == 10 && gameDefinition.userLocation == 10)
                                         {
-                                            Console.WriteLine($"Eli says: You have to pay for that my friend! That'll be {item.price} dollar{(item.price > 1 ? "s" : "")}!");
+                                            Console.WriteLine($"Eli says: You have to pay for the {item.title} my friend! That'll be {item.price} dollar{(item.price > 1 ? "s" : "")}!");
                                         }
                                     }
                                 }
