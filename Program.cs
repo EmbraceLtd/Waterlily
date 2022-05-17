@@ -89,6 +89,7 @@ namespace Waterlily
             if (!brief)
             {
                 Console.WriteLine(myLocation.description);
+                CheckDandelion();
             }
             else
             {
@@ -103,6 +104,7 @@ namespace Waterlily
                     if (!myLocation.showedDescription)
                     {
                         Console.WriteLine(myLocation.description);
+                        CheckDandelion();
                         myLocation.showedDescription = true;
                     }
                     else
@@ -110,6 +112,8 @@ namespace Waterlily
                 }
 
             }
+
+
             ShowDestinations();
 
             var itemsHere = GetItemsByLocation(gameDefinition.userLocation);
@@ -119,6 +123,12 @@ namespace Waterlily
                 foreach (var item in itemsHere)
                     Console.WriteLine($"   {item.shortDescription}.");
             }
+        }
+
+        private static void CheckDandelion()
+        {
+            if (gameDefinition.userLocation == 5 && myLocation.destEast != -1)
+                Console.WriteLine("The S/S Dandelion is moored to the pier.");
         }
 
         private static void ShowDestinations()
@@ -662,6 +672,22 @@ namespace Waterlily
 
                 if (destination == 8 && myLocation.number == 6)
                     Console.WriteLine("You take a deep breath and dive down.");
+
+                if (destination == 11 && myLocation.number == 5)
+                {
+                    if (gameDefinition.boatTicket)
+                        Console.WriteLine("You embark the Dandelion.");
+                    else
+                    {
+                        Console.WriteLine("You try to embark the Dandelion.");
+                        Console.WriteLine("The Ticket Controller says: You don't have a ticket, mister! He shows you back on to the pier.");
+                        DescribeWorld();
+                        return;
+                    }
+                }  
+
+                if (destination == 5 && myLocation.number == 11)
+                    Console.WriteLine("You disembark the Dandelion.");
 
                 if (destination == 7)
                     gameDefinition.pendingActions.Add(new PendingAction { action = "diebyfish", location = gameDefinition.userLocation, iterations = 8 });

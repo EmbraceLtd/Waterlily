@@ -13,6 +13,7 @@ namespace Waterlily
         public int userHealth { get; set; }
         public int turnCount { get; set; }
         public bool goodBreath { get; set; }
+        public bool boatTicket { get; set; }
         public List<string> intro { get; set; }
         public List<Item> items { get; set; }
         public List<Location> locations { get; set; }

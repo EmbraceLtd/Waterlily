@@ -148,7 +148,8 @@
       "title": "Ferry pier",
       "description": "You are on the ferry pier. An old man is sitting on a bench.",
       "destNorth": 4,
-      "destSouth": 6
+      "destSouth": 6,
+      "destEast":11
     },
     {
       "number": 6,
@@ -181,6 +182,19 @@
       "title": "Eli's Store",
       "description": "You are in Eli's Store. Eli stands behind the counter.",
       "destSouth": 9
+    },
+    {
+      "number": 11,
+      "title": "Dandelion Stern",
+      "description": "You are in the stern of S/S Dandelion. It is quite crowded with passengers.",
+      "destWest": 5,
+      "destSOuth": 12
+    },
+    {
+      "number": 12,
+      "title": "Dandelion Bow",
+      "description": "You are in the bow of S/S Dandelion. It is even more crowded with passengers.",
+      "destNorth": 11
     }
   ]
 }
