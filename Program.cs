@@ -127,8 +127,13 @@ namespace Waterlily
 
         private static void CheckDandelion()
         {
-            if (gameDefinition.userLocation == 5 && myLocation.destEast != -1)
-                Console.WriteLine("The S/S Dandelion is moored to the pier.");
+            if (gameDefinition.userLocation == 5)
+            {
+                if (myLocation.destEast != -1)
+                    Console.WriteLine("The ferry S/S Dandelion is moored to the pier.");
+                else
+                    Console.WriteLine("The ferry isn't here.");
+            }
         }
 
         private static void ShowDestinations()

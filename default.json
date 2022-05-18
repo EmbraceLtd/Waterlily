@@ -149,7 +149,7 @@
       "description": "You are on the ferry pier. An old man is sitting on a bench.",
       "destNorth": 4,
       "destSouth": 6,
-      "destEast":11
+      "destEast": -1
     },
     {
       "number": 6,
