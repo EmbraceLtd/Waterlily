@@ -136,27 +136,31 @@
       "title": "Main Street",
       "description": "Overlooking Main Street, Flatville. It's a hazy morning. Church bells are heard from afar.\r\nBehind you is the Central Bank building.",
       "destSouth": 2,
-      "destEast": 9
+      "destEast": 9,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 2,
       "title": "The park",
       "description": "You are in a park. Birds are singing and doing whatever birds do.\r\nA small bottle lies in the grass.",
       "destNorth": 1,
-      "destSouth": 4
+      "destSouth": 4,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 3,
       "title": "Bank manager's office",
       "description": "You are in the bank manager's office. The manager is away.",
-      "destSouth": 1
+      "destSouth": 1,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 4,
       "title": "River bank",
       "description": "You are at the banks of River Shanty, at the ferry pier.",
       "destNorth": 2,
-      "destSouth": 5
+      "destSouth": 5,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 5,
@@ -164,7 +168,8 @@
       "description": "You are on the ferry pier. An old man is sitting on a bench.",
       "destNorth": 4,
       "destSouth": 6,
-      "destEast": -1
+      "destEast": -1,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 6,
@@ -172,51 +177,66 @@
       "description": "You are in the river.",
       "destNorth": 5,
       "destSouth": 7,
-      "destDown": 8
+      "destDown": 8,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 7,
       "title": "River Shanty",
-      "description": "You are in the river. You are caught up in a strong swirl."
+      "description": "You are in the river. You are caught up in a strong swirl.",
+      "neighbourhood": "Flatville"
     },
     {
       "number": 8,
       "title": "River bottom",
       "description": "You are at the bottom of the river.",
-      "destUp": 6
+      "destUp": 6,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 9,
       "title": "Outside Eli's Store",
       "description": "You are in Main Street, outside Eli's Store",
       "destWest": 1,
-      "destNorth": 10
+      "destNorth": 10,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 10,
       "title": "Eli's Store",
       "description": "You are in Eli's Store. Eli stands behind the counter.",
-      "destSouth": 9
+      "destSouth": 9,
+      "neighbourhood": "Flatville"
     },
     {
       "number": 11,
       "title": "Dandelion Stern",
       "description": "You are in the stern of S/S Dandelion. It is quite crowded with passengers.",
       "destWest": 5,
-      "destSOuth": 12
+      "destSouth": 12,
+      "neighbourhood": "Ferry"
     },
     {
       "number": 12,
       "title": "Dandelion Bow",
       "description": "You are in the bow of S/S Dandelion. It is even more crowded with passengers.",
-      "destNorth": 11
+      "destNorth": 11,
+      "neighbourhood": "Ferry"
     },
     {
       "number": 13,
       "title": "Deerwood Ferry Terminal",
       "description": "You are in Deerwood Ferry Terminal, gate 14",
       "destSouth": 14,
-      "destEast": 11
+      "destEast": 11,
+      "neighbourhood": "Deerwood"
+    },
+    {
+      "number": 14,
+      "title": "Deerwood City Hall Plaza",
+      "description": "You are in Deerwood City Hall Plaza.",
+      "destNorth": 13,
+      "neighbourhood": "Deerwood"
     }
   ]
 }

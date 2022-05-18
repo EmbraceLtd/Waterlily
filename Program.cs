@@ -363,17 +363,20 @@ namespace Waterlily
 
         private static void CheckHealth()
         {
-            if (myLocation.number == 8)
+            if (myLocation != null)
             {
-                gameDefinition.userHealth -= 25;
-                if (gameDefinition.userHealth == 25)
+                if (myLocation.number == 8)
                 {
-                    Console.WriteLine("You are running out of air. Better swim up!");
-                }
-                if (gameDefinition.userHealth <= 0)
-                {
-                    Console.WriteLine("You are out of air.");
-                    cont = false;
+                    gameDefinition.userHealth -= 25;
+                    if (gameDefinition.userHealth == 25)
+                    {
+                        Console.WriteLine("You are running out of air. Better swim up!");
+                    }
+                    if (gameDefinition.userHealth <= 0)
+                    {
+                        Console.WriteLine("You are out of air.");
+                        cont = false;
+                    }
                 }
             }
         }
@@ -442,24 +445,23 @@ namespace Waterlily
 
         private static void FerryLeaveFlatville(PendingAction pendAction)
         {
-            Console.WriteLine("A steam whistle is heard all over town.");
+            if (GetLocationByNumber(gameDefinition.userLocation).neighbourhood == "Flatville")
+                Console.WriteLine("A steam whistle is heard all over town.");
 
             if (gameDefinition.userLocation == 11 || gameDefinition.userLocation == 12)
                 Console.WriteLine("The ferry leaves the pier. We are underway!");
 
-            var loc = GetLocationByNumber(5);
-            loc.destEast = -1;
+            if (!GetItemByName("ticket").carry)
+                GetItemByName("ticket").location = -1;
 
-            loc = GetLocationByNumber(11);
-            loc.destWest = -1;
-
-            var item = GetItemByName("ferry");
-            item.location = -1;
+            GetLocationByNumber(5).destEast = -1; ;
+            GetLocationByNumber(11).destWest=-1;
+            GetItemByName("ferry").location = -1;
 
             if (gameDefinition.userLocation == 5)
             {
                 Console.WriteLine("The ferry has left the pier.");
-                DescribeWorld();
+                //DescribeWorld();
             }
             pendAction.active = false;
             pendAction.completed = true;
@@ -470,24 +472,21 @@ namespace Waterlily
 
         private static void FerryArriveFlatville(PendingAction pendAction)
         {
-            Console.WriteLine("A steam whistle is heard all over town.");
+            var hood = GetLocationByNumber(gameDefinition.userLocation).neighbourhood;
+            if (hood == "Flatville" || hood == "Ferry")
+                Console.WriteLine("A steam whistle is heard all over town.");
 
             if (gameDefinition.userLocation == 11 || gameDefinition.userLocation == 12)
                 Console.WriteLine("We have arrived in Flatville!");
 
-            var loc = GetLocationByNumber(5);
-            loc.destEast = 11;
-
-            loc = GetLocationByNumber(11);
-            loc.destWest = 5;
-
-            var item = GetItemByName("ferry");
-            item.location = 5;
+            GetLocationByNumber(5).destEast = 11;
+            GetLocationByNumber(11).destWest = 5;
+            GetItemByName("ferry").location = 5;
 
             if (gameDefinition.userLocation == 5)
             {
                 Console.WriteLine("The ferry has arrived at the pier.");
-                DescribeWorld();
+                //DescribeWorld();
             }
             pendAction.active = false;
             pendAction.completed = true;
@@ -498,24 +497,21 @@ namespace Waterlily
 
         private static void FerryArriveDeerwood(PendingAction pendAction)
         {
-            Console.WriteLine("A steam whistle is heard all over town.");
+            var hood = GetLocationByNumber(gameDefinition.userLocation).neighbourhood;
+            if (hood == "Deerwood" || hood=="Ferry")
+                Console.WriteLine("A steam whistle is heard all over town.");
 
             if (gameDefinition.userLocation == 11 || gameDefinition.userLocation == 12)
                 Console.WriteLine("We have arrived in Deerwood!");
 
-            var loc = GetLocationByNumber(13);
-            loc.destEast = 11;
-
-            loc = GetLocationByNumber(11);
-            loc.destWest = 13;
-
-            var item = GetItemByName("ferry");
-            item.location = 13;
+            GetLocationByNumber(13).destEast = 11;
+            GetLocationByNumber(11).destWest = 13;
+            GetItemByName("ferry").location = 13;
 
             if (gameDefinition.userLocation == 13)
             {
                 Console.WriteLine("The ferry has arrived in the terminal.");
-                DescribeWorld();
+                //DescribeWorld();
             }
             pendAction.active = false;
             pendAction.completed = true;
@@ -526,24 +522,23 @@ namespace Waterlily
 
         private static void FerryLeaveDeerwood(PendingAction pendAction)
         {
-            Console.WriteLine("A steam whistle is heard all over town.");
+            if (GetLocationByNumber(gameDefinition.userLocation).neighbourhood == "Deerwood")
+                Console.WriteLine("A steam whistle is heard all over town.");
 
             if (gameDefinition.userLocation == 11 || gameDefinition.userLocation == 12)
                 Console.WriteLine("The ferry leaves the terminal. We are underway!");
 
-            var loc = GetLocationByNumber(13);
-            loc.destEast = -1;
+            if (!GetItemByName("ticket").carry)
+                GetItemByName("ticket").location = -1;
 
-            loc = GetLocationByNumber(11);
-            loc.destWest = -1;
-
-            var item = GetItemByName("ferry");
-            item.location = -1;
+            GetLocationByNumber(13).destEast = -1;
+            GetLocationByNumber(11).destWest = -1;
+            GetItemByName("ferry").location = -1;
 
             if (gameDefinition.userLocation == 13)
             {
                 Console.WriteLine("The ferry has left the terminal.");
-                DescribeWorld();
+                //DescribeWorld();
             }
             pendAction.active = false;
             pendAction.completed = true;
@@ -1032,6 +1027,11 @@ namespace Waterlily
                                         if (item.location == 10 && gameDefinition.userLocation == 10)
                                         {
                                             Console.WriteLine($"Eli says: You have to pay for the {item.title} my friend! That'll be {item.price} dollar{(item.price > 1 ? "s" : "")}!");
+                                        }
+
+                                        if ((item.location == 5 && gameDefinition.userLocation == 5) || (item.location == 13 && gameDefinition.userLocation == 13))
+                                        {
+                                            Console.WriteLine($"The ticket controller says: Well, you must pay for the {item.title} mister! It's {item.price} dollar{(item.price > 1 ? "s" : "")}!");
                                         }
                                     }
                                 }

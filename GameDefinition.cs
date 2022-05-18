@@ -68,6 +68,7 @@ namespace Waterlily
         public int destUp { get; set; } = -1;
         public int destDown { get; set; } = -1;
         public bool showedDescription { get; set; }
+        public string neighbourhood { get; set; }
     }
 
     public class PendingAction
