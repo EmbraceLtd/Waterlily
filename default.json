@@ -11,6 +11,7 @@
   "userCash": 3,
   "goodBreath": false,
   "turnCount": 1,
+  "pendFerryLeave": false,
   "pendingActions": [],
   "items": [
     {
@@ -103,7 +104,6 @@
       "canBuy": true,
       "price": 50
     },
-
     {
       "title": "nails",
       "shortDescription": "a box of nails",
@@ -111,6 +111,21 @@
       "location": -1,
       "canBuy": true,
       "price": 5
+    },
+    {
+      "title": "ferry",
+      "shortDescription": "the ferry",
+      "longDescription": "The ferry S/S Dandelion is crowded with people getting on and off. It is quite worn down and could use some repairs.",
+      "location": -1
+    },
+    {
+      "title": "ticket",
+      "shortDescription": "a ferry ticket",
+      "longDescription": "The ticket says: 'S/S Dandelion Certificate of Entry. Valid for one way journey across River Shanty. Price: $2'",
+      "location": -1,
+      "canBuy": true,
+      "price": 2,
+      "valid": true
     }
 
 
@@ -195,6 +210,13 @@
       "title": "Dandelion Bow",
       "description": "You are in the bow of S/S Dandelion. It is even more crowded with passengers.",
       "destNorth": 11
+    },
+    {
+      "number": 13,
+      "title": "Deerwood Ferry Terminal",
+      "description": "You are in Deerwood Ferry Terminal, gate 14",
+      "destSouth": 14,
+      "destEast": 11
     }
   ]
 }

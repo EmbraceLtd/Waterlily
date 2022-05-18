@@ -40,6 +40,8 @@ namespace Waterlily
             {
                 while (cont)
                 {
+                    InitFerry();
+
                     while (cont)
                     {
                         Console.Write($"{gameDefinition.turnCount++}> ");
@@ -59,6 +61,11 @@ namespace Waterlily
                     }
                 }
             }
+        }
+
+        private static void InitFerry()
+        {
+            gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveFlatville", location = -1, iterations = 30 });
         }
 
         private static void Print(string resource)
@@ -385,6 +392,18 @@ namespace Waterlily
 
                     if (pendAction.action == "diebyfish" && pendAction.active && !pendAction.completed)
                         DieByFish(pendAction);
+
+                    if (pendAction.action == "ferryArriveFlatville" && pendAction.active && !pendAction.completed)
+                        FerryArriveFlatville(pendAction);
+
+                    if (pendAction.action == "ferryLeaveFlatville" && pendAction.active && !pendAction.completed)
+                        FerryLeaveFlatville(pendAction);
+
+                    if (pendAction.action == "ferryArriveDeerwood" && pendAction.active && !pendAction.completed)
+                        FerryArriveDeerwood(pendAction);
+
+                    if (pendAction.action == "ferryLeaveDeerwood" && pendAction.active && !pendAction.completed)
+                        FerryLeaveDeerwood(pendAction);
                 }
             }
 
@@ -395,6 +414,142 @@ namespace Waterlily
                 if (!pendAction.active)
                     pendAction.active = true;
             }
+
+            if (gameDefinition.pendFerryLeaveFlatville)
+            {
+                gameDefinition.pendingActions.Add(new PendingAction { action = "ferryLeaveFlatville", location = -1, iterations = 4 });
+                gameDefinition.pendFerryLeaveFlatville = false;
+            }
+
+            if (gameDefinition.pendFerryArriveDeerwood)
+            {
+                gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveDeerwood", location = -1, iterations = 30 });
+                gameDefinition.pendFerryArriveDeerwood = false;
+            }
+
+            if (gameDefinition.pendFerryLeaveDeerwood)
+            {
+                gameDefinition.pendingActions.Add(new PendingAction { action = "ferryLeaveDeerwood", location = -1, iterations = 4 });
+                gameDefinition.pendFerryLeaveDeerwood = false;
+            }
+
+            if (gameDefinition.pendFerryArriveFlatville)
+            {
+                gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveFlatville", location = -1, iterations = 30 });
+                gameDefinition.pendFerryArriveFlatville = false;
+            }
+        }
+
+        private static void FerryLeaveFlatville(PendingAction pendAction)
+        {
+            Console.WriteLine("A steam whistle is heard all over town.");
+
+            if (gameDefinition.userLocation == 11 || gameDefinition.userLocation == 12)
+                Console.WriteLine("The ferry leaves the pier. We are underway!");
+
+            var loc = GetLocationByNumber(5);
+            loc.destEast = -1;
+
+            loc = GetLocationByNumber(11);
+            loc.destWest = -1;
+
+            var item = GetItemByName("ferry");
+            item.location = -1;
+
+            if (gameDefinition.userLocation == 5)
+            {
+                Console.WriteLine("The ferry has left the pier.");
+                DescribeWorld();
+            }
+            pendAction.active = false;
+            pendAction.completed = true;
+
+            gameDefinition.pendFerryArriveDeerwood = true;
+
+        }
+
+        private static void FerryArriveFlatville(PendingAction pendAction)
+        {
+            Console.WriteLine("A steam whistle is heard all over town.");
+
+            if (gameDefinition.userLocation == 11 || gameDefinition.userLocation == 12)
+                Console.WriteLine("We have arrived in Flatville!");
+
+            var loc = GetLocationByNumber(5);
+            loc.destEast = 11;
+
+            loc = GetLocationByNumber(11);
+            loc.destWest = 5;
+
+            var item = GetItemByName("ferry");
+            item.location = 5;
+
+            if (gameDefinition.userLocation == 5)
+            {
+                Console.WriteLine("The ferry has arrived at the pier.");
+                DescribeWorld();
+            }
+            pendAction.active = false;
+            pendAction.completed = true;
+
+            gameDefinition.pendFerryLeaveFlatville = true;
+
+        }
+
+        private static void FerryArriveDeerwood(PendingAction pendAction)
+        {
+            Console.WriteLine("A steam whistle is heard all over town.");
+
+            if (gameDefinition.userLocation == 11 || gameDefinition.userLocation == 12)
+                Console.WriteLine("We have arrived in Deerwood!");
+
+            var loc = GetLocationByNumber(13);
+            loc.destEast = 11;
+
+            loc = GetLocationByNumber(11);
+            loc.destWest = 13;
+
+            var item = GetItemByName("ferry");
+            item.location = 13;
+
+            if (gameDefinition.userLocation == 13)
+            {
+                Console.WriteLine("The ferry has arrived in the terminal.");
+                DescribeWorld();
+            }
+            pendAction.active = false;
+            pendAction.completed = true;
+
+            gameDefinition.pendFerryLeaveDeerwood = true;
+
+        }
+
+        private static void FerryLeaveDeerwood(PendingAction pendAction)
+        {
+            Console.WriteLine("A steam whistle is heard all over town.");
+
+            if (gameDefinition.userLocation == 11 || gameDefinition.userLocation == 12)
+                Console.WriteLine("The ferry leaves the terminal. We are underway!");
+
+            var loc = GetLocationByNumber(13);
+            loc.destEast = -1;
+
+            loc = GetLocationByNumber(11);
+            loc.destWest = -1;
+
+            var item = GetItemByName("ferry");
+            item.location = -1;
+
+            if (gameDefinition.userLocation == 13)
+            {
+                Console.WriteLine("The ferry has left the terminal.");
+                DescribeWorld();
+            }
+            pendAction.active = false;
+            pendAction.completed = true;
+
+            gameDefinition.pendFerryArriveFlatville = true;
+
         }
 
         private static void Detonate(PendingAction pendAction)
@@ -680,13 +835,16 @@ namespace Waterlily
 
                 if (destination == 11 && myLocation.number == 5)
                 {
-                    if (gameDefinition.boatTicket)
+                    var ticket = GetItemByName("ticket");
+                    if (ticket.carry)
+                    {
                         Console.WriteLine("You embark the Dandelion.");
+                    }
                     else
                     {
-                        Console.WriteLine("You try to embark the Dandelion.");
-                        Console.WriteLine("The Ticket Controller says: You don't have a ticket, mister! He shows you back on to the pier.");
-                        DescribeWorld();
+                        Console.WriteLine("You try to embark the ferry.");
+                        Console.WriteLine("The ticket controller says: You don't have a ticket, mister! Just two dollars a piece.");
+                        ticket.location = 5;
                         return;
                     }
                 }  

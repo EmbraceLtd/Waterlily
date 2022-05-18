@@ -13,7 +13,10 @@ namespace Waterlily
         public int userHealth { get; set; }
         public int turnCount { get; set; }
         public bool goodBreath { get; set; }
-        public bool boatTicket { get; set; }
+        public bool pendFerryLeaveFlatville { get; set; }
+        public bool pendFerryArriveFlatville { get; set; }
+        public bool pendFerryLeaveDeerwood { get; set; }
+        public bool pendFerryArriveDeerwood { get; set; }
         public List<string> intro { get; set; }
         public List<Item> items { get; set; }
         public List<Location> locations { get; set; }
@@ -46,6 +49,7 @@ namespace Waterlily
         public List<string> phrases { get; set; } = new List<string>();
         public int price { get; set; } = 0;
         public bool namedPerson { get; set; } = false;
+        public bool valid { get; set; }
     }
 
     public class Location
