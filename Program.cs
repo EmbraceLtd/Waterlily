@@ -24,6 +24,8 @@ namespace Waterlily
         private static Location myLocation;
         private static bool cont = true;
 
+        private static int ferryLength = 5;
+
         //private static int turnCount;
         //private static int gameDefinition.userLocation;
         //private static int userCash;
@@ -65,7 +67,7 @@ namespace Waterlily
 
         private static void InitFerry()
         {
-            gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveFlatville", location = -1, iterations = 30 });
+            gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveFlatville", location = -1, iterations = ferryLength });
         }
 
         private static void Print(string resource)
@@ -426,7 +428,7 @@ namespace Waterlily
 
             if (gameDefinition.pendFerryArriveDeerwood)
             {
-                gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveDeerwood", location = -1, iterations = 30 });
+                gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveDeerwood", location = -1, iterations = ferryLength });
                 gameDefinition.pendFerryArriveDeerwood = false;
             }
 
@@ -438,7 +440,7 @@ namespace Waterlily
 
             if (gameDefinition.pendFerryArriveFlatville)
             {
-                gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveFlatville", location = -1, iterations = 30 });
+                gameDefinition.pendingActions.Add(new PendingAction { action = "ferryArriveFlatville", location = -1, iterations = ferryLength });
                 gameDefinition.pendFerryArriveFlatville = false;
             }
         }

@@ -11,7 +11,10 @@
   "userCash": 3,
   "goodBreath": false,
   "turnCount": 1,
-  "pendFerryLeave": false,
+  "pendFerryLeaveFlatville": false,
+  "pendFerryArriveFlatville": false,
+  "pendFerryLeaveDeerwood": false,
+  "pendFerryArriveDeerwood": false,
   "pendingActions": [],
   "items": [
     {
@@ -126,6 +129,12 @@
       "canBuy": true,
       "price": 2,
       "valid": true
+    },
+    {
+      "title": "timetable",
+      "shortDescription": "a train timetable",
+      "longDescription": "DEERWOOD - SNAKEVILLE GREAT CENTRAL RAILROAD\r\n\r\n10:39 AM  POTTERBY     Platform 1\r\n11:52 AM  SNAKEVILLE   Platform 2\r\n 3:01 PM  CATTLE HILL  CANCELLED\r\n",
+      "location": 16
     }
 
 
@@ -233,10 +242,43 @@
     },
     {
       "number": 14,
-      "title": "Deerwood City Hall Plaza",
-      "description": "You are in Deerwood City Hall Plaza.",
+      "title": "North Street",
+      "description": "You are in North Street, Deerwood.",
       "destNorth": 13,
+      "destSouth": 15,
+      "neighbourhood": "Deerwood"
+    },
+    {
+      "number": 15,
+      "title": "Deerwood Grand Central Station",
+      "description": "You are outside Grand Central Station in Deerwood.",
+      "destNorth": 14,
+      "destSouth": 16,
+      "neighbourhood": "Deerwood"
+    },
+    {
+      "number": 16,
+      "title": "Grand Central Station Platform 1",
+      "description": "You are on platform 1.",
+      "destNorth": 15,
+      "destSouth": 17,
+      "neighbourhood": "Deerwood"
+    },
+    {
+      "number": 17,
+      "title": "Grand Central Station Platform 2",
+      "description": "You are on platform 2.",
+      "destNorth": 16,
+      "destSouth": 18,
+      "neighbourhood": "Deerwood"
+    },
+    {
+      "number": 18,
+      "title": "Grand Central Station Platform 3",
+      "description": "You are on platform 3.",
+      "destNorth": 17,
       "neighbourhood": "Deerwood"
     }
+
   ]
 }
