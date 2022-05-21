@@ -345,7 +345,7 @@ namespace Waterlily
                 }
                 else
                 {
-                    Console.WriteLine("It ain't here!");
+                    Console.WriteLine($"The {item.title} isn't here.");
                 }
             }
         }
@@ -372,7 +372,7 @@ namespace Waterlily
                     gameDefinition.userHealth -= 25;
                     if (gameDefinition.userHealth == 25)
                     {
-                        Console.WriteLine("You are running out of air. Better swim up!");
+                        Console.WriteLine("You are running out of air. You'd better swim up!");
                     }
                     if (gameDefinition.userHealth <= 0)
                     {
@@ -667,7 +667,7 @@ namespace Waterlily
                 }
                 else
                 {
-                    Console.WriteLine("It ain't here!");
+                    Console.WriteLine($"The {item.title} isn't here.");
                 }
             }
         }
@@ -706,7 +706,7 @@ namespace Waterlily
                 }
                 else
                 {
-                    Console.WriteLine("It ain't here!");
+                    Console.WriteLine($"The {item.title} isn't here.");
                 }
             }
         }
@@ -805,7 +805,7 @@ namespace Waterlily
                 }
                 else
                 {
-                    Console.WriteLine("It ain't here!");
+                    Console.WriteLine($"The {item.title} isn't here.");
                 }
             }
         }
@@ -1045,13 +1045,13 @@ namespace Waterlily
                         }
                         else
                         {
-                            Console.WriteLine("It ain't here!");
+                            Console.WriteLine($"The {item.title} isn't here.");
                         }
                     }
                     else
                     {
                         if (obj.ToUpper() != "ALL")
-                            Console.WriteLine("You can't!");
+                            Console.WriteLine($"You can't take the {item.title}!");
                     }
                 }
             }
