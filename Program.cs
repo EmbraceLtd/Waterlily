@@ -143,6 +143,15 @@ namespace Waterlily
                 else
                     Console.WriteLine("The ferry isn't here.");
             }
+
+            if (gameDefinition.userLocation == 13)
+            {
+                if (myLocation.destEast != -1)
+                    Console.WriteLine("The ferry S/S Dandelion is moored to the terminal dock.");
+                else
+                    Console.WriteLine("The ferry isn't here.");
+            }
+
         }
 
         private static void ShowDestinations()
